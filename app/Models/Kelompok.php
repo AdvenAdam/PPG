@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kelompok extends Model
 {
@@ -19,4 +20,9 @@ class Kelompok extends Model
         'created_at',
         'updated_at'
     ];
+
+    function Generus(): HasMany
+    {
+        return $this->hasMany(Generus::class);
+    }
 }
