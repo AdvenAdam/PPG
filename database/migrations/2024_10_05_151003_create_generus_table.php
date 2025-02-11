@@ -26,10 +26,12 @@ return new class extends Migration
             $table->bigInteger('id_kelas')->unsigned();
             $table->foreign('id_kelas')->references('id')->on('kelas');
             $table->enum('pendidikan_terakhir', ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3']);
-            $table->enum('status_pekerjaan', ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA']);
+            $table->enum('status_pekerjaan', ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK']);
             $table->string('detail_pekerjaan')->nullable();
             $table->string('nama_ibu')->nullable();
+            $table->boolean('hum_ibu')->default(0);
             $table->string('nama_bapak')->nullable();
+            $table->boolean('hum_bapak')->default(0);
             $table->enum('status', ['aktif', 'tidak aktif']);
             $table->text('keterangan')->nullable();
             $table->string('foto_url')->default('user.png');

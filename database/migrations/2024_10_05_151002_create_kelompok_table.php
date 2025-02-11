@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-      Schema::create('kelompok', function (Blueprint $table) {
+        Schema::create('kelompok', function (Blueprint $table) {
             $table->id(); // bigint unsigned
             $table->string('nama');
             $table->text('alamat');
@@ -31,6 +31,8 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('kelompok');
+        Schema::enableForeignKeyConstraints();
     }
 };

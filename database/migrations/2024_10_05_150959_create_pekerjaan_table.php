@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('pekerjaan', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->integer('count')->default(0);
             $table->timestamps();
         });
 
