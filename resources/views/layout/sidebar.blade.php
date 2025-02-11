@@ -3,7 +3,7 @@
   <div class="sidebar-logo">
     <!-- Logo Header -->
     <div class="logo-header text-center" data-background-color="dark">
-      <a href="index.html" class="logo text-white">
+      <a href="" class="logo text-white">
         {{-- <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" /> --}}
         WebPPG Boyolali Barat
       </a>

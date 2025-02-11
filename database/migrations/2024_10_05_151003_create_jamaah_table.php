@@ -37,8 +37,7 @@ return new class extends Migration
             $table->foreign('id_orangtua')->references('id')->on('orangtua');
             $table->string('foto')->default('user.png');
             $table->tinyInteger('meninggal')->default(0);
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

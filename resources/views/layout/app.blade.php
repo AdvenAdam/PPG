@@ -11,22 +11,24 @@
   <script src="assets/js/plugin/webfont/webfont.min.js"></script>
   <script>
     WebFont.load({
-        google: { families: ["Public Sans:300,400,500,600,700"] },
-        custom: {
-          families: [
-            "Font Awesome 5 Solid",
-            "Font Awesome 5 Regular",
-            "Font Awesome 5 Brands",
-            "simple-line-icons",
-          ],
-          urls: ["assets/css/fonts.min.css"],
-        },
-        active: function () {
-          sessionStorage.fonts = true;
-        },
-      });
+      google: {
+        families: ["Public Sans:300,400,500,600,700"]
+      },
+      custom: {
+        families: [
+          "Font Awesome 5 Solid",
+          "Font Awesome 5 Regular",
+          "Font Awesome 5 Brands",
+          "simple-line-icons",
+        ],
+        urls: ["assets/css/fonts.min.css"],
+      },
+      active: function() {
+        sessionStorage.fonts = true;
+      },
+    });
   </script>
-  
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -109,7 +111,7 @@
   <script src="{{ asset('assets/js/custom.js') }}"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
   <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
       $("#datepicker").flatpickr();
       $("#datepicker1").flatpickr();
@@ -118,16 +120,16 @@
 
       $("#multi-filter-select").DataTable({
         pageLength: 5,
-        initComplete: function () {
+        initComplete: function() {
           this.api()
             .columns()
-            .every(function () {
+            .every(function() {
               var column = this;
               var select = $(
-                '<select class="form-select"><option value=""></option></select>'
-              )
+                  '<select class="form-select"><option value=""></option></select>'
+                )
                 .appendTo($(column.footer()).empty())
-                .on("change", function () {
+                .on("change", function() {
                   var val = $.fn.dataTable.util.escapeRegex($(this).val());
 
                   column
@@ -139,7 +141,7 @@
                 .data()
                 .unique()
                 .sort()
-                .each(function (d, j) {
+                .each(function(d, j) {
                   select.append(
                     '<option value="' + d + '">' + d + "</option>"
                   );
@@ -153,56 +155,56 @@
         pageLength: 5,
       });
 
-      $(".cancelRowButton").on("click", function () {
+      $(".cancelRowButton").on("click", function() {
         // Mendapatkan ID dari modal yang sesuai
-            const modalId = $(this).closest('.modal').attr('id'); // Ambil ID modal saat ini
-            const formId = modalId.replace("editModal", "editRowForm"); // Buat ID form berdasarkan ID modal
-            const form = $(`#${formId}`)[0]; // Temukan form dengan ID yang sesuai
-            
-            if (form) {
-            form.reset(); // Reset form
-            } else {
-            console.error("Form not found for ID:", formId);
-            }
+        const modalId = $(this).closest('.modal').attr('id'); // Ambil ID modal saat ini
+        const formId = modalId.replace("editModal", "editRowForm"); // Buat ID form berdasarkan ID modal
+        const form = $(`#${formId}`)[0]; // Temukan form dengan ID yang sesuai
+
+        if (form) {
+          form.reset(); // Reset form
+        } else {
+          console.error("Form not found for ID:", formId);
+        }
         $(".modal").modal("hide");
       })
 
-      $("#addRowButton").on("click", function () {
+      $("#addRowButton").on("click", function() {
         // submit form
         $("#addRowForm").submit();
       });
     });
 
-      $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#177dff",
-        fillColor: "rgba(23, 125, 255, 0.14)",
-      });
+    $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#177dff",
+      fillColor: "rgba(23, 125, 255, 0.14)",
+    });
 
-      $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#f3545d",
-        fillColor: "rgba(243, 84, 93, .14)",
-      });
+    $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#f3545d",
+      fillColor: "rgba(243, 84, 93, .14)",
+    });
 
-      $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
-        type: "line",
-        height: "70",
-        width: "100%",
-        lineWidth: "2",
-        lineColor: "#ffa534",
-        fillColor: "rgba(255, 165, 52, .14)",
-      });
+    $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+      type: "line",
+      height: "70",
+      width: "100%",
+      lineWidth: "2",
+      lineColor: "#ffa534",
+      fillColor: "rgba(255, 165, 52, .14)",
+    });
 
-      function closeEdit(id) {
-        $(`#editModal${id}`).modal("hide");
-      }
+    function closeEdit(id) {
+      $(`#editModal${id}`).modal("hide");
+    }
   </script>
 </body>
 

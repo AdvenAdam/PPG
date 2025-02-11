@@ -16,8 +16,7 @@ return new class extends Migration
         Schema::create('hobi', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

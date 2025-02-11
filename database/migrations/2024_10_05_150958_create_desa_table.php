@@ -19,8 +19,7 @@ return new class extends Migration
             $table->text('alamat');
             $table->bigInteger('id_daerah')->unsigned();
             $table->foreign('id_daerah')->references('id')->on('daerah');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

@@ -26,8 +26,7 @@ return new class extends Migration
             $table->foreign('id_kelompok')->references('id')->on('kelompok');
             $table->enum('jabatan', ["daerah", "desa", "kelompok"])->default('kelompok');
             $table->string('foto');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

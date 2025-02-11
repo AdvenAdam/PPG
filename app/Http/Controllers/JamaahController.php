@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\JamaahExports;
 use App\Models\jamaah;
 use App\Models\kelas;
 use App\Models\Ortu;
@@ -11,9 +12,16 @@ use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JamaahController extends Controller
 {
+
+    public function export()
+    {
+        return Excel::download(new JamaahExports, 'jamaah.xlsx');
+    }
+
     public function index()
     {
         $jamaah = DB::table('jamaah')

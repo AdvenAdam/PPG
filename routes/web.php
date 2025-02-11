@@ -40,6 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Menu Jamaah
     Route::get('/jamaah', [JamaahController::class, 'index']);
+    Route::get('jamaah/export/', [JamaahController::class, 'export']);
     Route::post('/jamaah', [JamaahController::class, 'store']);
     Route::post('/jamaah/edit/{id}', [JamaahController::class, 'update']);
     Route::delete('/jamaah/delete/{id}', [JamaahController::class, 'destroy']);
