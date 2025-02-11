@@ -37,12 +37,12 @@
           <h4 class="text-section">Components</h4>
         </li>
         <li class="nav-item">
-          <a data-bs-toggle="collapse" href="#base">
+          <a data-bs-toggle="collapse" aria-expanded="true" href="#base">
             <i class="fas fa-layer-group"></i>
             <p>Master Data</p>
             <span class="caret"></span>
           </a>
-          <div class="collapse" id="base">
+          <div class="collapse show" id="base">
             <ul class="nav nav-collapse">
               <li>
                 <a href="{{url('/ortu')}}">
@@ -68,7 +68,7 @@
             <p>Setup</p>
             <span class="caret"></span>
           </a>
-          <div class="collapse" id="base1">
+          <div class="collapse show" id="base1">
             <ul class="nav nav-collapse">
               <li>
                 <a href="{{url('daerah')}}">
