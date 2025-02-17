@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DaerahController;
 use App\Http\Controllers\OrtuController;
 use App\Http\Controllers\DesaController;
+use App\Http\Controllers\GenerusController;
 use App\Http\Controllers\JamaahController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelompokController;
@@ -45,6 +46,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/jamaah/edit/{id}', [JamaahController::class, 'update']);
     Route::delete('/jamaah/delete/{id}', [JamaahController::class, 'destroy']);
 
+    // Menu Generus
+    Route::get('/generus', [GenerusController::class, 'index']);
+    Route::get('generus/export/', [GenerusController::class, 'export'])->name('generus.export');
+
+    Route::post('/generus', [GenerusController::class, 'store']);
+    Route::post('/generus/edit/{id}', [GenerusController::class, 'update']);
+    Route::delete('/generus/delete/{id}', [GenerusController::class, 'destroy']);
+
+
     // Menu Daerah
     Route::get('/daerah', [DaerahController::class, 'index']);
 
@@ -56,6 +66,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Menu Kelompok
     Route::get('/kelompok', [KelompokController::class, 'index']);
+    Route::get('/kelompok/get-by-desa/{id}', [KelompokController::class, 'getByDesa']);
     Route::post('/kelompok', [KelompokController::class, 'store']);
     Route::post('/kelompok/edit/{id}', [KelompokController::class, 'update']);
     Route::delete('/kelompok/delete/{id}', [KelompokController::class, 'destroy']);

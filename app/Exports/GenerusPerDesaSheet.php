@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Exports;
+
+use App\Models\Generus;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat as StyleNumberFormat;
+
+class GenerusPerDesaSheet implements FromQuery, WithHeadings, WithMapping, ShouldAutoSize, WithColumnFormatting, WithTitle
+{
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+
+    protected $idDesa;
+    protected $desa;
+
+    public function __construct($idDesa = null, $desa = null)
+    {
+        $this->idDesa = $idDesa;
+        $this->desa = $desa;
+    }
+
+    public function query()
+    {
+        return Generus::select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
+            ->join('kelas', 'generus.id_kelas', '=', 'kelas.id')
+            ->join('kelompok', 'generus.id_kelompok', '=', 'kelompok.id')
+            ->join('desa', 'generus.id_desa', '=', 'desa.id')
+            ->where('generus.id_desa', '=', $this->idDesa)
+            ->orderBy('kelompok', 'asc')
+            ->latest();
+    }
+
+    function map($generus): array
+    {
+        return [
+            $generus->id,
+            $generus->nama,
+            $generus->tgllahir,
+            $generus->gender,
+            $generus->desa,
+            $generus->kelompok,
+            $generus->kelas,
+            $generus->pendidikan_terakhir,
+            $generus->status_pekerjaan,
+            $generus->detail_pekerjaan,
+            $generus->nama_ibu,
+            $generus->hum_ibu,
+            $generus->nama_bapak,
+            $generus->hum_bapak,
+            $generus->status,
+            $generus->keterangan,
+            $generus->mubalight == 1 ? 'Pernah' : 'Tidak Pernah',
+        ];
+    }
+
+    public function headings(): array
+    {
+        return [
+            '#',
+            'Nama',
+            'Tanggal Lahir',
+            'Jenis Kelamin',
+            'Desa',
+            'Kelompok',
+            'Kelas',
+            'Pendidikan Terakhir',
+            'Status Pekerjaan',
+            'Detail Pekerjaan',
+            'Nama Ibu',
+            'Hum Ibu',
+            'Nama Bapak',
+            'Hum Bapak',
+            'status',
+            'Keterangan',
+            'Mubalight/Mubalighot',
+        ];
+    }
+    public function columnFormats(): array
+    {
+        return [
+            'C' => StyleNumberFormat::FORMAT_DATE_DDMMYYYY,
+        ];
+    }
+    public function title(): string
+    {
+        return 'Generus ' . $this->desa;
+    }
+}

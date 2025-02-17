@@ -12,9 +12,9 @@ class KelompokController extends Controller
     public function index()
     {
         $kelompok = DB::table('kelompok')
-        ->join('desa', 'kelompok.id_desa', '=', 'desa.id')
-        ->select('kelompok.*', 'desa.nama as nama_desa')
-        ->get();
+            ->join('desa', 'kelompok.id_desa', '=', 'desa.id')
+            ->select('kelompok.*', 'desa.nama as nama_desa')
+            ->get();
 
         $desas = Desa::all();
 
@@ -24,6 +24,11 @@ class KelompokController extends Controller
         confirmDelete($title, $text);
 
         return view('kelompok.index', compact('kelompok', 'desas'));
+    }
+
+    public function getByDesa($id)
+    {
+        return  Kelompok::where('id_desa', $id)->get();
     }
 
     public function store(Request $request)

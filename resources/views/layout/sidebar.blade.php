@@ -55,6 +55,11 @@
                 </a>
               </li>
               <li>
+                <a href="{{url('/generus')}}">
+                  <span class="sub-item">Data Generus</span>
+                </a>
+              </li>
+              <li>
                 <a href="{{url('/siswa')}}">
                   <span class="sub-item">Data Siswa</span>
                 </a>
@@ -90,11 +95,12 @@
                   <span class="sub-item">Data Kelas</span>
                 </a>
               </li>
-              <li>
+              <!-- FIXME : Pekerjaan now is optional inside generus -->
+              <!-- <li>
                 <a href="{{url('pekerjaan')}}">
                   <span class="sub-item">Data Pekerjaan</span>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </div>
         </li>

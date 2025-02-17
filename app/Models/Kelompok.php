@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Kelompok extends Model
@@ -24,5 +25,10 @@ class Kelompok extends Model
     function Generus(): HasMany
     {
         return $this->hasMany(Generus::class);
+    }
+
+    function Desa(): BelongsTo
+    {
+        return $this->beloBelongsTo(Desa::class);
     }
 }

@@ -42,11 +42,11 @@
 </head>
 
 <body class="d-flex justify-content-center align-items-center">
-    <div class="container bg-white p-5 border rounded-4 shadow" style="min-height: 50vh">
+    <div class="container bg-white  border rounded-4 shadow" style="min-height: 50vh">
         <div class="row h-100">
-            <div class="col-md-6">
-                <div class="card h-100 shadow mx-auto text-white" style="width: 30rem; border-radius: 5rem; background-color: #59cc72">
-                    <div class="card-body p-5">
+            <div class="col-md-6 p-5" style="background-color: #59cc72">
+                <div class=" h-100 mx-auto text-white w-75">
+                    <div class="p-5">
                         <h1 class="text-center">WebPPG</h1>
                         <h5 class="text-center">Penggerak Pembina Generus (PPG) - Boyolali Barat</h5>
                         <img src="assets/img/logo.png" alt="logo" class="img-fluid d-block mx-auto my-3" width="150px">
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 p-3 mt-5">
+            <div class="col-md-6 p-5 mt-5">
                 <div class="text-center fw-bold fs-1">Welcome Back</div>
                 <div class="text-center text-black-50">Silahkan login terlebih dahulu</div>
                 <form action="{{ route('login') }}" method="POST" class="mt-4">
