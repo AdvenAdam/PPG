@@ -35,6 +35,7 @@ return new class extends Migration
             $table->enum('status', ['aktif', 'tidak aktif']);
             $table->text('keterangan')->nullable();
             $table->string('foto_url')->default('user.png');
+            $table->boolean('mubalight')->default(0);
             $table->timestamps();
         });
 

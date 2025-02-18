@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GenerusErrorImport;
 use App\Exports\GenerusExports;
+use App\Exports\GenerusTemplate;
 use App\Imports\GenerusImport;
 use App\Models\Desa;
 use App\Models\Generus;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class GenerusController extends Controller
 {
@@ -24,18 +27,30 @@ class GenerusController extends Controller
     {
         return Excel::download((new GenerusExports), 'generus.xlsx');
     }
-
-    function import()
+    public function exportTemplate()
     {
-        $import = new GenerusImport();
-        $import->import('users.xlsx');
+        return Excel::download((new GenerusTemplate), 'generusTemplate.xlsx');
+    }
 
-        foreach ($import->failures() as $failure) {
-            $failure->row(); // row that went wrong
-            $failure->attribute(); // either heading key (if using heading row concern) or column index
-            $failure->errors(); // Actual error messages from Laravel validator
-            $failure->values(); // The values of the row that has failed.
+    public function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:csv,xlsx'
+            ]);
+
+            $file = $request->file('file'); // Get the uploaded file
+
+            Excel::import(new GenerusImport, $file); // Pass the file to the import
+
+        } catch (\Maatwebsite\Excel\Exceptions\NoTypeDetectedException $e) {
+            toast('File yang diupload tidak sesuai format.', 'error');
+        } catch (\Exception $e) {
+            dd($e);
+            // Log the exception for debugging
+            toast('Terjadi kesalahan saat mengimport file. ' . $e->getMessage(), 'error');
         }
+        return redirect()->back();
     }
 
     public function index()
@@ -63,6 +78,7 @@ class GenerusController extends Controller
             ->join('kelompok', 'generus.id_kelompok', '=', 'kelompok.id')
             ->join('desa', 'generus.id_desa', '=', 'desa.id')
             ->select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
+            ->orderBy('generus.updated_at', 'desc')
             ->get();
         return view('generus.index', compact('generus', 'jamaah', 'orangtua', 'pekerjaan', 'kelas', 'kelompok', 'desa'));
     }

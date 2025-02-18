@@ -18,7 +18,7 @@ class Generus extends Model
         'id_desa',
         'id_kelompok',
         'id_kelas',
-        'pendidikan',
+        'pendidikan_terakhir',
         'status_pekerjaan',
         'detail_pekerjaan',
         'nama_ibu',

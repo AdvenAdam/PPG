@@ -7,26 +7,30 @@ use App\Models\Desa;
 use App\Models\Generus;
 use App\Models\kelas;
 use App\Models\Kelompok;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\Failure;
 use Maatwebsite\Excel\Exports\CollectionExport;
 
-class GenerusImport implements ToModel, WithValidation, SkipsEmptyRows, SkipsOnFailure
+class GenerusImport implements ToModel, WithValidation, SkipsEmptyRows, SkipsOnFailure, WithStartRow, SkipsOnError
 {
     /**
      * @param array $row
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
-    use Importable, SkipsFailures;
+    use Importable, SkipsFailures, SkipsErrors;
 
     protected $desa;
     protected $kelompok;
@@ -41,40 +45,43 @@ class GenerusImport implements ToModel, WithValidation, SkipsEmptyRows, SkipsOnF
 
     public function model(array $row)
     {
+        $formatedDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[1]);
+        $selectedKelompok = explode(' - ', $row[4])[0];
         return new Generus([
-            'nama' => $row['Nama'],
-            'tgllahir' => $row['Tanggal Lahir'],
-            'gender' => $row['Jenis Kelamin'],
-            'id_desa' => $this->desa->firstWhere('nama', $row['Desa'])->id,
-            'id_kelompok' => $this->kelompok->firstWhere('nama', $row['Kelompok'])->id,
-            'id_kelas' => $this->kelas->firstWhere('nama', $row['Kelas'])->id,
-            'pendidikan' => $row['Pendidikan Terakhir'],
-            'status_pekerjaan' => $row['Status Pekerjaan'],
-            'detail_pekerjaan' => $row['Detail Pekerjaan'],
-            'nama_ibu' => $row['Nama Ibu'],
-            'hum_ibu' => $row['Hum Ibu'],
-            'nama_bapak' => $row['Nama Bapak'],
-            'hum_bapak' => $row['Hum Bapak'],
-            'status' => $row['status'],
-            'keterangan' => $row['Keterangan'],
+            'nama' => $row[0],
+            'tgllahir' => $formatedDate,
+            'gender' => $row[2],
+            'id_desa' => optional($this->desa->firstWhere('nama', $row[3]))->id,
+            'id_kelompok' => optional($this->kelompok->firstWhere('nama', $selectedKelompok))->id,
+            'id_kelas' => optional($this->kelas->firstWhere('nama', $row[5]))->id,
+            'pendidikan_terakhir' => $row[6],
+            'status_pekerjaan' => $row[7],
+            'detail_pekerjaan' => $row[8],
+            'nama_ibu' => $row[9],
+            'hum_ibu' => $row[10] == 'Ya' ? 1 : 0,
+            'nama_bapak' => $row[11],
+            'hum_bapak' => $row[12] == 'Ya' ? 1 : 0,
+            'status' => 'aktif',
+            'keterangan' => $row[13],
             'created_at' => now(),
             'updated_at' => now(),
-            'mubalight' => $row['Mubalight/Mubalighot'],
+            'mubalight' => $row[14],
         ]);
+    }
+
+    public function startRow(): int
+    {
+        return 2;
     }
 
     // FIXME : this validate using same as store function in laravel
     function rules(): array
     {
         return [
-
-            // Can also use callback validation rules
             '*.tgllahir' => function ($attribute, $value, $onFailure) {
-                if (! \DateTime::createFromFormat('d-m-Y', $value)) {
-                    $onFailure('Tanggal Lahir is not a valid date');
-                } else {
-                    $date = \DateTime::createFromFormat('d-m-Y', $value);
-                    $value = $date->format('dmy');
+                try {
+                } catch (\Exception $e) {
+                    $onFailure("Tanggal lahir harus berupa format d-m-Y");
                 }
             },
             '*.id_desa' => function ($attribute, $value, $onFailure) {
@@ -111,6 +118,17 @@ class GenerusImport implements ToModel, WithValidation, SkipsEmptyRows, SkipsOnF
                 'values' => $failure->values(),
             ];
         }
-        Excel::store(new GenerusErrorImport(collect($data)), 'generus-error-import.xlsx', 'public', null, true);
+        Excel::download(new GenerusErrorImport(collect($data)), 'generus-error-import.xlsx');
+    }
+    /**
+     * @param \Throwable $e
+     */
+    public function onError(\Throwable $e)
+    {
+        // Log the exception for debugging
+        Log::error('Exception occurred during import: ' . $e->getMessage());
+
+        // Provide feedback to the user
+        toast('An error occurred during the import process.', 'error');
     }
 }
