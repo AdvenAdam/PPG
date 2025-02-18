@@ -204,6 +204,39 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered  p-3" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title">
+                    <span class="fw-mediumbold">Input Data Generus</span>
+                </h5>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('generus.import') }}" method="POST" id="importForm"
+                    class="addRowForm row g-3" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row">
+                        <div class="form-group p-3">
+                            <label for="file">File Excel</label>
+                            <input type="file" class="form-control form-control" name="file" id="file"
+                                accept=".xlsx" required />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" id="importButton" class="btn btn-primary"
+                    onclick="document.getElementById('importForm').submit();">
+                    Add Batch
+                </button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="closemodal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function() {
         $('#id_desa').change(function() {

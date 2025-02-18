@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table id="add-row" class="display table table-striped table-hover">
+    <table id="add-row-table" class="display table table-striped table-hover">
         <thead>
             <tr>
                 <th style="width: 5%">No</th>
@@ -14,15 +14,23 @@
         </thead>
         <tbody>
             @foreach ($generus as $data)
+                @php
+                    $fotoUrl =
+                        $data->foto_url === 'user.png'
+                            ? ($data->gender === 'L'
+                                ? 'user-boy.png'
+                                : 'user-girl.png')
+                            : $data->foto_url;
+                @endphp
                 <tr>
                     <td style="max-width: 30px;">{{ $loop->iteration }}</td>
-                    <td style="text-align: center"><img src="{{ asset('assets/img/foto/' . $data->foto_url) }}"
-                            alt="" width="100" style="max-height: 150px"></td>
+                    <td style="text-align: center"><img src="{{ asset('assets/img/foto/' . $fotoUrl) }}" alt=""
+                            width="100" style="max-height: 150px"></td>
                     <td>{{ $data->nama }}</td>
                     <td>{{ \Carbon\Carbon::parse($data->tgllahir)->age }} tahun</td>
                     <td>{{ $data->kelompok }}</td>
                     <td>{{ $data->kelas }}</td>
-                    <td>{{ $data->status }}</td>
+                    <td class="{{ $data->status == 'aktif' ? 'text-success' : 'text-danger' }}">{{ $data->status }}</td>
                     <td>
                         <div class="form-button-action">
                             <!-- Button trigger modal -->

@@ -47,8 +47,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/jamaah/delete/{id}', [JamaahController::class, 'destroy']);
 
     // Menu Generus
-    Route::get('/generus', [GenerusController::class, 'index']);
+    Route::get('/generus', [GenerusController::class, 'index'])->name('generus.index');
     Route::get('generus/export/', [GenerusController::class, 'export'])->name('generus.export');
+    Route::get('generus/exportTemplate/', [GenerusController::class, 'exportTemplate'])->name('generus.exportTemplate');
+    Route::post('generus/import/', [GenerusController::class, 'import'])->name('generus.import');
+
 
     Route::post('/generus', [GenerusController::class, 'store']);
     Route::post('/generus/edit/{id}', [GenerusController::class, 'update']);

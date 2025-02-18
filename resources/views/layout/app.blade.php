@@ -117,7 +117,9 @@
             $("#datepicker").flatpickr();
             $("#datepicker1").flatpickr();
 
-            $("#basic-datatables").DataTable({});
+            $(".table").DataTable({
+                pageLength: 10,
+            });
 
             $("#multi-filter-select").DataTable({
                 pageLength: 5,
@@ -152,15 +154,12 @@
             });
 
             // Add Row
-            $("#add-row").DataTable({
-                pageLength: 5,
-            });
 
             $(".cancelRowButton").on("click", function() {
                 // Mendapatkan ID dari modal yang sesuai
                 const modalId = $(this).closest('.modal').attr('id'); // Ambil ID modal saat ini
                 const formId = modalId.replace("editModal",
-                "editRowForm"); // Buat ID form berdasarkan ID modal
+                    "editRowForm"); // Buat ID form berdasarkan ID modal
                 const form = $(`#${formId}`)[0]; // Temukan form dengan ID yang sesuai
 
                 if (form) {

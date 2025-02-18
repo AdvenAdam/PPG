@@ -6,18 +6,28 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex align-items-center">
+                    <div class="d-flex flex-column flex-md-row align-items-center gap-3">
                         <div class="col">
-                            <h4 class="card-title">Data Jamaah</h4>
-                            <span>Penginputan Data Jamaah</span>
+                            <h4 class="card-title">Data Generus</h4>
+                            <span>Penginputan Data Generus</span>
                         </div>
-                        <div class="d-flex gap-3 align-items-center">
-                            <a class="btn btn-success btn-round ms-auto" href="{{ route('generus.export') }}">
-                                <i class="far fa-file-excel"></i>
-                                Download Excel
-                            </a>
-                            <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
-                                data-bs-target="#addRowModal">
+                        <div class="d-flex flex-column flex-md-row gap-3 align-items-center">
+                            <div class="btn-group ms-auto" role="group" aria-label="Basic example">
+                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#importModal">
+                                    <i class="far fa-file-excel"></i>
+                                    Upload Excel
+                                </a>
+                                <a class="btn btn-info" href="{{ route('generus.exportTemplate') }}">
+                                    <i class="far fa-file-excel"></i>
+                                    Download Template
+                                </a>
+                                <a class="btn btn-info" href="{{ route('generus.export') }}">
+                                    <i class="far fa-file-excel"></i>
+                                    Download Excel
+                                </a>
+
+                            </div>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRowModal">
                                 <i class="fa fa-plus"></i>
                                 Tambah
                             </button>
