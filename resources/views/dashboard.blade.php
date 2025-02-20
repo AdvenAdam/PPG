@@ -82,14 +82,14 @@
         <div class="px-3" style="margin-bottom: 30px ">
             <h3 class="fw-bold mb-2">Data Generus Berdasarkan Kelas</h3>
             <div class="row gap-md-0 gap-3">
-                <div class="col-12 col-md-5">
+                <div class="col-12 col-md-5" style="max-height: 450px">
                     <div class="card card-stats card-round h-100 mx-auto">
                         <div class="card-body h-100 d-flex align-items-center justify-content-center">
                             <canvas id="GenerusByClassOverall"></canvas>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-7">
+                <div class="col-12 col-md-7" style="max-height: 450px">
                     <div class="card card-stats card-round h-100">
                         <div class="card-body h-100 d-flex flex-column justify-content-center">
                             <canvas id="GenerusByClass"></canvas>
@@ -100,8 +100,8 @@
         </div>
         {{-- NOTE : Generus By Job --}}
         <div class="px-3 pb-3">
-            <div class="row gap-md-0 gap-3 pb-3 ">
-                <div class="col-12 col-md-8" style="max-height: 450px">
+            <div class="row gap-lg-0 gap-5 pb-3 ">
+                <div class="col-12 col-lg-8" style="max-height: 450px">
                     <h3 class="fw-bold mb-2">Generus Berdasarkan Pendidikan</h3>
                     <div class="card card-stats card-round h-100 mx-auto">
                         <div class="card-body h-100 d-flex align-items-center justify-content-center">
@@ -109,17 +109,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-4" style="max-height: 550px">
-                    <h3 class="fw-bold mb-2">Generus Berdasarkan Pekerjaan</h3>
+                <div class="col-12 col-lg-4" style="max-height: 450px">
+                    <h3 class="fw-bold my-2">Generus Berdasarkan Pekerjaan</h3>
                     <div class="card card-stats card-round h-100">
-                        <div class="card-body h-100 d-flex flex-column justify-content-center">
+                        <div class="card-body h-100 d-flex flex-column align-items-center justify-content-center">
                             <canvas id="GenerusByJob"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row gap-md-0 gap-3">
-                <h3 class="fw-bold mb-2">Generus Yang Mubaligh / Mubalighot</h3>
+            <div class="row gap-md-0 gap-2 mt-5">
+                <h3 class="fw-bold my-2">Generus Yang Mubaligh / Mubalighot</h3>
                 <div class="col-12 col-md-4">
                     <div class="card card-info">
                         <div class="card-body skew-shadow">
