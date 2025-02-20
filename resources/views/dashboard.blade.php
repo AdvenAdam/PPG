@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-inner" style="background: linear-gradient(-45deg,#06418e,#1572e8)!important">
         <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row mb-3">
-            <div class="text-white">
+            <div class="text-white py-5">
                 <h3 class="fw-bold mb-2">Dashboard</h3>
                 <h6 class="op-7 mb-2">Penggerak Pembina Generus (PPG)</h6>
             </div>
@@ -11,7 +11,7 @@
     </div>
     <div class="allChart mb-5">
         {{-- NOTE : General Data  --}}
-        <div class="px-3" style="margin-top: -30px">
+        <div class="px-3" style="margin-top: -50px">
             <div class="row">
                 <div class="col-sm-6 col-md-4">
                     <div class="card card-stats card-round">
