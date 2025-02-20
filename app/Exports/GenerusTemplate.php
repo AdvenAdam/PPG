@@ -30,24 +30,22 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
         if ($role === 'desa' || $role === 'kelompok') {
             $desa = Desa::where('id', '=', auth()->user()->id_desa)->pluck('nama')->toArray();
         }
-        $kelompok = Kelompok::join('desa', 'desa.id', '=', 'kelompok.id_desa')
+
+        $kelompokQuery = Kelompok::join('desa', 'desa.id', '=', 'kelompok.id_desa')
             ->select('kelompok.nama as kelompok', 'desa.nama as desa')
-            ->orderBy('desa.id')
-            ->get()
+            ->orderBy('desa.id');
+        if ($role === 'desa') {
+            $kelompokQuery->where('desa.id', '=', auth()->user()->id_desa);
+        } elseif ($role === 'kelompok') {
+            $kelompokQuery->where('kelompok.id', '=', auth()->user()->id_kelompok);
+        }
+
+        $kelompok = $kelompokQuery->get()
             ->mapWithKeys(function ($item) {
                 return [$item->kelompok => "{$item->kelompok} - ({$item->desa})"];
             })
             ->toArray();
-        if ($role == 'desa') {
-            $kelompok = Kelompok::join('desa', 'desa.id', '=', 'kelompok.id_desa')
-                ->select('kelompok.nama as kelompok', 'desa.nama as desa')
-                ->orderBy('desa.id')
-                ->get()
-                ->mapWithKeys(function ($item) {
-                    return [$item->kelompok => "{$item->kelompok} - ({$item->desa})"];
-                })
-                ->toArray();
-        }
+
         $kelas = kelas::pluck('nama')->toArray();
         $pendidikanTerakhir = ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
         $statusPekerjaan = ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK'];

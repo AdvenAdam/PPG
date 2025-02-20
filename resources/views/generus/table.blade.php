@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table id="add-row-table" class="display table table-striped table-hover">
+    <table id="add-row-table" class="display table table-datatable table-striped table-hover">
         <thead>
             <tr>
                 <th style="width: 5%">No</th>

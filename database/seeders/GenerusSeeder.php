@@ -37,6 +37,7 @@ class GenerusSeeder extends Seeder
                     $kelas = DB::table('kelas')->where('nama', 'Usia Mandiri')->value('id');
                     break;
             }
+            $mubalight = $age >= 18 ? $faker->boolean : 0;
             DB::table('generus')->insert([
                 [
                     'nama' => $gender === 'L' ? $faker->firstNameMale . ' ' . $faker->lastNameMale : $faker->firstNameFemale . ' ' . $faker->lastNameFemale,
@@ -55,6 +56,7 @@ class GenerusSeeder extends Seeder
                     'status' => 'aktif',
                     'keterangan' => substr($faker->text, 0, 50),
                     'foto_url' => 'user.png',
+                    'mubalight' => $mubalight,
                 ],
             ]);
         }

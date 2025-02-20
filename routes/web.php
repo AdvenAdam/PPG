@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DaerahController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrtuController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\GenerusController;
@@ -25,13 +26,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', function () {
-        return view('dashboard');
-    });
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     // Menu Kepala Keluarga
     Route::get('/ortu', [OrtuController::class, 'index']);

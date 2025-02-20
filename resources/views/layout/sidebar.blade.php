@@ -1,8 +1,8 @@
 <!-- Sidebar -->
-<div class="sidebar" data-background-color="dark">
+<div class="sidebar" data-background-color="blue">
     <div class="sidebar-logo">
         <!-- Logo Header -->
-        <div class="logo-header text-center" data-background-color="dark">
+        <div class="logo-header text-center" data-background-color="blue">
             <a href="" class="logo text-white">
                 {{-- <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" /> --}}
                 WebPPG Boyolali Barat
@@ -44,7 +44,7 @@
                     </a>
                     <div class="collapse show" id="base">
                         <ul class="nav nav-collapse">
-                            <li>
+                            {{-- <li>
                                 <a href="{{ url('/ortu') }}">
                                     <span class="sub-item">Data Orang Tua</span>
                                 </a>
@@ -53,17 +53,17 @@
                                 <a href="{{ url('/jamaah') }}">
                                     <span class="sub-item">Data Jamaah</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li>
                                 <a href="{{ url('/generus') }}">
                                     <span class="sub-item">Data Generus</span>
                                 </a>
                             </li>
-                            <li>
+                            {{-- <li>
                                 <a href="{{ url('/siswa') }}">
                                     <span class="sub-item">Data Siswa</span>
                                 </a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>

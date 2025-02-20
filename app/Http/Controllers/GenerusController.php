@@ -234,7 +234,8 @@ class GenerusController extends Controller
     }
     public function exportTemplate()
     {
-        return Excel::download((new GenerusTemplate), 'generusTemplate.xlsx');
+        $role = auth()->user()->jabatan;
+        return Excel::download(new GenerusTemplate(), "generusTemplate_{$role}.xlsx");
     }
 
     public function import(Request $request)
