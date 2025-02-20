@@ -44,7 +44,12 @@
         } else {
             $('#mubalightEdit2').prop('checked', true);
         }
-        $('#previewEdit').attr('src', `/assets/img/foto/${selectedGenerus.foto_url}`).show();
+        if (selectedGenerus.foto_url === 'user.png') {
+            const defaultFoto = selectedGenerus.gender === 'L' ? 'user-boy.png' : 'user-girl.png';
+            $('#previewEdit').attr('src', `/assets/img/foto/${defaultFoto}`).show();
+        } else {
+            $('#previewEdit').attr('src', `/assets/img/foto/${selectedGenerus.foto_url}`).show();
+        }
 
     }
 </script>

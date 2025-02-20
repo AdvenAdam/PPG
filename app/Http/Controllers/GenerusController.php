@@ -22,37 +22,6 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class GenerusController extends Controller
 {
-
-    public function export()
-    {
-        return Excel::download((new GenerusExports), 'generus.xlsx');
-    }
-    public function exportTemplate()
-    {
-        return Excel::download((new GenerusTemplate), 'generusTemplate.xlsx');
-    }
-
-    public function import(Request $request)
-    {
-        try {
-            $request->validate([
-                'file' => 'required|mimes:csv,xlsx'
-            ]);
-
-            $file = $request->file('file'); // Get the uploaded file
-
-            Excel::import(new GenerusImport, $file); // Pass the file to the import
-
-        } catch (\Maatwebsite\Excel\Exceptions\NoTypeDetectedException $e) {
-            toast('File yang diupload tidak sesuai format.', 'error');
-        } catch (\Exception $e) {
-            dd($e);
-            // Log the exception for debugging
-            toast('Terjadi kesalahan saat mengimport file. ' . $e->getMessage(), 'error');
-        }
-        return redirect()->back();
-    }
-
     public function index()
     {
         $jamaah = DB::table('jamaah')
@@ -67,20 +36,35 @@ class GenerusController extends Controller
         // untuk sweat alert hapus
         $title = 'Delete Data!';
         $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
 
         $kelas = kelas::all();
         $kelompok = Kelompok::all();
         $desa = Desa::all();
 
-        confirmDelete($title, $text);
+        $user = auth()->user();
+        $role = $user->jabatan;
+
+        if ($role === 'desa' || $role === 'kelompok') {
+            $desa = Desa::where('id', '=', $user->id_desa)->get();
+        }
+
         $generus = DB::table('generus')
             ->join('kelas', 'generus.id_kelas', '=', 'kelas.id')
             ->join('kelompok', 'generus.id_kelompok', '=', 'kelompok.id')
             ->join('desa', 'generus.id_desa', '=', 'desa.id')
             ->select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
+            ->when($role === 'kelompok', function ($query) use ($user) {
+                $query->where('generus.id_kelompok', '=', $user->id_kelompok);
+            })
+            ->when($role === 'desa', function ($query) use ($user) {
+                $query->where('generus.id_desa', '=', $user->id_desa);
+            })
             ->orderBy('generus.updated_at', 'desc')
             ->get();
-        return view('generus.index', compact('generus', 'jamaah', 'orangtua', 'pekerjaan', 'kelas', 'kelompok', 'desa'));
+
+
+        return view('generus.index', compact('generus', 'kelas', 'kelompok', 'desa', 'role'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -120,7 +104,6 @@ class GenerusController extends Controller
             toast('Data generus berhasil diupdate', 'success');
         } catch (\Exception $e) {
             // sweat alert
-            dd($e);
             Log::error('Error saat menambahkan Generus: ' . $e->getMessage());
 
             toast('Data generus gagal ditambahkan', 'error');
@@ -162,15 +145,15 @@ class GenerusController extends Controller
 
     function update(Request $request, $id): RedirectResponse
     {
+        $this->GenerusValidate($request);
         try {
-            $this->GenerusValidate($request);
+            $filePath = public_path('assets/img/foto');
             DB::beginTransaction();
             $Generus = Generus::find($id);
             $file = $request->file('foto_url');
             if ($file) {
                 // Hapus file lama
                 if ($Generus->foto_url) {
-                    $filePath = public_path('assets/img/foto');
                     $fileName = basename($Generus->foto_url);
                     if (file_exists($filePath . '/' . $fileName)) {
                         unlink($filePath . '/' . $fileName);
@@ -178,8 +161,7 @@ class GenerusController extends Controller
                 }
                 // Buat nama file unik
                 $fileName = time() . '_' . $file->hashName();
-                // Tentukan path penyimpanan
-                $filePath = public_path('assets/img/foto');
+
                 // Pindahkan file ke folder yang ditentukan
                 $file->move($filePath, $fileName);
             }
@@ -198,43 +180,25 @@ class GenerusController extends Controller
                 'nama_bapak' => $request->input('nama_bapak'),
                 'hum_bapak' => $request->input('hum_bapak') ?? 0,
                 'status' => $request->input('status'),
-                'foto_url' => $file ? $fileName : null,
+                'foto_url' => $file ? $fileName : $Generus->foto_url,
                 'keterangan' => $request->input('keterangan'),
             ]);
-
-            $userChangePekerjaan = $Generus->detail_pekerjaan != strtolower($request->input('detail_pekerjaan'));
-
-            if ($userChangePekerjaan) {
-                $pekerjaanExist = Pekerjaan::where('nama', strtolower($request->input('detail_pekerjaan')))->first();
-                if (!$pekerjaanExist) {
-                    Pekerjaan::create([
-                        'nama' => strtolower($request->input('detail_pekerjaan')),
-                        'count' => 1
-                    ]);
-                } else {
-                    $pekerjaanExist->count = $pekerjaanExist->count + 1;
-                    $pekerjaanExist->save();
-                }
-            }
-
             DB::commit();
+            toast('Data generus berhasil diupdate', 'success');
         } catch (\Exception $e) {
             // sweat alert
-            toast('Generus ' . $Generus->nama . ' gagal diupdate', 'error');
+            Log::error('Error saat menambahkan Generus: ' . $e->getMessage());
 
+            toast('Data generus gagal ditambahkan', 'error');
             if (isset($fileName)) {
                 // Hapus file jika sudah ada
                 if (file_exists($filePath . '/' . $fileName)) {
                     unlink($filePath . '/' . $fileName);
                 }
             }
-
-            // Log kesalahan
-            Log::error('Error saat mengupdate Generus: ' . $e->getMessage());
-        } finally {
-            toast('Generus ' . $Generus->nama . ' berhasil diupdate', 'success');
-            return Redirect::back()->withInput();
         }
+
+        return Redirect::back()->withInput();
     }
 
     function destroy(Request $request): RedirectResponse
@@ -261,5 +225,36 @@ class GenerusController extends Controller
             toast('Generus ' . $Generus->nama . ' berhasil dihapus', 'success');
             return Redirect::back()->withInput();
         }
+    }
+
+
+    public function export()
+    {
+        return Excel::download((new GenerusExports), 'generus.xlsx');
+    }
+    public function exportTemplate()
+    {
+        return Excel::download((new GenerusTemplate), 'generusTemplate.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file' => 'required|mimes:csv,xlsx'
+            ]);
+
+            $file = $request->file('file'); // Get the uploaded file
+
+            Excel::import(new GenerusImport, $file); // Pass the file to the import
+
+        } catch (\Maatwebsite\Excel\Exceptions\NoTypeDetectedException $e) {
+            toast('File yang diupload tidak sesuai format.', 'error');
+        } catch (\Exception $e) {
+            dd($e);
+            // Log the exception for debugging
+            toast('Terjadi kesalahan saat mengimport file. ' . $e->getMessage(), 'error');
+        }
+        return redirect()->back();
     }
 }

@@ -63,8 +63,6 @@
                                 <label for="kelompok">Kelompok</label>
                                 <select name="id_kelompok" id="id_klmpk" class="form-control" disabled="true">
                                     <option value="" selected disabled>Pilih Kelompok</option>
-                                    @foreach ($kelompok as $value)
-                                    @endforeach
                                 </select>
                             </div>
                         </div>

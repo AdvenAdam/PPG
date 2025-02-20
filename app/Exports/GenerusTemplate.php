@@ -25,7 +25,11 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
 
     public function __construct()
     {
+        $role =  auth()->user()->jabatan;
         $desa = Desa::pluck('nama')->toArray();
+        if ($role === 'desa' || $role === 'kelompok') {
+            $desa = Desa::where('id', '=', auth()->user()->id_desa)->pluck('nama')->toArray();
+        }
         $kelompok = Kelompok::join('desa', 'desa.id', '=', 'kelompok.id_desa')
             ->select('kelompok.nama as kelompok', 'desa.nama as desa')
             ->orderBy('desa.id')
@@ -34,6 +38,16 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
                 return [$item->kelompok => "{$item->kelompok} - ({$item->desa})"];
             })
             ->toArray();
+        if ($role == 'desa') {
+            $kelompok = Kelompok::join('desa', 'desa.id', '=', 'kelompok.id_desa')
+                ->select('kelompok.nama as kelompok', 'desa.nama as desa')
+                ->orderBy('desa.id')
+                ->get()
+                ->mapWithKeys(function ($item) {
+                    return [$item->kelompok => "{$item->kelompok} - ({$item->desa})"];
+                })
+                ->toArray();
+        }
         $kelas = kelas::pluck('nama')->toArray();
         $pendidikanTerakhir = ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
         $statusPekerjaan = ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK'];

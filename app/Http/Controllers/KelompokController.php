@@ -28,7 +28,12 @@ class KelompokController extends Controller
 
     public function getByDesa($id)
     {
-        return  Kelompok::where('id_desa', $id)->get();
+        $kelompoks = Kelompok::where('id_desa', $id)->get();
+        $role = auth()->user()->jabatan;
+        if ($role === 'kelompok') {
+            $kelompoks = $kelompoks->where('id', auth()->user()->id_kelompok);
+        }
+        return $kelompoks;
     }
 
     public function store(Request $request)
