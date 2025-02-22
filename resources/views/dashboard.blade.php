@@ -127,7 +127,7 @@
                             <h5 class="op-8">Mubalight</h5>
                             <div class="pull-right">
                                 <h3 class="fw-bold op-8">
-                                    {{ number_format(($generusTugas['mubalight'] / $generalData['generus']) * 100, 0) }}
+                                    {{ $generalData['generus'] ? number_format(($generusTugas['mubalight'] / $generalData['generus']) * 100, 0) : 0 }}
                                     %
                                 </h3>
                             </div>
@@ -141,7 +141,7 @@
                             <h5 class="op-8">Mubalighot</h5>
                             <div class="pull-right">
                                 <h3 class="fw-bold op-8">
-                                    {{ number_format(($generusTugas['mubalighot'] / $generalData['generus']) * 100, 0) }}
+                                    {{ $generalData['generus'] ? number_format(($generusTugas['mubalighot'] / $generalData['generus']) * 100, 0) : 0 }}
                                     %
                                 </h3>
                             </div>
@@ -157,7 +157,7 @@
                             <h5 class="op-8">Belum / Tidak Tugas</h5>
                             <div class="pull-right">
                                 <h3 class="fw-bold op-8">
-                                    {{ number_format(($generusTugas['blm-tidak-tugas'] / $generalData['generus']) * 100, 0) }}
+                                    {{ $generalData['generus'] ? number_format(($generusTugas['blm-tidak-tugas'] / $generalData['generus']) * 100, 0) : 0 }}
                                     %
                                 </h3>
                             </div>

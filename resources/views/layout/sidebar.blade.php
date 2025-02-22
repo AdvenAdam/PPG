@@ -5,7 +5,7 @@
         <div class="logo-header text-center" data-background-color="blue">
             <a href="" class="logo text-white">
                 {{-- <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" /> --}}
-                WebPPG Boyolali Barat
+                Generus Boyolali Barat
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">

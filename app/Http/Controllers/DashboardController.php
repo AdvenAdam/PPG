@@ -32,9 +32,9 @@ class DashboardController extends Controller
         foreach ($desa as $value) {
             foreach ($kelas as $class) {
                 $generusByDesa[$value->nama][$class->nama]['L'] = Generus::where('id_desa', '=', $value->id)->where('id_kelas', '=', $class->id)->where('gender', '=', 'L')->count();
-                $generusByDesa[$value->nama][$class->nama]['P'] = Generus::where('id_desa', '=', $value->id)->where('id_kelas', '=', $class->id)->where('gender', '=', 'L')->count();
+                $generusByDesa[$value->nama][$class->nama]['P'] = Generus::where('id_desa', '=', $value->id)->where('id_kelas', '=', $class->id)->where('gender', '=', 'P')->count();
             }
-            $generusByDesa[$value->nama]['total'] = Generus::where('id_desa', '=', $value->id)->where('id_kelas', '=', $class->id)->count();
+            $generusByDesa[$value->nama]['total'] = Generus::where('id_desa', '=', $value->id)->count();
         }
         $generusByEdu = Generus::all()->groupBy('pendidikan_terakhir')->map(function ($group) {
             return $group->count();
