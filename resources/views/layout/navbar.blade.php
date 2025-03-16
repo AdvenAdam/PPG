@@ -53,11 +53,14 @@
                                         </h4>
                                         <p class="text-muted">
                                             @auth
-                                                <b>Admin {{ Auth::user()->jabatan }}</b> {{ Auth::user()->email }}
+                                                <b>Admin {{ Auth::user()->jabatan }}</b> <br /> {{ Auth::user()->email }}
                                             @endauth
                                         </p>
+                                        <a href="{{ route('user.profile') }}" class="btn btn-xs btn-primary btn-sm">View
+                                            Profile</a>
                                     </div>
                                 </div>
+
                             </li>
                             <li>
                                 <div class="dropdown-divider"></div>

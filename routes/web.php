@@ -84,8 +84,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Menu User
     Route::get('/user', [userController::class, 'index']);
+    Route::get('/profile', [userController::class, 'profile'])->name('user.profile');
     Route::post('/user', [userController::class, 'store']);
     Route::post('/user/edit/{id}', [userController::class, 'update']);
+    Route::post('/profile/edit/{id}', [userController::class, 'updateProfile']);
     Route::delete('/user/delete/{id}', [userController::class, 'destroy']);
 
     // Menu Siswa

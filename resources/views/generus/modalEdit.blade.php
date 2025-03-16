@@ -22,6 +22,7 @@
         $('#updateRowForm').attr('action', `/generus/edit/${id}`);
         const generus = @json($data);
         const selectedGenerus = generus.filter(g => g.id === id)[0]
+        console.log("🚀 ~ updateAct ~ selectedGenerus:", selectedGenerus)
         kelompokDropdown(selectedGenerus.id_desa, selectedGenerus.id_kelompok)
 
         $('#titleText').text(`Update Data ${selectedGenerus.nama}`)

@@ -45,11 +45,12 @@
     <div class="container bg-white  border rounded-4 shadow" style="min-height: 50vh">
         <div class="row h-100">
             <div class="col-md-6 p-5" style="background-color: #59cc72">
-                <div class=" h-100 mx-auto text-white w-75">
+                <div class=" h-100 mx-auto text-white w-50 lg-w-75">
                     <div class="p-5">
                         <h1 class="text-center">WebPPG</h1>
                         <h5 class="text-center">Penggerak Pembina Generus (PPG) - Boyolali Barat</h5>
-                        <img src="assets/img/logo.png" alt="logo" class="img-fluid d-block mx-auto my-3" width="150px">
+                        <img src="assets/img/logo.png" alt="logo" class="img-fluid d-block mx-auto my-3"
+                            width="150px">
                         <div class="text-center"><span>Website ini berfungsi sebagai pusat informasi dan pendataan,
                                 mendukung setiap upaya pembinaan generus LDII dalam
                                 menciptakan generasi yang berkualitas.</span></div>
@@ -63,26 +64,29 @@
                     @csrf
                     {{-- handle error --}}
                     @if ($errors->any())
-                    <div class="alert alert-danger">
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </div>
+                        <div class="alert alert-danger">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </div>
                     @endif
                     <div class="mb-4">
-                        <input type="email" class="form-control p-3 rounded-4 @error('email') is-invalid @enderror" id="email" name="email" placeholder="Email">
+                        <input type="email" class="form-control p-3 rounded-4 @error('email') is-invalid @enderror"
+                            id="email" name="email" placeholder="Email">
                         @error('email')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <input type="password" class="form-control p-3 rounded-4 @error('password') is-invalid @enderror" id="password" name="password" placeholder="Password">
+                        <input type="password"
+                            class="form-control p-3 rounded-4 @error('password') is-invalid @enderror" id="password"
+                            name="password" placeholder="Password">
                         @error('password')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
                     <div class="d-grid">
@@ -93,7 +97,7 @@
                 {{-- footer --}}
                 <div class="text-center mt-5">
                     <div class="text-center text-black-50">Copyright &copy;
-                        <?php echo date("Y"); ?> - WebPPG
+                        <?php echo date('Y'); ?> - WebPPG
                     </div>
                 </div>
             </div>
