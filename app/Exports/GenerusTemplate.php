@@ -41,11 +41,13 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
         }
 
         $kelompok = $kelompokQuery->get()
-            ->mapWithKeys(function ($item) {
-                return [$item->kelompok => "{$item->kelompok} - ({$item->desa})"];
+            ->map(function ($item) {
+                return $item->desa . "-" . $item->kelompok;
             })
+            ->unique()
+            ->values()
             ->toArray();
-
+        // dd($kelompok);
         $kelas = kelas::pluck('nama')->toArray();
         $pendidikanTerakhir = ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
         $statusPekerjaan = ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK'];

@@ -96,7 +96,7 @@ class GenerusController extends Controller
                 'nama_bapak' => $request->input('nama_bapak'),
                 'hum_bapak' => $request->input('hum_bapak') ?? 0,
                 'status' => $request->input('status'),
-                'foto_url' => $file ? $fileName : null,
+                'foto_url' => $file ? $fileName : 'user.png',
                 'keterangan' => $request->input('keterangan'),
             ]);
 

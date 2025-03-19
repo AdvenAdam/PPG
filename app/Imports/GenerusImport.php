@@ -45,8 +45,13 @@ class GenerusImport implements ToModel, WithValidation, SkipsEmptyRows, SkipsOnF
 
     public function model(array $row)
     {
-        $formatedDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[1]);
-        $selectedKelompok = explode(' - ', $row[4])[0];
+        if (is_string($row[1])) {
+            $formatedDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject(\PhpOffice\PhpSpreadsheet\Shared\Date::stringToExcel($row[1], '/'));
+        } else {
+            $formatedDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[1]);
+        }
+        $selectedKelompok = explode('-', $row[4])[1];
+
         return new Generus([
             'nama' => $row[0],
             'tgllahir' => $formatedDate,
@@ -127,8 +132,12 @@ class GenerusImport implements ToModel, WithValidation, SkipsEmptyRows, SkipsOnF
     {
         // Log the exception for debugging
         Log::error('Exception occurred during import: ' . $e->getMessage());
-
-        // Provide feedback to the user
-        toast('An error occurred during the import process.', 'error');
+        if ($e->getCode() == '01000') {
+            // Provide feedback to the user
+            toast('Pastikan file yang diupload sesuai format.', 'error');
+        } else {
+            // Provide feedback to the user
+            toast('Pastikan Semua kolom terisi dengan benar.', 'error');
+        }
     }
 }
