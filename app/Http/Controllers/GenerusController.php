@@ -235,7 +235,17 @@ class GenerusController extends Controller
     public function exportTemplate()
     {
         $role = auth()->user()->jabatan;
-        return Excel::download(new GenerusTemplate(), "generusTemplate_{$role}.xlsx");
+        // dd($role);
+        if ($role == 'daerah') {
+            $path = storage_path('Excel/generusTemplate_daerah.xlsx');
+            return response()->download($path);
+        } elseif ($role == 'desa') {
+            $deskel = Desa::where('id', auth()->user()->id_desa)->first()->nama;
+            return Excel::download(new GenerusTemplate($deskel), "generusTemplate_{$role}_{$deskel}.xlsx");
+        } else {
+            $deskel = Kelompok::where('id', auth()->user()->id_kelompok)->first()->nama;
+            return Excel::download(new GenerusTemplate($deskel), "generusTemplate_{$role}_{$deskel}.xlsx");
+        }
     }
 
     public function import(Request $request)
@@ -245,14 +255,11 @@ class GenerusController extends Controller
                 'file' => 'required|mimes:csv,xlsx'
             ]);
 
-            $file = $request->file('file'); // Get the uploaded file
-
-            Excel::import(new GenerusImport, $file); // Pass the file to the import
+            Excel::import(new GenerusImport, $request->file('file')); // Pass the file to the import
 
         } catch (\Maatwebsite\Excel\Exceptions\NoTypeDetectedException $e) {
             toast('File yang diupload tidak sesuai format.', 'error');
         } catch (\Exception $e) {
-            dd($e);
             // Log the exception for debugging
             toast('Terjadi kesalahan saat mengimport file. ' . $e->getMessage(), 'error');
         }

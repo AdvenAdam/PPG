@@ -42,7 +42,7 @@
 </head>
 
 <body class="d-flex justify-content-center align-items-center">
-    <div class="container bg-white  border rounded-4 shadow" style="min-height: 50vh">
+    <div class="container bg-white  border rounded-4 shadow" style="overflow: hidden; min-height: 50vh">
         <div class="row h-100">
             <div class="col-md-6 p-5" style="background-color: #59cc72">
                 <div class=" h-100 mx-auto text-white w-50 lg-w-75">

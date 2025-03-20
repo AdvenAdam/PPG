@@ -32,22 +32,15 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
         }
 
         $kelompokQuery = Kelompok::join('desa', 'desa.id', '=', 'kelompok.id_desa')
-            ->select('kelompok.nama as kelompok', 'desa.nama as desa')
+            ->selectRaw("UPPER(CONCAT(kelompok.nama)) as kelompok_desa")
             ->orderBy('desa.id');
         if ($role === 'desa') {
             $kelompokQuery->where('desa.id', '=', auth()->user()->id_desa);
         } elseif ($role === 'kelompok') {
             $kelompokQuery->where('kelompok.id', '=', auth()->user()->id_kelompok);
         }
+        $kelompok = $kelompokQuery->pluck('kelompok_desa')->toArray();
 
-        $kelompok = $kelompokQuery->get()
-            ->map(function ($item) {
-                return $item->desa . "-" . $item->kelompok;
-            })
-            ->unique()
-            ->values()
-            ->toArray();
-        // dd($kelompok);
         $kelas = kelas::pluck('nama')->toArray();
         $pendidikanTerakhir = ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
         $statusPekerjaan = ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK'];
@@ -67,7 +60,7 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
             ['columns_name' => 'M', 'options' => $hum],
         ];
         $this->selects = $selects;
-        $this->row_count = 99; //number of rows that will have the dropdown
+        $this->row_count = 150; //number of rows that will have the dropdown
     }
 
     public function collection()
@@ -125,7 +118,6 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
                 foreach ($this->selects as $select) {
                     $drop_column = $select['columns_name'];
                     $options = $select['options'];
-
                     // set dropdown list for first data row
                     $validation = $event->sheet->getCell("{$drop_column}2")->getDataValidation();
                     $validation->setType(DataValidation::TYPE_LIST);

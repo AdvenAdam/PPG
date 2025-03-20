@@ -29,6 +29,6 @@ class Kelompok extends Model
 
     function Desa(): BelongsTo
     {
-        return $this->beloBelongsTo(Desa::class);
+        return $this->belongsTo(Desa::class);
     }
 }
