@@ -45,8 +45,8 @@
     <div class="container bg-white  border rounded-4 shadow" style="overflow: hidden; min-height: 50vh">
         <div class="row h-100">
             <div class="col-md-6 p-5" style="background-color: #59cc72">
-                <div class=" h-100 mx-auto text-white w-50 lg-w-75">
-                    <div class="p-5">
+                <div class=" h-100 mx-auto text-white w-100 lg-w-75">
+                    <div class="p-3 p-lg-5">
                         <h1 class="text-center">WebPPG</h1>
                         <h5 class="text-center">Penggerak Pembina Generus (PPG) - Boyolali Barat</h5>
                         <img src="assets/img/logo.png" alt="logo" class="img-fluid d-block mx-auto my-3"
