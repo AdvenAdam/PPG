@@ -73,6 +73,7 @@
                                 <label for="status_pekerjaan">Status Pekerjaan</label>
                                 <select name="status_pekerjaan" id="status_pekerjaan" class="form-control">
                                     <option value="" selected disabled>Pilih Status Pekerjaan</option>
+                                    <option value="BELUM SEKOLAH">BELUM SEKOLAH</option>
                                     <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>
                                     <option value="BEKERJA">BEKERJA</option>
                                     <option value="BELUM BEKERJA">BELUM BEKERJA</option>
@@ -90,6 +91,8 @@
                                 <label for="pendidikan_terakhir">Pendidikan Terakhir</label>
                                 <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-control">
                                     <option value="" selected disabled>Pilih Pendidikan Terakhir</option>
+                                    <option value="BELUM SEKOLAH">BELUM SEKOLAH</option>
+                                    <option value="TK">TK</option>
                                     <option value="SD">SD</option>
                                     <option value="SMP">SMP</option>
                                     <option value="SMA">SMA</option>

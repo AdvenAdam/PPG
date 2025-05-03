@@ -188,7 +188,7 @@ class GenerusController extends Controller
         } catch (\Exception $e) {
             // sweat alert
             Log::error('Error saat menambahkan Generus: ' . $e->getMessage());
-
+            dd($e);
             toast('Data generus gagal ditambahkan', 'error');
             if (isset($fileName)) {
                 // Hapus file jika sudah ada
