@@ -2,7 +2,7 @@
     <table id="add-row-table" class="display table table-datatable table-striped table-hover">
         <thead>
             <tr>
-                <th style="width: 5%">No</th>
+                <th style="width: 7%">No</th>
                 <th style="width: 8%">Foto</th>
                 <th>Nama</th>
                 <th>Umur</th>

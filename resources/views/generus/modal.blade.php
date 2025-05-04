@@ -47,27 +47,29 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="desa">Desa</label>
-                                <select name="id_desa" id="id_desa" class="form-control">
-                                    <option value="" selected disabled>Pilih Desa</option>
-                                    @foreach ($desa as $value)
-                                        <option value="{{ $value->id }}">{{ $value->nama }}</option>
-                                    @endforeach
-                                </select>
+                        @if (Auth::user()->jabatan !== 'kelompok')
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="desa">Desa</label>
+                                    <select name="id_desa" id="id_desa" class="form-control">
+                                        <option value="" selected disabled>Pilih Desa</option>
+                                        @foreach ($desa as $value)
+                                            <option value="{{ $value->id }}">{{ $value->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="kelompok">Kelompok</label>
-                                <select name="id_kelompok" id="id_klmpk" class="form-control" disabled="true">
-                                    <option value="" selected disabled>Pilih Kelompok</option>
-                                    @foreach ($kelompok as $value)
-                                    @endforeach
-                                </select>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="kelompok">Kelompok</label>
+                                    <select name="id_kelompok" id="id_klmpk" class="form-control" disabled="true">
+                                        <option value="" selected disabled>Pilih Kelompok</option>
+                                        @foreach ($kelompok as $value)
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="status_pekerjaan">Status Pekerjaan</label>

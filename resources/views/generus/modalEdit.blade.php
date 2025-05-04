@@ -1,6 +1,4 @@
 <script>
-    console.log('called')
-
     function kelompokDropdown(id_desa, id_kelompok = 0) {
         $.ajax({
             url: '/kelompok/get-by-desa/' + id_desa,
@@ -103,27 +101,31 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="desa">Desa</label>
-                                <select name="id_desa" id="id_desaEdit" class="form-control">
-                                    <option value="" selected>Pilih Desa</option>
-                                    @foreach ($desa as $value)
-                                        <option value="{{ $value->id }}">{{ $value->nama }}</option>
-                                    @endforeach
-                                </select>
+                        {{-- TODO : Kelompok cant edit id_kelompok --}}
+                        @if (Auth::user()->jabatan !== 'kelompok')
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="desa">Desa</label>
+                                    <select name="id_desa" id="id_desaEdit" class="form-control">
+                                        <option value="" selected>Pilih Desa</option>
+                                        @foreach ($desa as $value)
+                                            <option value="{{ $value->id }}">{{ $value->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="kelompok">Kelompok</label>
-                                <select name="id_kelompok" id="id_klmpkEdit" class="form-control" disabled="true">
-                                    <option value="" selected disabled>Pilih Kelompok</option>
-                                    @foreach ($kelompok as $value)
-                                    @endforeach
-                                </select>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="kelompok">Kelompok</label>
+                                    <select name="id_kelompok" id="id_klmpkEdit" class="form-control" disabled="true">
+                                        <option value="" selected disabled>Pilih Kelompok</option>
+                                        @foreach ($kelompok as $value)
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="status_pekerjaan">Status Pekerjaan</label>

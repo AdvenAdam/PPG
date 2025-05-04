@@ -81,12 +81,14 @@ class GenerusController extends Controller
                 // Pindahkan file ke folder yang ditentukan
                 $file->move($filePath, $fileName);
             }
+            $kelompok = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_kelompok : $request->input('id_kelompok');
+            $desa = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_desa : $request->input('id_desa');
             Generus::create([
                 'nama' => $request->input('nama'),
                 'tgllahir' => $request->input('tgllahir'),
                 'gender' => $request->input('gender'),
-                'id_desa' => $request->input('id_desa'),
-                'id_kelompok' => $request->input('id_kelompok'),
+                'id_desa' => $desa,
+                'id_kelompok' => $kelompok,
                 'id_kelas' => $request->input('id_kelas'),
                 'pendidikan_terakhir' => $request->input('pendidikan_terakhir'),
                 'status_pekerjaan' => $request->input('status_pekerjaan'),
@@ -139,7 +141,6 @@ class GenerusController extends Controller
             'foto_url.image' => 'Format gambar harus berupa jpeg, png, jpg',
             'foto_url.max' => 'Ukuran gambar maksimal 3MB',
         ];
-
         $request->validate($rules, $messages);
     }
 
@@ -161,16 +162,17 @@ class GenerusController extends Controller
                 }
                 // Buat nama file unik
                 $fileName = time() . '_' . $file->hashName();
-
                 // Pindahkan file ke folder yang ditentukan
                 $file->move($filePath, $fileName);
             }
+            $kelompok = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_kelompok : $request->input('id_kelompok');
+            $desa = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_desa : $request->input('id_desa');
             $Generus->update([
                 'nama' => $request->input('nama'),
                 'tgllahir' => $request->input('tgllahir'),
                 'gender' => $request->input('gender'),
-                'id_desa' => $request->input('id_desa'),
-                'id_kelompok' => $request->input('id_kelompok'),
+                'id_desa' => $desa,
+                'id_kelompok' => $kelompok,
                 'id_kelas' => $request->input('id_kelas'),
                 'pendidikan_terakhir' => $request->input('pendidikan_terakhir'),
                 'status_pekerjaan' => $request->input('status_pekerjaan'),

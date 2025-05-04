@@ -11,16 +11,16 @@
                             <span>Penginputan Data Generus</span>
                         </div>
                         <div class="d-flex flex-column flex-md-row gap-3 align-items-center">
-                            <div class="btn-group ms-auto" role="group" aria-label="Basic example">
-                                <a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#importModal">
+                            <div class="btn-md-group ms-auto gap-2" role="group" aria-label="Basic example">
+                                <a class="btn btn-info my-1" data-bs-toggle="modal" data-bs-target="#importModal">
                                     <i class="far fa-file-excel"></i>
                                     Upload Excel
                                 </a>
-                                <a class="btn btn-info" href="{{ route('generus.exportTemplate') }}">
+                                <a class="btn btn-info my-1" href="{{ route('generus.exportTemplate') }}">
                                     <i class="far fa-file-excel"></i>
                                     Download Template
                                 </a>
-                                <a class="btn btn-info" href="{{ route('generus.export') }}">
+                                <a class="btn btn-info my-1" href="{{ route('generus.export') }}">
                                     <i class="far fa-file-excel"></i>
                                     Download Excel
                                 </a>

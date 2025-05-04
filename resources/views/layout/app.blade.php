@@ -106,7 +106,7 @@
             $("#datepicker1").flatpickr();
 
             $(".table-datatable").DataTable({
-                pageLength: 10,
+                pageLength: 25,
             });
 
             $("#multi-filter-select").DataTable({

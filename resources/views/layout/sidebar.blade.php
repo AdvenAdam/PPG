@@ -4,7 +4,6 @@
         <!-- Logo Header -->
         <div class="logo-header text-center" data-background-color="blue">
             <a href="" class="logo text-white">
-                {{-- <img src="assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" /> --}}
                 Generus Boyolali Barat
             </a>
             <div class="nav-toggle">
@@ -44,66 +43,58 @@
                     </a>
                     <div class="collapse show" id="base">
                         <ul class="nav nav-collapse">
-                            {{-- <li>
-                                <a href="{{ url('/ortu') }}">
-                                    <span class="sub-item">Data Orang Tua</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ url('/jamaah') }}">
-                                    <span class="sub-item">Data Jamaah</span>
-                                </a>
-                            </li> --}}
                             <li>
                                 <a href="{{ url('/generus') }}">
                                     <span class="sub-item">Data Generus</span>
                                 </a>
                             </li>
-                            {{-- <li>
-                                <a href="{{ url('/siswa') }}">
-                                    <span class="sub-item">Data Siswa</span>
+                            <li>
+                                <a href="{{ url('/generus') }}">
+                                    <span class="sub-item">Absensi</span>
                                 </a>
-                            </li> --}}
+                            </li>
+                            <li>
+                                <a href="{{ url('/generus') }}">
+                                    <span class="sub-item">Kurikulum</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a data-bs-toggle="collapse" href="#base1">
-                        <i class="fas fa-user-cog"></i>
-                        <p>Setup</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse show" id="base1">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="{{ url('daerah') }}">
-                                    <span class="sub-item">Data Daerah</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ url('desa') }}">
-                                    <span class="sub-item">Data Desa</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ url('kelompok') }}">
-                                    <span class="sub-item">Data Kelompok</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ url('kls') }}">
-                                    <span class="sub-item">Data Kelas</span>
-                                </a>
-                            </li>
-                            <!-- FIXME : Pekerjaan now is optional inside generus -->
-                            <!-- <li>
-                <a href="{{ url('pekerjaan') }}">
-                  <span class="sub-item">Data Pekerjaan</span>
-                </a>
-              </li> -->
-                        </ul>
-                    </div>
-                </li>
+                @if (Auth::user()->jabatan === 'daerah')
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#base1">
+                            <i class="fas fa-user-cog"></i>
+                            <p>Setup</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse show" id="base1">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ url('daerah') }}">
+                                        <span class="sub-item">Data Daerah</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('desa') }}">
+                                        <span class="sub-item">Data Desa</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('kelompok') }}">
+                                        <span class="sub-item">Data Kelompok</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ url('kls') }}">
+                                        <span class="sub-item">Data Kelas</span>
+                                    </a>
+                                </li>
+                                <!-- FIXME : Pekerjaan now is optional inside generus -->
+                            </ul>
+                        </div>
+                    </li>
+                @endif
                 @if (Auth::user()->jabatan == 'daerah')
                     <li class="nav-item">
                         <a href="{{ url('/user') }}">
