@@ -3,13 +3,11 @@
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\DaerahController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OrtuController;
 use App\Http\Controllers\DesaController;
 use App\Http\Controllers\GenerusController;
-use App\Http\Controllers\JamaahController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelompokController;
-use App\Http\Controllers\PekerjaanController;
+use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
@@ -28,67 +26,61 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
-    // Menu Kepala Keluarga
-    Route::get('/ortu', [OrtuController::class, 'index']);
-    Route::post('/ortu', [OrtuController::class, 'store']);
-    Route::post('/ortu/edit/{id}', [OrtuController::class, 'update']);
-    Route::delete('/ortu/delete/{id}', [OrtuController::class, 'destroy']);
-
-    // Menu Jamaah
-    Route::get('/jamaah', [JamaahController::class, 'index']);
-    Route::get('jamaah/export/', [JamaahController::class, 'export']);
-    Route::post('/jamaah', [JamaahController::class, 'store']);
-    Route::post('/jamaah/edit/{id}', [JamaahController::class, 'update']);
-    Route::delete('/jamaah/delete/{id}', [JamaahController::class, 'destroy']);
-
     // Menu Generus
-    Route::get('/generus', [GenerusController::class, 'index'])->name('generus.index');
-    Route::get('generus/export/', [GenerusController::class, 'export'])->name('generus.export');
-    Route::get('generus/exportTemplate/', [GenerusController::class, 'exportTemplate'])->name('generus.exportTemplate');
-    Route::post('generus/import/', [GenerusController::class, 'import'])->name('generus.import');
+    Route::prefix('generus')->name('generus.')->group(function () {
+        Route::get('/', [GenerusController::class, 'index'])->name('index');
+        Route::get('/export/', [GenerusController::class, 'export'])->name('export');
+        Route::get('/exportTemplate/', [GenerusController::class, 'exportTemplate'])->name('exportTemplate');
+        Route::post('/import/', [GenerusController::class, 'import'])->name('import');
 
-
-    Route::post('/generus', [GenerusController::class, 'store']);
-    Route::post('/generus/edit/{id}', [GenerusController::class, 'update']);
-    Route::delete('/generus/delete/{id}', [GenerusController::class, 'destroy']);
+        Route::post('/', [GenerusController::class, 'store']);
+        Route::post('/edit/{id}', [GenerusController::class, 'update']);
+        Route::delete('/delete/{id}', [GenerusController::class, 'destroy']);
+    });
 
 
     // Menu Daerah
     Route::get('/daerah', [DaerahController::class, 'index']);
 
     // Menu Desa
-    Route::get('/desa', [DesaController::class, 'index']);
-    Route::post('/desa', [DesaController::class, 'store']);
-    Route::post('/desa/edit/{id}', [DesaController::class, 'update']);
-    Route::delete('/desa/delete/{id}', [DesaController::class, 'destroy']);
+    Route::prefix('desa')->name('desa.')->middleware('jabatan.daerah')->group(function () {
+        Route::get('/', [DesaController::class, 'index'])->name('index');
+        Route::post('/', [DesaController::class, 'store'])->name('store');
+        Route::post('/edit/{id}', [DesaController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [DesaController::class, 'destroy'])->name('destroy');
+    });
 
-    // Menu Kelompok
-    Route::get('/kelompok', [KelompokController::class, 'index']);
-    Route::get('/kelompok/get-by-desa/{id}', [KelompokController::class, 'getByDesa']);
-    Route::post('/kelompok', [KelompokController::class, 'store']);
-    Route::post('/kelompok/edit/{id}', [KelompokController::class, 'update']);
-    Route::delete('/kelompok/delete/{id}', [KelompokController::class, 'destroy']);
+    Route::prefix('kelompok')->name('kelompok.')->middleware('jabatan.daerah')->group(function () {
+        Route::get('/', [KelompokController::class, 'index'])->name('index');
+        Route::get('/get-by-desa/{id}', [KelompokController::class, 'getByDesa'])->name('getByDesa');
+        Route::post('/', [KelompokController::class, 'store'])->name('store');
+        Route::post('/edit/{id}', [KelompokController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [KelompokController::class, 'destroy'])->name('destroy');
+    });
 
     // Menu Kelas
-    Route::get('/kls', [KelasController::class, 'index']);
-    Route::post('/kls', [KelasController::class, 'store']);
-    Route::post('/kls/edit/{id}', [KelasController::class, 'update']);
-    Route::delete('/kls/delete/{id}', [KelasController::class, 'destroy']);
-
-    // Menu Pekerjaan
-    Route::get('/pekerjaan', [PekerjaanController::class, 'index']);
-    Route::post('/pekerjaan', [PekerjaanController::class, 'store']);
-    Route::post('/pekerjaan/edit/{id}', [PekerjaanController::class, 'update']);
-    Route::delete('/pekerjaan/delete/{id}', [PekerjaanController::class, 'destroy']);
+    Route::prefix('kls')->name('kls.')->middleware('jabatan.daerah')->group(function () {
+        Route::get('/', [KelasController::class, 'index'])->name('index');
+        Route::post('/', [KelasController::class, 'store'])->name('store');
+        Route::post('/edit/{id}', [KelasController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [KelasController::class, 'destroy'])->name('destroy');
+    });
+    Route::prefix('kurikulum')->name('kurikulum.')->middleware('jabatan.daerah')->group(function () {
+        Route::get('/', [KurikulumController::class, 'index'])->name('index');
+        Route::post('/', [KurikulumController::class, 'store'])->name('store');
+        Route::delete('/delete/{id}', [KurikulumController::class, 'destroy'])->name('destroy');
+        Route::get('/download/{id}', [KurikulumController::class, 'download'])->name('download');
+    });
 
     // Menu User
-    Route::get('/user', [userController::class, 'index']);
-    Route::get('/profile', [userController::class, 'profile'])->name('user.profile');
-    Route::post('/user', [userController::class, 'store']);
-    Route::post('/user/edit/{id}', [userController::class, 'update']);
-    Route::post('/profile/edit/{id}', [userController::class, 'updateProfile']);
-    Route::delete('/user/delete/{id}', [userController::class, 'destroy']);
+    Route::prefix('user')->name('user.')->middleware('jabatan.daerah')->group(function () {
+        Route::get('/', [userController::class, 'index'])->name('index');
+        Route::get('/profile', [userController::class, 'profile'])->name('profile');
+        Route::post('/', [userController::class, 'store'])->name('store');
+        Route::post('/edit/{id}', [userController::class, 'update'])->name('update');
+        Route::post('/profile/edit/{id}', [userController::class, 'updateProfile'])->name('profile.update');
+        Route::delete('/delete/{id}', [userController::class, 'destroy'])->name('destroy');
+    });
 
     // Menu Siswa
     Route::get('/siswa', [SiswaController::class, 'index']);

@@ -54,7 +54,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ url('/generus') }}">
+                                <a href="{{ url('/kurikulum') }}">
                                     <span class="sub-item">Kurikulum</span>
                                 </a>
                             </li>
