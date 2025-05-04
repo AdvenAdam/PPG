@@ -43,7 +43,7 @@ class GenerusTemplate implements FromCollection, WithHeadings, WithEvents, Shoul
 
         $kelas = kelas::pluck('nama')->toArray();
         $pendidikanTerakhir = ['BELUM SEKOLAH', 'TK', 'SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3'];
-        $statusPekerjaan = ['BELUM SEKOLAH', 'PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK'];
+        $statusPekerjaan = ['BELUM SEKOLAH', 'PELAJAR', 'MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK'];
         $statusMubalight = ['Pernah', 'Tidak Pernah'];
         $hum = ['Tidak', 'Ya'];
         $gender = ['L', 'P'];

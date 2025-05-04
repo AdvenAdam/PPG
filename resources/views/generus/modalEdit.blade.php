@@ -132,7 +132,8 @@
                                 <select name="status_pekerjaan" id="status_pekerjaanEdit" class="form-control">
                                     <option value="" selected disabled>Pilih Status Pekerjaan</option>
                                     <option value="BELUM SEKOLAH">BELUM SEKOLAH</option>
-                                    <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>
+                                    <option value="PELAJAR">PELAJAR</option>
+                                    <option value="MAHASISWA">MAHASISWA</option>
                                     <option value="BEKERJA">BEKERJA</option>
                                     <option value="BELUM BEKERJA">BELUM BEKERJA</option>
                                     <option value="MONDOK">MONDOK</option>

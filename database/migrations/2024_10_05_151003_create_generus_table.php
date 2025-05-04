@@ -25,8 +25,8 @@ return new class extends Migration
             $table->foreign('id_kelompok')->references('id')->on('kelompok');
             $table->bigInteger('id_kelas')->unsigned();
             $table->foreign('id_kelas')->references('id')->on('kelas');
-            $table->enum('pendidikan_terakhir', ['SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3']);
-            $table->enum('status_pekerjaan', ['PELAJAR/MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK']);
+            $table->enum('pendidikan_terakhir', ['TK', 'SD', 'SMP', 'SMA', 'D3', 'S1', 'S2', 'S3']);
+            $table->enum('status_pekerjaan', ['BELUM SEKOLAH', 'PELAJAR', 'MAHASISWA', 'BEKERJA', 'BELUM BEKERJA', 'MONDOK']);
             $table->string('detail_pekerjaan')->nullable();
             $table->string('nama_ibu')->nullable();
             $table->boolean('hum_ibu')->default(0);
