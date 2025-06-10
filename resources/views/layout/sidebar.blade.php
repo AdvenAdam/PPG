@@ -49,7 +49,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ url('/generus') }}">
+                                <a href="{{ url('/pengajian') }}">
                                     <span class="sub-item">Absensi</span>
                                 </a>
                             </li>

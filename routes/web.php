@@ -8,6 +8,7 @@ use App\Http\Controllers\GenerusController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\KurikulumController;
+use App\Http\Controllers\PengajianController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
@@ -50,12 +51,12 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [DesaController::class, 'destroy'])->name('destroy');
     });
 
-    Route::prefix('kelompok')->name('kelompok.')->middleware('jabatan.daerah')->group(function () {
-        Route::get('/', [KelompokController::class, 'index'])->name('index');
+    Route::prefix('kelompok')->name('kelompok.')->group(function () {
         Route::get('/get-by-desa/{id}', [KelompokController::class, 'getByDesa'])->name('getByDesa');
-        Route::post('/', [KelompokController::class, 'store'])->name('store');
-        Route::post('/edit/{id}', [KelompokController::class, 'update'])->name('update');
-        Route::delete('/delete/{id}', [KelompokController::class, 'destroy'])->name('destroy');
+        Route::get('/', [KelompokController::class, 'index'])->middleware('jabatan.daerah')->name('index');
+        Route::post('/', [KelompokController::class, 'store'])->middleware('jabatan.daerah')->name('store');
+        Route::post('/edit/{id}', [KelompokController::class, 'update'])->middleware('jabatan.daerah')->name('update');
+        Route::delete('/delete/{id}', [KelompokController::class, 'destroy'])->middleware('jabatan.daerah')->name('destroy');
     });
 
     // Menu Kelas
@@ -65,10 +66,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/edit/{id}', [KelasController::class, 'update'])->name('update');
         Route::delete('/delete/{id}', [KelasController::class, 'destroy'])->name('destroy');
     });
-    Route::prefix('kurikulum')->name('kurikulum.')->middleware('jabatan.daerah')->group(function () {
+    Route::prefix('kurikulum')->name('kurikulum.')->group(function () {
         Route::get('/', [KurikulumController::class, 'index'])->name('index');
-        Route::post('/', [KurikulumController::class, 'store'])->name('store');
-        Route::delete('/delete/{id}', [KurikulumController::class, 'destroy'])->name('destroy');
+        Route::post('/', [KurikulumController::class, 'store'])->middleware('jabatan.daerah')->name('store');
+        Route::delete('/delete/{id}', [KurikulumController::class, 'destroy'])->middleware('jabatan.daerah')->name('destroy');
         Route::get('/download/{id}', [KurikulumController::class, 'download'])->name('download');
     });
 
@@ -82,8 +83,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{id}', [userController::class, 'destroy'])->name('destroy');
     });
 
-    // Menu Siswa
-    Route::get('/siswa', [SiswaController::class, 'index']);
+    Route::prefix('pengajian')->name('pengajian.')->group(function () {
+        Route::get('/', [PengajianController::class, 'index'])->name('pengajian.index');
+        Route::get('/export/{tahun}', [PengajianController::class, 'export'])->name('report.export');
+        Route::get('/{pengajian}/edit/', [PengajianController::class, 'edit'])->name('edit');
+        Route::post('/', [PengajianController::class, 'store'])->name('store');
+        Route::patch('/{absen}/edit/', [PengajianController::class, 'update'])->name('update');
+        Route::delete('/delete/{pengajian}', [PengajianController::class, 'destroy'])->name('destroy');
+    });
 });
 
 Route::get('/login', [AuthenticationController::class, 'login'])->name('login')->middleware('guest');
