@@ -232,7 +232,16 @@ class GenerusController extends Controller
 
     public function export()
     {
-        return Excel::download((new GenerusExports), 'generus.xlsx');
+        $role = auth()->user()->jabatan;
+        if ($role == 'daerah') {
+            return Excel::download((new GenerusExports), 'generus.xlsx');
+        } elseif ($role == 'desa') {
+            $deskel = Desa::where('id', auth()->user()->id_desa)->first()->nama;
+            return Excel::download(new GenerusExports, "generus_{$role}_{$deskel}.xlsx");
+        } else {
+            $deskel = Kelompok::where('id', auth()->user()->id_kelompok)->first()->nama;
+            return Excel::download(new GenerusExports, "generus_{$role}_{$deskel}.xlsx");
+        }
     }
     public function exportTemplate()
     {

@@ -19,22 +19,28 @@ class GenerusPerDesaSheet implements FromQuery, WithHeadings, WithMapping, Shoul
 
     protected $idDesa;
     protected $desa;
+    protected $role;
 
     public function __construct($idDesa = null, $desa = null)
     {
         $this->idDesa = $idDesa;
         $this->desa = $desa;
+        $this->role = auth()->user()->jabatan;
     }
 
     public function query()
     {
-        return Generus::select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
+        $query = Generus::select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
             ->join('kelas', 'generus.id_kelas', '=', 'kelas.id')
             ->join('kelompok', 'generus.id_kelompok', '=', 'kelompok.id')
             ->join('desa', 'generus.id_desa', '=', 'desa.id')
-            ->where('generus.id_desa', '=', $this->idDesa)
-            ->orderBy('kelompok', 'asc')
-            ->latest();
+            ->where('generus.id_desa', '=', $this->idDesa);
+
+        if ($this->role === 'kelompok') {
+            $query->where('generus.id_kelompok', auth()->user()->id_kelompok);
+        }
+
+        return $query->orderBy('kelompok', 'asc')->latest();
     }
 
     function map($generus): array
