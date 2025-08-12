@@ -313,12 +313,12 @@
         });
         $('#status_pekerjaanEdit').change(function() {
             const status_pekerjaan = $(this).val()
+            $('#updateRowModal #detail_pekerjaan_input_container').prop('hidden', true);
+            $('#updateRowModal #detail_sekolah_input_container').prop('hidden', true);
             if (status_pekerjaan === 'BEKERJA') {
                 $('#updateRowModal #detail_pekerjaan_input_container').prop('hidden', false);
             } else if (status_pekerjaan === 'PELAJAR') {
                 $('#updateRowModal #detail_sekolah_input_container').prop('hidden', false);
-            } else {
-                $('#updateRowModal #detail_pekerjaan_input_container').prop('hidden', true);
             }
         }).trigger('change');
 

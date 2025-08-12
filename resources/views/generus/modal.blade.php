@@ -287,14 +287,14 @@
         });
         $('#status_pekerjaan').change(function() {
             const status_pekerjaan = $(this).val()
+            $('#detail_pekerjaan_input_container').prop('hidden', true);
+            $('#detail_sekolah_input_container').prop('hidden', true);
+
             if (status_pekerjaan === 'BEKERJA') {
                 $('#detail_pekerjaan_input_container').prop('hidden', false);
             } else if (status_pekerjaan === 'PELAJAR') {
                 $('#detail_sekolah_input_container').prop('hidden', false);
-            } else {
-                $('#detail_pekerjaan_input_container').prop('hidden', true);
             }
-
         })
 
     });
