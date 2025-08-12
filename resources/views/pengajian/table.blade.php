@@ -15,7 +15,6 @@
     <div class="row mb-3">
         @if (Auth::user()->jabatan !== 'kelompok')
             <form action="{{ url('/pengajian') }}" method="GET" id="addRowForm" class="addRowForm row g-3">
-
                 <div class="col-sm-4 ">
                     <div class="form-group">
                         <label for="desa">Desa</label>
