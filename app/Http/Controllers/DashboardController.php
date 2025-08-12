@@ -39,7 +39,17 @@ class DashboardController extends Controller
         $generusByEdu = Generus::all()->groupBy('pendidikan_terakhir')->map(function ($group) {
             return $group->count();
         })->toArray();
-        $generusByJob = Generus::all()->groupBy('status_pekerjaan')->map(function ($group) {
+        $generusByJob = Generus::all()->groupBy(function ($item) {
+            if ($item->status_pekerjaan === 'PELAJAR') {
+                $detail = json_decode($item->detail_pekerjaan, true);
+                if (!empty($detail['sekolahJamaah']) && $detail['sekolahJamaah'] == 1) {
+                    return 'PELAJAR JAMAAH';
+                } else {
+                    return 'PELAJAR';
+                }
+            }
+            return $item->status_pekerjaan;
+        })->map(function ($group) {
             return $group->count();
         });
         $generusTugas = [];

@@ -88,6 +88,28 @@
                                 <input type="text" class="form-control" id="detail_pekerjaan" name="detail_pekerjaan"
                                     required placeholder="* Detail Pekerjaan" />
                             </div>
+                            <div class="form-group" id="detail_sekolah_input_container" hidden='true'>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="tingkat_sekolah">Tingkat Sekolah</label>
+                                        <select name="tingkat_sekolah" id="tingkat_sekolah" class="form-control">
+                                            <option value="" selected disabled>Pilih Kelas</option>
+                                            @for ($i = 1; $i <= 12; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="detail_sekolah">Sekolah Jamaah</label>
+                                        <div class="py-3">
+                                            <input class="form-check-input-lg mt-0" name="sekolah_jamaah"
+                                                id="sekolah_jamaah" type="checkbox" value="1"
+                                                aria-label="Checkbox for following text input"
+                                                style="width: 20px; height: 20px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -119,7 +141,7 @@
                                 <div class="col-3 p-0">
                                     <div class="form-group">
                                         <label for="hum_bapak">Hum</label>
-                                        <div class="p-3 ">
+                                        <div class="py-3">
                                             <input class="form-check-input-lg mt-0" name="hum_bapak" type="checkbox"
                                                 value="1" aria-label="Checkbox for following text input"
                                                 style="width: 20px; height: 20px;">
@@ -140,7 +162,7 @@
                                 <div class="col-3 p-0">
                                     <div class="form-group">
                                         <label for="hum_ibu">Hum</label>
-                                        <div class="p-3 ">
+                                        <div class="py-3">
                                             <input class="form-check-input-lg mt-0" name="hum_ibu" type="checkbox"
                                                 value="1" aria-label="Checkbox for following text input"
                                                 style="width: 20px; height: 20px;">
@@ -169,7 +191,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Pernah Menjadi Mubalight/Mubalighot ?</label>
+                                <label>Mubalight/Mubalighot ?</label>
                                 <div class="d-flex">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="mubalight"
@@ -267,6 +289,8 @@
             const status_pekerjaan = $(this).val()
             if (status_pekerjaan === 'BEKERJA') {
                 $('#detail_pekerjaan_input_container').prop('hidden', false);
+            } else if (status_pekerjaan === 'PELAJAR') {
+                $('#detail_sekolah_input_container').prop('hidden', false);
             } else {
                 $('#detail_pekerjaan_input_container').prop('hidden', true);
             }

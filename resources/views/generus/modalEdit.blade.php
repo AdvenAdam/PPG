@@ -18,37 +18,52 @@
 
     function updateAct(id) {
         $('#updateRowForm').attr('action', `/generus/edit/${id}`);
-        const generus = @json($data);
-        const selectedGenerus = generus.filter(g => g.id === id)[0]
-        kelompokDropdown(selectedGenerus.id_desa, selectedGenerus.id_kelompok)
 
-        $('#titleText').text(`Update Data ${selectedGenerus.nama}`)
-        $('#namaEdit').val(selectedGenerus.nama)
-        $('#datepicker1').val(selectedGenerus.tgllahir)
-        $('#genderEdit').val(selectedGenerus.gender).change()
-        $('#id_kelasEdit').val(selectedGenerus.id_kelas).change()
-        $('#id_desaEdit').val(selectedGenerus.id_desa).change()
-        $('#status_pekerjaanEdit').val(selectedGenerus.status_pekerjaan).change()
-        $('#detail_pekerjaanEdit').val(selectedGenerus.detail_pekerjaan)
-        $('#pendidikan_terakhirEdit').val(selectedGenerus.pendidikan_terakhir)
-        $('#nama_bapakEdit').val(selectedGenerus.nama_bapak)
-        $('#hum_bapakEdit').prop('checked', selectedGenerus.hum_bapak == 1 ? true : false)
-        $('#nama_ibuEdit').val(selectedGenerus.nama_ibu)
-        $('#hum_ibuEdit').prop('checked', selectedGenerus.hum_ibu == 1 ? true : false)
-        $('#statusEdit').val(selectedGenerus.status)
-        $('#keteranganEdit').val(selectedGenerus.keterangan).change()
-        if (selectedGenerus.mubalight == 1) {
-            $('#mubalightEdit1').prop('checked', true);
-        } else {
-            $('#mubalightEdit2').prop('checked', true);
+        const generus = @json($data);
+        const modal = $("#updateRowModal");
+        const selectedGenerus = generus.find(g => g.id === id);
+
+        kelompokDropdown(selectedGenerus.id_desa, selectedGenerus.id_kelompok);
+
+        modal.find('#titleText').text(`Update Data ${selectedGenerus.nama}`);
+        modal.find('#namaEdit').val(selectedGenerus.nama);
+        modal.find('#datepicker1').val(selectedGenerus.tgllahir);
+        modal.find('#genderEdit').val(selectedGenerus.gender).change();
+        modal.find('#id_kelasEdit').val(selectedGenerus.id_kelas).change();
+        modal.find('#id_desaEdit').val(selectedGenerus.id_desa).change();
+        modal.find('#status_pekerjaanEdit').val(selectedGenerus.status_pekerjaan).change();
+
+        if (selectedGenerus.status_pekerjaan === 'PELAJAR' && selectedGenerus.detail_pekerjaan) {
+            try {
+                const detailSekolah = JSON.parse(selectedGenerus.detail_pekerjaan);
+                console.log("🚀 ~ updateAct ~ detailSekolah:", detailSekolah)
+                modal.find('#sekolah_jamaah').prop('checked', detailSekolah.sekolahJamaah == 1);
+                modal.find('#tingkat_sekolah').val(detailSekolah.tingkat).change();
+            } catch (e) {
+                console.error("Invalid detail_pekerjaan JSON:", selectedGenerus.detail_pekerjaan);
+            }
         }
+        modal.find('#detail_pekerjaanEdit').val(selectedGenerus.detail_pekerjaan);
+        modal.find('#pendidikan_terakhirEdit').val(selectedGenerus.pendidikan_terakhir);
+        modal.find('#nama_bapakEdit').val(selectedGenerus.nama_bapak);
+        modal.find('#hum_bapakEdit').prop('checked', selectedGenerus.hum_bapak == 1);
+        modal.find('#nama_ibuEdit').val(selectedGenerus.nama_ibu);
+        modal.find('#hum_ibuEdit').prop('checked', selectedGenerus.hum_ibu == 1);
+        modal.find('#statusEdit').val(selectedGenerus.status);
+        modal.find('#keteranganEdit').val(selectedGenerus.keterangan).change();
+
+        if (selectedGenerus.mubalight == 1) {
+            modal.find('#mubalightEdit1').prop('checked', true);
+        } else {
+            modal.find('#mubalightEdit2').prop('checked', true);
+        }
+
         if (selectedGenerus.foto_url === 'user.png') {
             const defaultFoto = selectedGenerus.gender === 'L' ? 'user-boy.png' : 'user-girl.png';
-            $('#previewEdit').attr('src', `/assets/img/foto/${defaultFoto}`).show();
+            modal.find('#previewEdit').attr('src', `/assets/img/foto/${defaultFoto}`).show();
         } else {
-            $('#previewEdit').attr('src', `/assets/img/foto/${selectedGenerus.foto_url}`).show();
+            modal.find('#previewEdit').attr('src', `/assets/img/foto/${selectedGenerus.foto_url}`).show();
         }
-
     }
 </script>
 
@@ -143,6 +158,28 @@
                                 <label for="detail_pekerjaan">Detail Pekerjaan</label>
                                 <input type="text" class="form-control" id="detail_pekerjaanEdit"
                                     name="detail_pekerjaan" required placeholder="* Detail Pekerjaan" />
+                            </div>
+                            <div class="form-group" id="detail_sekolah_input_container" hidden='true'>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="tingkat_sekolah">Tingkat Sekolah</label>
+                                        <select name="tingkat_sekolah" id="tingkat_sekolah" class="form-control">
+                                            <option value="" selected disabled>Pilih Kelas</option>
+                                            @for ($i = 1; $i <= 12; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="detail_sekolah">Sekolah Jamaah</label>
+                                        <div class="py-3">
+                                            <input class="form-check-input-lg mt-0" name="sekolah_jamaah"
+                                                id="sekolah_jamaah" type="checkbox" value="1"
+                                                aria-label="Checkbox for following text input"
+                                                style="width: 20px; height: 20px;">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -274,15 +311,16 @@
             const id_desa = $(this).val()
             kelompokDropdown(id_desa)
         });
-        $('#status_pekerjaan').change(function() {
+        $('#status_pekerjaanEdit').change(function() {
             const status_pekerjaan = $(this).val()
             if (status_pekerjaan === 'BEKERJA') {
-                $('#detail_pekerjaan_input_container').prop('hidden', false);
+                $('#updateRowModal #detail_pekerjaan_input_container').prop('hidden', false);
+            } else if (status_pekerjaan === 'PELAJAR') {
+                $('#updateRowModal #detail_sekolah_input_container').prop('hidden', false);
             } else {
-                $('#detail_pekerjaan_input_container').prop('hidden', true);
+                $('#updateRowModal #detail_pekerjaan_input_container').prop('hidden', true);
             }
-
-        })
+        }).trigger('change');
 
     });
 </script>

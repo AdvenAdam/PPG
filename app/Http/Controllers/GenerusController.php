@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\GenerusErrorImport;
 use App\Exports\GenerusExports;
 use App\Exports\GenerusTemplate;
 use App\Imports\GenerusImport;
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
 class GenerusController extends Controller
 {
@@ -83,6 +81,17 @@ class GenerusController extends Controller
             }
             $kelompok = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_kelompok : $request->input('id_kelompok');
             $desa = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_desa : $request->input('id_desa');
+
+            if ($request->input('status_pekerjaan') == 'PELAJAR') {
+                $detailSekolah = [
+                    'sekolahJamaah' => $request->input('sekolah_jamaah'),
+                    'tingkat' => $request->input('tingkat_sekolah'),
+                ];
+                $request->merge([
+                    'detail_pekerjaan' => json_encode($detailSekolah),
+                ]);
+            }
+
             Generus::create([
                 'nama' => $request->input('nama'),
                 'tgllahir' => $request->input('tgllahir'),
@@ -92,7 +101,7 @@ class GenerusController extends Controller
                 'id_kelas' => $request->input('id_kelas'),
                 'pendidikan_terakhir' => $request->input('pendidikan_terakhir'),
                 'status_pekerjaan' => $request->input('status_pekerjaan'),
-                'detail_pekerjaan' => strtolower($request->input('detail_pekerjaan')),
+                'detail_pekerjaan' => $request->input('detail_pekerjaan'),
                 'nama_ibu' => $request->input('nama_ibu'),
                 'hum_ibu' => $request->input('hum_ibu') ?? 0,
                 'nama_bapak' => $request->input('nama_bapak'),
@@ -167,6 +176,15 @@ class GenerusController extends Controller
             }
             $kelompok = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_kelompok : $request->input('id_kelompok');
             $desa = auth()->user()->jabatan == 'kelompok' ? auth()->user()->id_desa : $request->input('id_desa');
+            if ($request->input('status_pekerjaan') == 'PELAJAR') {
+                $detailSekolah = [
+                    'sekolahJamaah' => $request->input('sekolah_jamaah'),
+                    'tingkat' => $request->input('tingkat_sekolah'),
+                ];
+                $request->merge([
+                    'detail_pekerjaan' => $detailSekolah,
+                ]);
+            }
             $Generus->update([
                 'nama' => $request->input('nama'),
                 'tgllahir' => $request->input('tgllahir'),
@@ -176,7 +194,7 @@ class GenerusController extends Controller
                 'id_kelas' => $request->input('id_kelas'),
                 'pendidikan_terakhir' => $request->input('pendidikan_terakhir'),
                 'status_pekerjaan' => $request->input('status_pekerjaan'),
-                'detail_pekerjaan' => strtolower($request->input('detail_pekerjaan')),
+                'detail_pekerjaan' => $request->input('detail_pekerjaan'),
                 'nama_ibu' => $request->input('nama_ibu'),
                 'hum_ibu' => $request->input('hum_ibu') ?? 0,
                 'nama_bapak' => $request->input('nama_bapak'),
@@ -229,7 +247,6 @@ class GenerusController extends Controller
         }
     }
 
-
     public function export()
     {
         $role = auth()->user()->jabatan;
@@ -246,7 +263,6 @@ class GenerusController extends Controller
     public function exportTemplate()
     {
         $role = auth()->user()->jabatan;
-        // dd($role);
         if ($role == 'daerah') {
             $path = storage_path('Excel/generusTemplate_daerah.xlsx');
             return response()->download($path);

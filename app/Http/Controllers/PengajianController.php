@@ -57,7 +57,7 @@ class PengajianController extends Controller
         }
 
         // Get filtered results
-        $pengajians = $pengajiansQuery->orderBy('waktu_tanggal_mulai')->get();
+        $pengajians = $pengajiansQuery->orderBy('waktu_tanggal_mulai', 'desc')->get();
 
         // Generate available years
         $tahun = $pengajians->pluck('waktu_tanggal_mulai')->map(fn($d) => date('Y', strtotime($d)))
@@ -95,9 +95,14 @@ class PengajianController extends Controller
                 'nama' => $request->input('nama'),
                 'waktu_tanggal_mulai' => $request->input('waktu_tanggal_mulai'),
                 'id_kelompok' => Auth::user()->id_kelompok,
+                'materi' => $request->input('materi'),
             ]);
             foreach ($request->input('kelas') as $id_kelas) {
-                $generus = Generus::where('id_kelas', $id_kelas)->where('id_kelompok', Auth::user()->id_kelompok)->get();
+                $generus = Generus::where('id_kelas', $id_kelas)
+                    ->where('id_kelompok', Auth::user()->id_kelompok)
+                    ->where('status', '=', 'aktif')
+                    ->get();
+
                 $absenFormated = $generus->map(function ($gen) {
                     return [
                         'id_generus' => $gen->id,

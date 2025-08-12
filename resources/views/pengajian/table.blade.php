@@ -59,7 +59,7 @@
                     <div class="row align-items-center">
                         <div class="col-icon w-100 m-0 ">
                             <div
-                                class="icon-big text-center {{ $id == count($pengajians) - 1 ? 'icon-success' : 'icon-primary' }} bubble-shadow-small">
+                                class="icon-big text-center {{ $id == 0 ? 'icon-success' : 'icon-primary' }} bubble-shadow-small">
                                 <div class="text-light">
                                     <h6 class="mb-0 ">{{ date('d M Y', strtotime($data->waktu_tanggal_mulai)) }}</h6>
                                     <p class="mb-0">{{ date('H:i', strtotime($data->waktu_tanggal_mulai)) }}</p>
@@ -83,20 +83,27 @@
                                         </button>
                                     @endforeach
                                 </div>
-                                <div class="col-auto">
-                                    <a href="{{ url('/pengajian/' . $data->id . '/edit') }}" type="button"
-                                        title="Edit" class="btn btn-link btn-primary" style="padding: 10px">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </div>
+
                             </div>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-auto d-flex align-items-center ps-0">
                             <a href="{{ url('/pengajian/delete/' . $data->id) }}" type="button" title="Hapus"
                                 class="btn btn-link btn-danger" data-original-title="Remove" data-confirm-delete="true"
-                                style="padding: 10px">
+                                style="padding: .5rem">
                                 <i class="fa fa-trash"></i>
                             </a>
+                            <a href="{{ url('/pengajian/' . $data->id . '/edit') }}" type="button" title="Edit"
+                                class="btn btn-link btn-primary" style="padding: .5rem">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <div class="col-auto">
+                                @if ($data->materi)
+                                    <p class="text-muted m-0">{{ $data->materi }}</p>
+                                @endif
+
+                            </div>
                         </div>
                     </div>
                 </div>

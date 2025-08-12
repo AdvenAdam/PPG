@@ -14,6 +14,7 @@ class Pengajian extends Model
         'nama',
         'waktu_tanggal_mulai',
         'id_kelompok',
+        'materi',
     ];
 
     function Absens(): HasMany

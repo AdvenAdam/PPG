@@ -20,6 +20,7 @@ class GenerusPerDesaSheet implements FromQuery, WithHeadings, WithMapping, Shoul
     protected $idDesa;
     protected $desa;
     protected $role;
+    protected $rowNumber = 0;
 
     public function __construct($idDesa = null, $desa = null)
     {
@@ -45,8 +46,9 @@ class GenerusPerDesaSheet implements FromQuery, WithHeadings, WithMapping, Shoul
 
     function map($generus): array
     {
+        $this->rowNumber++;
         return [
-            $generus->id,
+            $this->rowNumber,
             $generus->nama,
             \Carbon\Carbon::parse($generus->tgllahir)->format('d/m/Y'),
             $generus->gender,
@@ -69,7 +71,7 @@ class GenerusPerDesaSheet implements FromQuery, WithHeadings, WithMapping, Shoul
     public function headings(): array
     {
         return [
-            '#',
+            'No',
             'Nama',
             'Tanggal Lahir',
             'Jenis Kelamin',

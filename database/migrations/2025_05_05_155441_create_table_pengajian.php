@@ -17,6 +17,7 @@ return new class extends Migration
             $table->datetime('waktu_tanggal_mulai');
             $table->bigInteger('id_kelompok')->unsigned();
             $table->foreign('id_kelompok')->references('id')->on('kelompok');
+            $table->text('materi');
             $table->timestamps();
         });
     }
