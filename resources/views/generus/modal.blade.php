@@ -197,14 +197,14 @@
                                         <input class="form-check-input" type="radio" name="mubalight"
                                             id="mubalight1" value="1">
                                         <label class="form-check-label" for="mubalight1">
-                                            Pernah
+                                            Iya
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="mubalight"
                                             id="mubalight2" value="0" checked="">
                                         <label class="form-check-label" for="mubalight2">
-                                            Tidak Pernah
+                                            Tidak
                                         </label>
                                     </div>
                                 </div>

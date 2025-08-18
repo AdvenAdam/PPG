@@ -109,6 +109,7 @@ class GenerusController extends Controller
                 'status' => $request->input('status'),
                 'foto_url' => $file ? $fileName : 'user.png',
                 'keterangan' => $request->input('keterangan'),
+                'mubalight' => $request->input('mubalight'),
             ]);
 
             DB::commit();
@@ -202,6 +203,7 @@ class GenerusController extends Controller
                 'status' => $request->input('status'),
                 'foto_url' => $file ? $fileName : $Generus->foto_url,
                 'keterangan' => $request->input('keterangan'),
+                'mubalight' => $request->input('mubalight'),
             ]);
             DB::commit();
             toast('Data generus berhasil diupdate', 'success');

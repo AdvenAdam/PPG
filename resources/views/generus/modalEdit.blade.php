@@ -264,20 +264,20 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Pernah Menjadi Mubalight/Mubalighot ?</label>
+                                <label>Sudah Mubalight/Mubalighot ?</label>
                                 <div class="d-flex">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="mubalight"
                                             id="mubalightEdit1" value="1">
                                         <label class="form-check-label" for="mubalight1">
-                                            Pernah
+                                            Iya
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="mubalight"
                                             id="mubalightEdit2" value="0" checked="">
                                         <label class="form-check-label" for="mubalight2">
-                                            Tidak Pernah
+                                            Tidak
                                         </label>
                                     </div>
                                 </div>
