@@ -881,6 +881,7 @@ body {
     justify-content: center;
     height: 100%;
     position: absolute;
+    padding: .75rem;
     top: 0;
     right: 18px;
     z-index: 5; }

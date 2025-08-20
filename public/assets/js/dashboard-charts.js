@@ -1,36 +1,25 @@
 function GenerusByClassChart(feed) {
     const labels = Object.keys(feed);
-    
+
     const data = {
         labels: labels,
         datasets: [
             {
                 label: "Perempuan",
-                data: Object.values(feed).map(val => val.P),
-                backgroundColor: [
-                    "rgba(255, 99, 132, 0.2)",
-                ],
-                borderColor: [
-                    "rgb(255, 99, 132)",
-                ],
+                data: Object.values(feed).map((val) => val.P),
+                backgroundColor: ["rgba(255, 99, 132, 0.2)"],
+                borderColor: ["rgb(255, 99, 132)"],
                 borderWidth: 2,
-                borderRadius: 100,
-                borderSkipped: false
+                borderSkipped: false,
             },
             {
                 label: "Laki Laki",
-                data: Object.values(feed).map(val => val.L),
-                backgroundColor: [  
-                    "rgba(54, 162, 235, 0.2)",
-                ],
-                borderColor: [
-                    "rgb(75, 192, 192)",
-                ],
+                data: Object.values(feed).map((val) => val.L),
+                backgroundColor: ["rgba(54, 162, 235, 0.2)"],
+                borderColor: ["rgb(75, 192, 192)"],
                 borderWidth: 2,
-                borderRadius: 10,
-                borderSkipped: false
+                borderSkipped: false,
             },
-            
         ],
     };
     const config = {
@@ -60,7 +49,7 @@ function GenerusByClassOverallChart(feed) {
         datasets: [
             {
                 label: "Overall",
-                data: Object.values(feed).map(val => val.total),
+                data: Object.values(feed).map((val) => val.total),
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(255, 159, 64, 0.2)",
@@ -80,26 +69,34 @@ function GenerusByClassOverallChart(feed) {
                     "rgb(201, 203, 207)",
                 ],
             },
-            
         ],
     };
+
     const config = {
-        type: 'pie',
+        type: "pie",
         data: data,
         options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'bottom',
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                },
+                title: {
+                    display: true,
+                    text: "Perbandingan Jumlah Generus Berdasarkan Kelas",
+                },
+                datalabels: {
+                    color: "#444",
+                    formatter: (value) => value, // show raw count
+                },
             },
-            title: {
-              display: true,
-              text: 'Perbandingan Jumlah Generus Berdasarkan Kelas',
-            }
-          }
         },
-      };
-    const ctx = document.getElementById("GenerusByClassOverall").getContext("2d");
+        plugins: [ChartDataLabels], // enable datalabels
+    };
+
+    const ctx = document
+        .getElementById("GenerusByClassOverall")
+        .getContext("2d");
     const myChart = new Chart(ctx, config);
 }
 
@@ -110,7 +107,7 @@ function GenerusByEducationChart(feed) {
         datasets: [
             {
                 label: "Overall",
-                data: Object.values(feed).map(val => val),
+                data: Object.values(feed).map((val) => val),
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(255, 159, 64, 0.2)",
@@ -130,33 +127,30 @@ function GenerusByEducationChart(feed) {
                     "rgb(201, 203, 207)",
                 ],
             },
-            
         ],
     };
     const config = {
-        type: 'bar',
+        type: "bar",
         data: data,
         options: {
-          indexAxis: 'y',
-          // Elements options apply to all of the options unless overridden in a dataset
-          // In this case, we are setting the border of each horizontal bar to be 2px wide
-          elements: {
-            bar: {
-              borderWidth: 2,
-            }
-          },
-          responsive: true,
-          plugins: {
-            legend: {
-              display: false,
-              position: 'right',
+            indexAxis: "y",
+            elements: {
+                bar: {
+                    borderWidth: 2,
+                },
             },
-            title: {
-              display: true,
-            }
-          }
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false,
+                    position: "right",
+                },
+                title: {
+                    display: true,
+                },
+            },
         },
-      };
+    };
     const ctx = document.getElementById("GenerusByEducation").getContext("2d");
     const myChart = new Chart(ctx, config);
 }
@@ -167,7 +161,7 @@ function GenerusByJobChart(feed) {
         datasets: [
             {
                 label: "Overall",
-                data: Object.values(feed).map(val => val),
+                data: Object.values(feed).map((val) => val),
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(255, 159, 64, 0.2)",
@@ -187,22 +181,25 @@ function GenerusByJobChart(feed) {
                     "rgb(201, 203, 207)",
                 ],
             },
-            
         ],
     };
     const config = {
-        type: 'pie',
+        type: "pie",
         data: data,
         options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'bottom',
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: "bottom",
+                },
+                datalabels: {
+                    color: "#444",
+                    formatter: (value) => value, // show raw count
+                },
             },
- 
-          }
         },
-      };
+        plugins: [ChartDataLabels], // enable datalabels
+    };
     const ctx = document.getElementById("GenerusByJob").getContext("2d");
     const myChart = new Chart(ctx, config);
 }
