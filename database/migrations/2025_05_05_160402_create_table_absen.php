@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absens', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('id_pengajian')->unsigned();
-            $table->foreign('id_pengajian')->references('id')->on('pengajians');
-            $table->bigInteger('id_kelas')->unsigned();
-            $table->foreign('id_kelas')->references('id')->on('kelas');
-            $table->longText('absen');
-            $table->longText('keterangan');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('pengajians')) {
+
+            Schema::create('absens', function (Blueprint $table) {
+                $table->id();
+                $table->bigInteger('id_pengajian')->unsigned();
+                $table->foreign('id_pengajian')->references('id')->on('pengajians');
+                $table->bigInteger('id_kelas')->unsigned();
+                $table->foreign('id_kelas')->references('id')->on('kelas');
+                $table->longText('absen');
+                $table->longText('keterangan');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

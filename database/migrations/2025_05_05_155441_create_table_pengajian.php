@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pengajians', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->datetime('waktu_tanggal_mulai');
-            $table->bigInteger('id_kelompok')->unsigned();
-            $table->foreign('id_kelompok')->references('id')->on('kelompok');
-            $table->text('materi');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('pengajians')) {
+            Schema::create('pengajians', function (Blueprint $table) {
+                $table->id();
+                $table->string('nama');
+                $table->datetime('waktu_tanggal_mulai');
+                $table->bigInteger('id_kelompok')->unsigned();
+                $table->foreign('id_kelompok')->references('id')->on('kelompok');
+                $table->text('materi');
+                $table->timestamps();
+            });
+        }
     }
 
     /**

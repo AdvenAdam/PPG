@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('kurikulums')) {
-            Schema::create('kurikulums', function (Blueprint $table) {
+        if (!Schema::hasTable('musyawarah')) {
+            Schema::create('musyawarah', function (Blueprint $table) {
                 $table->id();
                 $table->string('desc');
+                $table->datetime('waktu_tanggal_mulai')->nullable();
                 $table->string('file_name');
                 $table->string('file_path');
                 $table->string('file_ext')->nullable();
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kurikulums');
+        Schema::dropIfExists('musyawarah');
     }
 };

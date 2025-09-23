@@ -90,6 +90,11 @@
                                         <span class="sub-item">Data Kelas</span>
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{ url('/musyawarah') }}">
+                                        <span class="sub-item">Hasil Musyawarah</span>
+                                    </a>
+                                </li>
                                 <!-- FIXME : Pekerjaan now is optional inside generus -->
                             </ul>
                         </div>

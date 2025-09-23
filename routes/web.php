@@ -8,6 +8,7 @@ use App\Http\Controllers\GenerusController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\KurikulumController;
+use App\Http\Controllers\MusyawarahController;
 use App\Http\Controllers\PengajianController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\userController;
@@ -71,6 +72,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [KurikulumController::class, 'store'])->middleware('jabatan.daerah')->name('store');
         Route::delete('/delete/{id}', [KurikulumController::class, 'destroy'])->middleware('jabatan.daerah')->name('destroy');
         Route::get('/download/{id}', [KurikulumController::class, 'download'])->name('download');
+    });
+
+    Route::prefix('musyawarah')->name('musyawarah.')->group(function () {
+        Route::get('/', [MusyawarahController::class, 'index'])->name('index');
+        Route::post('/', [MusyawarahController::class, 'store'])->middleware('jabatan.daerah')->name('store');
+        Route::delete('/delete/{id}', [MusyawarahController::class, 'destroy'])->middleware('jabatan.daerah')->name('destroy');
+        Route::put('/update/{id}', [MusyawarahController::class, 'update'])->middleware('jabatan.daerah')->name('update');
+        Route::get('/download/{id}', [MusyawarahController::class, 'download'])->name('download');
     });
 
     // Menu User

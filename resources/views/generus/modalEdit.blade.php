@@ -36,7 +36,6 @@
         if (selectedGenerus.status_pekerjaan === 'PELAJAR' && selectedGenerus.detail_pekerjaan) {
             try {
                 const detailSekolah = JSON.parse(selectedGenerus.detail_pekerjaan);
-                console.log("🚀 ~ updateAct ~ detailSekolah:", detailSekolah)
                 modal.find('#sekolah_jamaah').prop('checked', detailSekolah.sekolahJamaah == 1);
                 modal.find('#tingkat_sekolah').val(detailSekolah.tingkat).change();
             } catch (e) {
