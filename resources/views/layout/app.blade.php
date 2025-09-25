@@ -44,6 +44,11 @@
 
     {{-- Sweet Alert --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        :root {
+            --swal2-confirm-button-background-color: 0 0 0 0.2rem rgba(255, 0, 0, 0.25);
+        }
+    </style>
 </head>
 
 <body>

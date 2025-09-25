@@ -58,6 +58,11 @@
                                     <span class="sub-item">Kurikulum</span>
                                 </a>
                             </li>
+                            <li>
+                                <a href="{{ url('/sarpras') }}">
+                                    <span class="sub-item">Sarpras</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

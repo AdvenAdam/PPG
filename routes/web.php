@@ -10,6 +10,7 @@ use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\MusyawarahController;
 use App\Http\Controllers\PengajianController;
+use App\Http\Controllers\SarprasController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
@@ -74,11 +75,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/download/{id}', [KurikulumController::class, 'download'])->name('download');
     });
 
-    Route::prefix('musyawarah')->name('musyawarah.')->group(function () {
+    Route::prefix('musyawarah')->name('musyawarah.')->middleware('jabatan.daerah')->group(function () {
         Route::get('/', [MusyawarahController::class, 'index'])->name('index');
-        Route::post('/', [MusyawarahController::class, 'store'])->middleware('jabatan.daerah')->name('store');
-        Route::delete('/delete/{id}', [MusyawarahController::class, 'destroy'])->middleware('jabatan.daerah')->name('destroy');
-        Route::put('/update/{id}', [MusyawarahController::class, 'update'])->middleware('jabatan.daerah')->name('update');
+        Route::post('/', [MusyawarahController::class, 'store'])->name('store');
+        Route::delete('/delete/{id}', [MusyawarahController::class, 'destroy'])->name('destroy');
+        Route::put('/update/{id}', [MusyawarahController::class, 'update'])->name('update');
         Route::get('/download/{id}', [MusyawarahController::class, 'download'])->name('download');
     });
 
@@ -99,6 +100,13 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [PengajianController::class, 'store'])->name('store');
         Route::patch('/{absen}/edit/', [PengajianController::class, 'update'])->name('update');
         Route::delete('/delete/{pengajian}', [PengajianController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('sarpras')->name('sarpras.')->group(function () {
+        Route::get('/', [SarprasController::class, 'index'])->name('index');
+        Route::post('/', [SarprasController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [SarprasController::class, 'update'])->name('update');
+        Route::delete('/delete/{sarpras}', [SarprasController::class, 'destroy'])->name('destroy');
     });
 });
 
