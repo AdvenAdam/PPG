@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export/', [GenerusController::class, 'export'])->name('export');
         Route::get('/exportTemplate/', [GenerusController::class, 'exportTemplate'])->name('exportTemplate');
         Route::post('/import/', [GenerusController::class, 'import'])->name('import');
+        Route::get('/data', [GenerusController::class, 'getData'])->name('data');
 
         Route::post('/', [GenerusController::class, 'store']);
         Route::post('/edit/{id}', [GenerusController::class, 'update']);

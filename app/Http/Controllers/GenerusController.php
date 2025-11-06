@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class GenerusController extends Controller
 {
@@ -293,5 +294,44 @@ class GenerusController extends Controller
             toast('Terjadi kesalahan saat mengimport file. ' . $e->getMessage(), 'error');
         }
         return redirect()->back();
+    }
+    public function getData(Request $request)
+    {
+        $user = auth()->user();
+        $role = $user->jabatan;
+
+        $query = DB::table('generus')
+            ->join('kelas', 'generus.id_kelas', '=', 'kelas.id')
+            ->join('kelompok', 'generus.id_kelompok', '=', 'kelompok.id')
+            ->join('desa', 'generus.id_desa', '=', 'desa.id')
+            ->select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
+            ->when($role === 'kelompok', fn($q) => $q->where('generus.id_kelompok', $user->id_kelompok))
+            ->when($role === 'desa', fn($q) => $q->where('generus.id_desa', $user->id_desa));
+
+        return DataTables::of($query)
+            ->addIndexColumn()
+            ->editColumn('foto', function ($row) {
+                $foto = $row->foto_url === 'user.png'
+                    ? ($row->gender === 'L' ? 'user-boy.png' : 'user-girl.png')
+                    : $row->foto_url;
+
+                return '<img src="' . asset('assets/img/foto/' . $foto) . '" width="100" style="max-height:150px">';
+            })
+            ->editColumn('umur', fn($row) => \Carbon\Carbon::parse($row->tgllahir)->age . ' tahun')
+            ->editColumn('status', fn($row) => $row->status === 'aktif'
+                ? '<span class="text-success">aktif</span>'
+                : '<span class="text-danger">tidak aktif</span>')
+            ->addColumn('action', function ($row) {
+                return '
+                <button type="button" class="btn btn-link btn-primary" onclick="updateAct(' . $row->id . ')" data-bs-toggle="modal" data-bs-target="#updateRowModal">
+                    <i class="fa fa-edit"></i>
+                </button>
+                <a href="' . url('/generus/delete/' . $row->id) . '" class="btn btn-link btn-danger" data-confirm-delete="true">
+                    <i class="fa fa-trash"></i>
+                </a>
+            ';
+            })
+            ->rawColumns(['foto', 'status', 'action'])
+            ->make(true);
     }
 }
