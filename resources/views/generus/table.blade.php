@@ -7,15 +7,16 @@
             @endforeach
         </select>
     </div>
-
-    <div class="col-md-3">
-        <select id="filter-kelompok" class="form-select">
-            <option value="">-- Filter Kelompok --</option>
-            @foreach ($kelompok as $k)
-                <option value="{{ $k->id }}">{{ $k->nama }}</option>
-            @endforeach
-        </select>
-    </div>
+    @if (Auth::user()->jabatan != 'kelompok')
+        <div class="col-md-3">
+            <select id="filter-kelompok" class="form-select">
+                <option value="">-- Filter Kelompok --</option>
+                @foreach ($kelompok as $k)
+                    <option value="{{ $k->id }}">{{ $k->nama }}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
 </div>
 
 

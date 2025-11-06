@@ -46,6 +46,7 @@ class GenerusController extends Controller
 
         if ($role === 'desa' || $role === 'kelompok') {
             $desa = Desa::where('id', '=', $user->id_desa)->get();
+            $kelompok = Kelompok::where('id_desa', '=', $user->id_desa)->get();
         }
 
         $generus = DB::table('generus')
