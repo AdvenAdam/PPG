@@ -1,3 +1,25 @@
+<div class="row mb-3">
+    <div class="col-md-3">
+        <select id="filter-kelas" class="form-select">
+            <option value="">-- Filter Kelas --</option>
+            @foreach ($kelas as $k)
+                <option value="{{ $k->id }}">{{ $k->nama }}</option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select id="filter-kelompok" class="form-select">
+            <option value="">-- Filter Kelompok --</option>
+            @foreach ($kelompok as $k)
+                <option value="{{ $k->id }}">{{ $k->nama }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
+
+
 <div class="table-responsive">
     <table id="add-row-table" class="display table table-striped table-hover">
         <thead>
@@ -17,10 +39,17 @@
 </div>
 <script>
     $(function() {
-        $('#add-row-table').DataTable({
+        let table = $('#add-row-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('generus.data') }}",
+            ajax: {
+                url: "{{ route('generus.data') }}",
+                data: function(d) {
+                    d.kelas = $('#filter-kelas').val();
+                    d.kelompok = $('#filter-kelompok').val();
+                    d.desa = $('#filter-desa').val();
+                }
+            },
             columns: [{
                     data: 'DT_RowIndex',
                     name: 'DT_RowIndex',
@@ -60,6 +89,9 @@
                     searchable: false
                 }
             ]
+        });
+        $('#filter-kelas, #filter-kelompok').change(function() {
+            table.draw();
         });
     });
 </script>

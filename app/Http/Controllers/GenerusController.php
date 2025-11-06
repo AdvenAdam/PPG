@@ -306,7 +306,9 @@ class GenerusController extends Controller
             ->join('desa', 'generus.id_desa', '=', 'desa.id')
             ->select('generus.*', 'kelas.nama as kelas', 'kelompok.nama as kelompok', 'desa.nama as desa')
             ->when($role === 'kelompok', fn($q) => $q->where('generus.id_kelompok', $user->id_kelompok))
-            ->when($role === 'desa', fn($q) => $q->where('generus.id_desa', $user->id_desa));
+            ->when($role === 'desa', fn($q) => $q->where('generus.id_desa', $user->id_desa))
+            ->when($request->kelas, fn($q) => $q->where('generus.id_kelas', $request->kelas))
+            ->when($request->kelompok, fn($q) => $q->where('generus.id_kelompok', $request->kelompok));
 
         return DataTables::of($query)
             ->addIndexColumn()
