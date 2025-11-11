@@ -1,6 +1,6 @@
 <div class="row mb-3">
-    <div class="col-md-3">
-        <select id="filter-kelas" class="form-select">
+    <div class="col-md-3 col-6">
+        <select id="filter-kelas" class="form-control">
             <option value="">-- Filter Kelas --</option>
             @foreach ($kelas as $k)
                 <option value="{{ $k->id }}">{{ $k->nama }}</option>
@@ -8,8 +8,8 @@
         </select>
     </div>
     @if (Auth::user()->jabatan != 'kelompok')
-        <div class="col-md-3">
-            <select id="filter-kelompok" class="form-select">
+        <div class="col-md-3 col-6">
+            <select id="filter-kelompok" class="form-control">
                 <option value="">-- Filter Kelompok --</option>
                 @foreach ($kelompok as $k)
                     <option value="{{ $k->id }}">{{ $k->nama }}</option>
