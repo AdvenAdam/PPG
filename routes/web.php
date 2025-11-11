@@ -10,8 +10,10 @@ use App\Http\Controllers\KelompokController;
 use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\MusyawarahController;
 use App\Http\Controllers\PengajianController;
+use App\Http\Controllers\ProkerController;
 use App\Http\Controllers\SarprasController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\TimProkerController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +29,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     // Menu Generus
     Route::prefix('generus')->name('generus.')->group(function () {
         Route::get('/', [GenerusController::class, 'index'])->name('index');
@@ -108,6 +110,16 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [SarprasController::class, 'store'])->name('store');
         Route::put('/update/{id}', [SarprasController::class, 'update'])->name('update');
         Route::delete('/delete/{sarpras}', [SarprasController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('tim-proker')->name('tim-proker.')->middleware('jabatan.daerah')->group(function () {
+        Route::delete('/delete/{proker}', [TimProkerController::class, 'destroy'])->name('destroy');
+        Route::resource('/', TimProkerController::class)->parameters(['' => 'tim_proker'])->except('create', 'show', 'edit', 'destroy');
+    });
+
+    Route::prefix('proker')->name('proker.')->middleware('jabatan.daerah')->group(function () {
+        Route::delete('/delete/{proker}', [ProkerController::class, 'destroy'])->name('destroy');
+        Route::resource('/', ProkerController::class)->parameters(['' => 'proker'])->except('create', 'show', 'edit', 'destroy');
     });
 });
 

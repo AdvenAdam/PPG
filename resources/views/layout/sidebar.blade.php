@@ -100,7 +100,27 @@
                                         <span class="sub-item">Hasil Musyawarah</span>
                                     </a>
                                 </li>
-                                <!-- FIXME : Pekerjaan now is optional inside generus -->
+                                <li class="submenu">
+                                    <a data-bs-toggle="collapse" href="#subnav1" class="collapsed"
+                                        aria-expanded="false">
+                                        <span class="sub-item">Program Kerja</span>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <div class="collapse" id="subnav1" style="">
+                                        <ul class="nav nav-collapse subnav">
+                                            <li>
+                                                <a href="/tim-proker">
+                                                    <span class="sub-item">Tim Program Kerja</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#">
+                                                    <span class="sub-item">Rancangan Program Kerja</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                     </li>

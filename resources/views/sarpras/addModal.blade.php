@@ -40,22 +40,22 @@
                         <div class="col-4 pe-1">
                             <div class="form-group">
                                 <label for="nama">Baik</label>
-                                <input type="number" step="1" min="0" id="baik" name="baik"
-                                    class="form-control form-control" />
+                                <input type="number" value="0" step="1" min="0" id="baik"
+                                    name="baik" class="form-control form-control" />
                             </div>
                         </div>
                         <div class="col-4 pe-1">
                             <div class="form-group">
                                 <label for="nama">Sedang</label>
-                                <input type="number" step="1" min="0" id="sedang" name="sedang"
-                                    class="form-control form-control" />
+                                <input type="number" value="0" step="1" min="0" id="sedang"
+                                    name="sedang" class="form-control form-control" />
                             </div>
                         </div>
                         <div class="col-4 pe-1">
                             <div class="form-group">
                                 <label for="nama">Rusak</label>
-                                <input type="number" step="1" min="0" id="rusak" name="rusak"
-                                    class="form-control form-control" />
+                                <input type="number" value="0" step="1" min="0" id="rusak"
+                                    name="rusak" class="form-control form-control" />
                             </div>
                         </div>
 
@@ -75,6 +75,20 @@
     </div>
 </div>
 <script>
+    // Reset the modal when closed
+    $('#addRowModal').on('hidden.bs.modal', function() {
+        const modal = $(this);
+        const form = modal.find('#addRowForm');
+
+        form.trigger('reset');
+        form.find('input[name="_method"]').remove();
+        form.attr('action', '{{ url('/sarpras') }}');
+        modal.find('.modal-title').text('Input Sarana & Prasarana');
+        modal.find('#addRowButton').prop('disabled', false);
+        modal.find('#id_kelompok').prop('selectedIndex', 0);
+        modal.find('#baik, #sedang, #rusak').val('');
+    });
+
     function updateAct(id) {
         // update the form action
         $('#addRowForm').attr('action', `/sarpras/update/${id}`);
@@ -101,9 +115,9 @@
         modal.find('#nama').val(selectedData.nama);
         modal.find('#id_kelompok').val(selectedData.id_kelompok);
         modal.find('#jumlah').val(selectedData.jumlah);
-        modal.find('#baik').val(selectedData.kondisi ? selectedData.kondisi.baik : 0);
-        modal.find('#sedang').val(selectedData.kondisi ? selectedData.kondisi.sedang : 0);
-        modal.find('#rusak').val(selectedData.kondisi ? selectedData.kondisi.rusak : 0);
+        modal.find('#baik').val(selectedData.kondisi?.baik ? selectedData.kondisi.baik : 0);
+        modal.find('#sedang').val(selectedData.kondisi?.sedang ? selectedData.kondisi.sedang : 0);
+        modal.find('#rusak').val(selectedData.kondisi?.rusak ? selectedData.kondisi.rusak : 0);
 
     }
 </script>
