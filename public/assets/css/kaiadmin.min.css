@@ -441,9 +441,6 @@ body {
     width: 100%;
     max-width: unset;
 }
-.main-panel .row {
-    --bs-gutter-x: 30px;
-}
 .main-panel .page-header {
     display: flex;
     align-items: center;

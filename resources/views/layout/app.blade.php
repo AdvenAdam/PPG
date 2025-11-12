@@ -107,8 +107,6 @@
     <script>
         $(document).ready(function() {
 
-            $("#datepicker").flatpickr();
-            $("#datepicker1").flatpickr();
             $(".datetimepicker").flatpickr({
                 enableTime: true,
                 dateFormat: "Y-m-d H:i",

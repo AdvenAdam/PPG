@@ -89,8 +89,8 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="tgllahir">Tanggal Lahir</label>
-                                <input type="text" class="form-control" id="datepicker1" name="tgllahir"
-                                    placeholder="* isi Tanggal Lahir" />
+                                <input type="text" class="form-control datetimepicker" id="datepicker1"
+                                    name="tgllahir" placeholder="* isi Tanggal Lahir" />
                             </div>
                         </div>
                         <div class="col-sm-6">
