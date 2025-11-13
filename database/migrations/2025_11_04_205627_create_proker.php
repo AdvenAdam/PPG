@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('penanggung_jawab');
             $table->longText('indikator_keberhasilan');
             $table->string('anggaran');
-            $table->longText('keterangan');
+            $table->longText('keterangan')->nullable();
             $table->timestamps();
         });
     }

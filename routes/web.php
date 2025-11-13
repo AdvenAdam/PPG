@@ -120,6 +120,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('proker')->name('proker.')->middleware('jabatan.daerah')->group(function () {
         Route::delete('/delete/{proker}', [ProkerController::class, 'destroy'])->name('destroy');
         Route::resource('/', ProkerController::class)->parameters(['' => 'proker'])->except('create', 'show', 'edit', 'destroy');
+        Route::post('/{proker}/update-waktu', [ProkerController::class, 'updateWaktu']);
     });
 });
 

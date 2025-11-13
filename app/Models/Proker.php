@@ -18,6 +18,21 @@ class Proker extends Model
         'waktu_pelaksanaan' => 'array'
     ];
 
+    public const MONTHS = [
+        'Januari',
+        'Februari',
+        'Maret',
+        'April',
+        'Mei',
+        'Juni',
+        'Juli',
+        'Agustus',
+        'September',
+        'Oktober',
+        'November',
+        'Desember'
+    ];
+
     public function tim()
     {
         return $this->belongsTo(TimProker::class, 'id_tim');
