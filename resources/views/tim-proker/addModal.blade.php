@@ -67,7 +67,7 @@
 
     function updateAct(id) {
         // update the form action
-        $('#addRowForm').attr('action', `/tim-proker/update/${id}`);
+        $('#addRowForm').attr('action', `/tim-proker/${id}`);
         $('#addRowForm input[name="_method"]').remove();
         $('#addRowForm').append('<input type="hidden" name="_method" value="PUT">');
 
@@ -101,7 +101,7 @@
         $('#btn_add_anggota_row').on('click', function() {
             const el = this;
             let newRow = /*html*/ `
-                <div class="form-group px-0 row anggota-row">
+                <div class="form-group row anggota-row">
                     <div class="col-10">
                         <input type="text" id="anggota" name="anggota[]"  placeholder="* isi nama anggota tim" class="form-control" />
                     </div>
