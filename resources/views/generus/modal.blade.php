@@ -189,9 +189,9 @@
                             <img id="preview" class="img-fluid ms-3 mt-1"
                                 style="display: none; max-width: 100px; max-height: 100px;" alt="Preview Foto">
                         </div>
-                        <div class="col-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Mubalight/Mubalighot ?</label>
+                                <label>Sudah Mubalight/Mubalighot ?</label>
                                 <div class="d-flex">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="mubalight"
@@ -204,6 +204,27 @@
                                         <input class="form-check-input" type="radio" name="mubalight"
                                             id="mubalight2" value="0" checked="">
                                         <label class="form-check-label" for="mubalight2">
+                                            Tidak
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Generate Barcode ?</label>
+                                <div class="d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="generated_qr"
+                                            id="qr" value="1">
+                                        <label class="form-check-label" for="qr">
+                                            Iya
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="generated_qr"
+                                            id="qr2" value="0" checked="">
+                                        <label class="form-check-label" for="qr2">
                                             Tidak
                                         </label>
                                     </div>

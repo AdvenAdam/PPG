@@ -28,6 +28,7 @@ class Generus extends Model
         'status',
         'keterangan',
         'mubalight',
+        'generated_qr',
         'foto_url',
         'created_at',
         'updated_at'

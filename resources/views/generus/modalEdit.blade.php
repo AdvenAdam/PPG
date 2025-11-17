@@ -57,6 +57,12 @@
             modal.find('#mubalightEdit2').prop('checked', true);
         }
 
+        if (selectedGenerus.generated_qr == 1) {
+            modal.find('#qrEdit1').prop('checked', true);
+        } else {
+            modal.find('#qrEdit2').prop('checked', true);
+        }
+
         if (selectedGenerus.foto_url === 'user.png') {
             const defaultFoto = selectedGenerus.gender === 'L' ? 'user-boy.png' : 'user-girl.png';
             modal.find('#previewEdit').attr('src', `/assets/img/foto/${defaultFoto}`).show();
@@ -261,7 +267,7 @@
                                     style="display: none; max-width: 100px; max-height: 100px;" alt="Preview Foto">
                             </div>
                         </div>
-                        <div class="col-12">
+                        <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Sudah Mubalight/Mubalighot ?</label>
                                 <div class="d-flex">
@@ -276,6 +282,27 @@
                                         <input class="form-check-input" type="radio" name="mubalight"
                                             id="mubalightEdit2" value="0" checked="">
                                         <label class="form-check-label" for="mubalight2">
+                                            Tidak
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Generate Barcode ?</label>
+                                <div class="d-flex">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="generated_qr"
+                                            id="qrEdit1" value="1">
+                                        <label class="form-check-label" for="qr">
+                                            Iya
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="generated_qr"
+                                            id="qrEdit2" value="0" checked="">
+                                        <label class="form-check-label" for="qr2">
                                             Tidak
                                         </label>
                                     </div>

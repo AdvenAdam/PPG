@@ -111,6 +111,7 @@ class GenerusController extends Controller
                 'status' => $request->input('status'),
                 'foto_url' => $file ? $fileName : 'user.png',
                 'keterangan' => $request->input('keterangan'),
+                'generated_qr' => $request->input('generated_qr'),
                 'mubalight' => $request->input('mubalight'),
             ]);
 
@@ -205,6 +206,7 @@ class GenerusController extends Controller
                 'status' => $request->input('status'),
                 'foto_url' => $file ? $fileName : $Generus->foto_url,
                 'keterangan' => $request->input('keterangan'),
+                'generated_qr' => $request->input('generated_qr'),
                 'mubalight' => $request->input('mubalight'),
             ]);
             DB::commit();
