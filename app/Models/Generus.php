@@ -28,6 +28,7 @@ class Generus extends Model
         'status',
         'keterangan',
         'mubalight',
+        'generus_id',
         'generated_qr',
         'foto_url',
         'created_at',
@@ -46,5 +47,27 @@ class Generus extends Model
     public function Kelas(): BelongsTo
     {
         return $this->belongsTo(Kelas::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($generus) {
+            $lastGenerus = Generus::where('id_kelompok', $generus->id_kelompok)
+                ->orderByDesc('generus_id')
+                ->first();
+
+            $counter = 1;
+
+            if ($lastGenerus) {
+                $lastGenerusId = $lastGenerus->generus_id;
+                $counterPart = substr($lastGenerusId, -3);
+                $counter = intval($counterPart) + 1;
+            }
+
+            $generus->generus_id = $generus->id_desa
+                . sprintf("%02d", $generus->id_kelompok)
+                . sprintf("%02d", $generus->id_kelas)
+                . sprintf("%03d", $counter);
+        });
     }
 }

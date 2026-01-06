@@ -25,7 +25,7 @@
     <table id="add-row-table" class="display table table-striped table-hover">
         <thead>
             <tr>
-                <th style="width: 7%">No</th>
+                <th style="width: 7%">ID</th>
                 <th style="width: 8%">Foto</th>
                 <th>Nama</th>
                 <th>Umur</th>
@@ -52,8 +52,8 @@
                 }
             },
             columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
+                    data: 'generus_id',
+                    name: 'generus_id',
                     orderable: false,
                     searchable: false
                 },
