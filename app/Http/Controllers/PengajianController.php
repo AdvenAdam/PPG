@@ -57,13 +57,17 @@ class PengajianController extends Controller
         }
 
         // Get filtered results
-        $pengajians = $pengajiansQuery->orderBy('waktu_tanggal_mulai', 'desc')->get();
+        $pengajians = $pengajiansQuery
+            ->orderBy('waktu_tanggal_mulai', 'desc')
+            ->paginate(30)
+            ->withQueryString();
 
         // Generate available years
-        $tahun = $pengajians->pluck('waktu_tanggal_mulai')->map(fn($d) => date('Y', strtotime($d)))
-            ->unique()
-            ->sort()
-            ->values();
+        $tahun = Pengajian::selectRaw('YEAR(waktu_tanggal_mulai) as tahun')
+            ->distinct()
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun');
+
 
         // Attendance calculation
         $overallKehadiran = [];

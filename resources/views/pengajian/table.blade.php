@@ -116,6 +116,22 @@
             </div>
         </div>
     @endforeach
+    @if ($pengajians->hasPages())
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="text-muted small">
+                Showing
+                {{ $pengajians->firstItem() }}
+                –
+                {{ $pengajians->lastItem() }}
+                of
+                {{ $pengajians->total() }}
+            </div>
+
+            {{ $pengajians->links() }}
+        </div>
+    @endif
+
+
 </div>
 <script>
     $(document).ready(function() {
