@@ -25,7 +25,7 @@ class PengajianController extends Controller
         $desa = Desa::all();
         $kelompoks = Kelompok::all();
 
-        $pengajiansQuery = Pengajian::with('Absens', 'Absens.Kelas');
+        $pengajiansQuery = Pengajian::with('Absens', 'Absens.Kelas', 'Kelompok');
 
         // Role-based filters
         if ($user->jabatan === 'kelompok') {
@@ -91,46 +91,62 @@ class PengajianController extends Controller
         try {
             $this->validatePengajian($request);
             DB::beginTransaction();
-            $pengajian = Pengajian::create([
-                'nama' => $request->input('nama'),
-                'waktu_tanggal_mulai' => $request->input('waktu_tanggal_mulai'),
-                'id_kelompok' => Auth::user()->id_kelompok,
-                'materi' => $request->input('materi'),
-            ]);
-            foreach ($request->input('kelas') as $id_kelas) {
-                $generus = Generus::where('id_kelas', $id_kelas)
-                    ->where('id_kelompok', Auth::user()->id_kelompok)
-                    ->where('status', '=', 'aktif')
-                    ->get();
 
-                $absenFormated = $generus->map(function ($gen) {
-                    return [
+            $user = Auth::user();
+            $role = $user->jabatan;
+
+            if ($role === 'daerah') {
+                $kelompokIds = Kelompok::all()->pluck('id');
+            } elseif ($role === 'desa') {
+                $kelompokIds = Kelompok::where('id_desa', $user->id_desa)->pluck('id');
+            } else { // role === 'kelompok'
+                $kelompokIds = collect([$user->id_kelompok]);
+            }
+
+            foreach ($kelompokIds as $id_kelompok) {
+
+                $pengajian = Pengajian::create([
+                    'nama' => $request->input('nama'),
+                    'waktu_tanggal_mulai' => $request->input('waktu_tanggal_mulai'),
+                    'id_kelompok' => $id_kelompok,
+                    'materi' => $request->input('materi'),
+                ]);
+
+                foreach ($request->input('kelas') as $id_kelas) {
+
+                    $generus = Generus::where('id_kelas', $id_kelas)
+                        ->where('id_kelompok', $id_kelompok)
+                        ->where('status', 'aktif')
+                        ->get();
+
+                    $absenFormatted = $generus->map(fn ($gen) => [
                         'id_generus' => $gen->id,
                         'nama' => $gen->nama,
                         'absen' => 'alpha',
+                    ])->toArray();
+
+                    $keterangan = [
+                        'alpha' => $generus->count(),
+                        'hadir' => 0,
+                        'sakit' => 0,
+                        'izin' => 0,
                     ];
-                })->toArray();
 
-                $keterangan = [
-                    'alpha' => $generus->count(),
-                    'hadir' => 0,
-                    'sakit' => 0,
-                    'izin' => 0
-                ];
-
-                Absen::create([
-                    'id_kelas' => $id_kelas,
-                    'id_pengajian' => $pengajian->id,
-                    'absen' => json_encode($absenFormated),
-                    'keterangan' => json_encode($keterangan),
-                ]);
+                    Absen::create([
+                        'id_kelas' => $id_kelas,
+                        'id_pengajian' => $pengajian->id,
+                        'absen' => json_encode($absenFormatted),
+                        'keterangan' => json_encode($keterangan),
+                    ]);
+                }
             }
+
             DB::commit();
             toast('Berhasil menambahkan data', 'success');
+
         } catch (\Throwable $th) {
             DB::rollBack();
-            toast('Error saat menambahkan data <br/>' . $th->getMessage(), 'error');
-            //throw $th;
+            toast('Error saat menambahkan data<br>' . $th->getMessage(), 'error');
         } finally {
             return redirect()->back()->withInput();
         }

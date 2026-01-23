@@ -54,14 +54,14 @@
     @foreach ($pengajians as $id => $data)
         <div class="col-sm-6 col-lg-4 mb-2 mb-lg-5">
             <div class="card card-stats card-round h-100">
-                <div class="card-body">
+                <div class="card-body" style="padding-block: 6px !important">
                     <div class="row align-items-center">
                         <div class="col-icon w-100 m-0 ">
                             <div
-                                class="icon-big text-center {{ $id == 0 ? 'icon-success' : 'icon-primary' }} bubble-shadow-small">
+                                class="icon-big px-3 justify-content-start text-start {{ $id == 0 ? 'icon-success' : 'icon-primary' }} bubble-shadow-small">
                                 <div class="text-light">
-                                    <h6 class="mb-0 ">{{ date('d M Y', strtotime($data->waktu_tanggal_mulai)) }}</h6>
-                                    <p class="mb-0">{{ date('H:i', strtotime($data->waktu_tanggal_mulai)) }}</p>
+                                    <h6 class="mb-0 ">{{ date('d M Y', strtotime($data->waktu_tanggal_mulai)) }} | {{ date('H:i', strtotime($data->waktu_tanggal_mulai)) }}</h6>
+                                    <p class="mb-0">{{ Str::title($data->kelompok->nama) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,14 @@
                             <div class="numbers">
                                 <div class="text-truncate-container">
                                     <p class="card-category mb-0">
-                                        {{ number_format(($overallKehadiran[$data->id]['hadir'] / $overallKehadiran[$data->id]['total']) * 100, 2) }}%
+                                        {{ 
+                                            $overallKehadiran[$data->id]['total'] > 0
+                                                ? number_format(
+                                                    ($overallKehadiran[$data->id]['hadir'] / $overallKehadiran[$data->id]['total']) * 100,
+                                                    2
+                                                ) . '%'
+                                                : '0.00%'
+                                        }}
                                     </p>
                                 </div>
                                 <div class="card-title d-flex mb-0">

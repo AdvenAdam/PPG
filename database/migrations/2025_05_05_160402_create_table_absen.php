@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasTable('pengajians')) {
+        if (!Schema::hasTable('absens')) {
 
             Schema::create('absens', function (Blueprint $table) {
                 $table->id();

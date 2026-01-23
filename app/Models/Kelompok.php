@@ -31,4 +31,9 @@ class Kelompok extends Model
     {
         return $this->belongsTo(Desa::class);
     }
+
+    function Pengajian(): HasMany
+    {
+        return $this->hasMany(Pengajian::class);
+    }
 }
