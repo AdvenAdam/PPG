@@ -7,6 +7,7 @@ use App\Models\TimProker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 
 class ProkerController extends Controller
@@ -80,15 +81,12 @@ class ProkerController extends Controller
 
             toast('Berhasil menambahkan program kerja', 'success');
             confirmDelete('Delete Program Kerja!', 'Are you sure you want to delete?');
-
-            return redirect()
-                ->route('proker.index', [], 303)
-                ->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error saat menambahkan Proker: ' . $e->getMessage());
             toast('Data proker gagal ditambahkan pastikan semua data terisi', 'error');
         }
+        return Redirect::back()->withInput();
     }
 
     public function update(Request $request, Proker $proker)
@@ -121,15 +119,12 @@ class ProkerController extends Controller
             DB::commit();
 
             toast('Berhasil memperbarui program kerja', 'success');
-            return redirect()
-                ->route('proker.index', [], 303)
-                ->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error saat memperbarui Proker: ' . $e->getMessage());
             toast('Data proker gagal diperbarui pastikan semua data terisi', 'error');
-            throw $e;
         }
+        return Redirect::back()->withInput();
     }
 
     public function updateWaktu(Request $request, $id)
@@ -166,12 +161,11 @@ class ProkerController extends Controller
             DB::commit();
 
             toast('Berhasil menghapus program kerja', 'success');
-            return redirect()
-                ->route('proker.index', [], 303);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error saat menghapus Proker: ' . $e->getMessage());
             toast('Data proker gagal ditambahkan pastikan semua data terisi', 'error');
         }
+        return Redirect::back()->withInput();
     }
 }
