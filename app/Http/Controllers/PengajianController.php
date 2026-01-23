@@ -55,6 +55,9 @@ class PengajianController extends Controller
                 "$year-12-31"
             ]);
         }
+        if ($request->filled('tingkat')) {
+            $pengajiansQuery->where('tingkat', $request->tingkat);
+        }
 
         // Get filtered results
         $pengajians = $pengajiansQuery
@@ -101,10 +104,13 @@ class PengajianController extends Controller
 
             if ($role === 'daerah') {
                 $kelompokIds = Kelompok::all()->pluck('id');
+                $tingkat = 'daerah';
             } elseif ($role === 'desa') {
                 $kelompokIds = Kelompok::where('id_desa', $user->id_desa)->pluck('id');
+                $tingkat = 'desa';
             } else { // role === 'kelompok'
                 $kelompokIds = collect([$user->id_kelompok]);
+                $tingkat = 'kelompok';
             }
 
             foreach ($kelompokIds as $id_kelompok) {
@@ -114,6 +120,7 @@ class PengajianController extends Controller
                     'waktu_tanggal_mulai' => $request->input('waktu_tanggal_mulai'),
                     'id_kelompok' => $id_kelompok,
                     'materi' => $request->input('materi'),
+                    'tingkat' => $tingkat
                 ]);
 
                 foreach ($request->input('kelas') as $id_kelas) {

@@ -38,10 +38,21 @@
                     <div class="form-group">
                         <label for="kelompok">Tahun</label>
                         <select name="tahun" id="tahun" class="form-control">
-                            <option value="" selected>Pilih Tahun</option>
+                            <option value="">Pilih Tahun</option>
                             @foreach ($tahun as $value)
                                 <option value="{{ $value }}">{{ $value }}</option>
                             @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="kelompok">Tingkat</label>
+                        <select name="tingkat" id="tingkat" class="form-control">
+                            <option value="">Pilih Tingkat Pengajian</option>
+                            <option value="daerah">Daerah</option>
+                            <option value="desa">Desa</option>
+                            <option value="kelompok">Kelompok</option>
                         </select>
                     </div>
                 </div>
@@ -76,7 +87,8 @@
                                                     2
                                                 ) . '%'
                                                 : '0.00%'
-                                        }}
+                                        }} 
+                                        | Pengajian : {{ Str::title($data->tingkat) }}
                                     </p>
                                 </div>
                                 <div class="card-title d-flex mb-0">

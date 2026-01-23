@@ -25,12 +25,14 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
     protected $year;
     protected $month;
     protected $role;
+    protected $tingkat;
 
     public function __construct($year = null, $month = null, $role = null)
     {
         $this->year = $year ?? date('Y');
         $this->month = $month ?? date('m');
         $this->role = Auth::user()->jabatan;
+        $this->tingkat = ['desa', 'daerah', 'kelompok'];
     }
     // TODO : MAKE THIS EXPORT SUITABLE FOR USER LEVEL (DAERAH, DESA, KELOMPOK)
     public function collection()
@@ -41,10 +43,12 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
             ->select(
                 'absens.id_kelas',
                 'pengajians.id_kelompok',
+                'pengajians.tingkat',
                 'absens.keterangan'
             )
             ->whereYear('pengajians.waktu_tanggal_mulai', $this->year)
             ->whereMonth('pengajians.waktu_tanggal_mulai', $this->month)
+            ->orderBy('pengajians.id_kelompok')
             ->orderBy('absens.id_kelas');
 
         // Role-based filtering (before get)
@@ -65,51 +69,83 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
         });
     }
 
-
     public function map($pengajian): array
     {
-        // $pengajian here is a collection grouped by id_kelas
+        $rows = [];
+
+        // Guaranteed by collection(): one kelas + one kelompok
         $first = $pengajian->first();
-        $idKelas = $first->id_kelas;
-        $kelas = kelas::find($idKelas);
-        $idKelompok = $first->id_kelompok;
-        $kelompok = Kelompok::find($idKelompok);
 
-        $totalHadir = 0;
-        $totalAlpha = 0;
-        $totalIzin = 0;
-        $totalSakit = 0;
+        $kelas = kelas::find($first->id_kelas);
+        $kelompok = Kelompok::find($first->id_kelompok);
+        $desa = Desa::find($kelompok->id_desa);
 
-        foreach ($pengajian as $row) {
-            $keterangan = json_decode($row->keterangan, true);
+        /**
+         * Now split THIS kelompok into its tingkat rows
+         * Result:
+         * - kelompok × tingkat
+         */
+        $byTingkat = $pengajian->groupBy('tingkat');
 
-            $totalHadir += $keterangan['hadir'] ?? 0;
-            $totalAlpha += $keterangan['alpha'] ?? 0;
-            $totalIzin  += $keterangan['izin'] ?? 0;
-            $totalSakit += $keterangan['sakit'] ?? 0;
+        foreach ($byTingkat as $tingkat => $items) {
+            $stat = $this->calculate($items);
+
+            // Name depends on tingkat, but kelompok context stays
+            $nama = match ($tingkat) {
+                'kelompok' => $kelompok->nama,
+                'desa'     => $desa->nama,
+                'daerah'   => 'Boyolali Barat',
+                default    => '-',
+            };
+
+            $rows[] = [
+                ucfirst($tingkat),   // tingkat
+                $kelompok->nama,     // ALWAYS show kelompok
+                $nama,               // entity name by tingkat
+                $kelas->nama,
+                $stat['hadir'],
+                $stat['alpha'],
+                $stat['izin'],
+                $stat['sakit'],
+                $stat['jumlah'],
+                $stat['persen'] . '%',
+            ];
         }
 
-        $jumlahNgaji = $pengajian->count();
-        $totalAll = $totalHadir + $totalAlpha + $totalIzin + $totalSakit;
-        $presentaseHadir = $totalAll > 0 ? round(($totalHadir / $totalAll) * 100, 2) : 0;
-
-        return [
-            $kelompok->nama,
-            $kelas->nama,
-            $totalHadir,
-            $totalAlpha,
-            $totalIzin,
-            $totalSakit,
-            $jumlahNgaji,
-            $presentaseHadir . '%',
-        ];
+        return $rows;
     }
 
+
+    private function calculate($rows)
+    {
+        $hadir = $alpha = $izin = $sakit = 0;
+
+        foreach ($rows as $row) {
+            $ket = json_decode($row->keterangan, true);
+            $hadir += $ket['hadir'] ?? 0;
+            $alpha += $ket['alpha'] ?? 0;
+            $izin  += $ket['izin'] ?? 0;
+            $sakit += $ket['sakit'] ?? 0;
+        }
+
+        $total = $hadir + $alpha + $izin + $sakit;
+
+        return [
+            'hadir' => $hadir,
+            'alpha' => $alpha,
+            'izin'  => $izin,
+            'sakit' => $sakit,
+            'jumlah' => $rows->count(),
+            'persen' => $total > 0 ? round(($hadir / $total) * 100, 2) : 0,
+        ];
+    }
 
     public function headings(): array
     {
         return [
+            'Tingkat',
             'Kelompok',
+            'Nama Tingkat',
             'Kelas',
             'Hadir',
             'Alpha',
@@ -117,7 +153,6 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
             'Sakit',
             'Jumlah Ngaji',
             'Presentase Hadir (%)',
-
         ];
     }
 
