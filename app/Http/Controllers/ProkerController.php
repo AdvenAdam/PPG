@@ -6,6 +6,7 @@ use App\Models\Proker;
 use App\Models\TimProker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class ProkerController extends Controller
@@ -83,29 +84,30 @@ class ProkerController extends Controller
             return redirect()
                 ->route('proker.index', [], 303)
                 ->withInput();
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             DB::rollBack();
-            throw $th;
+            Log::error('Error saat menambahkan Proker: ' . $e->getMessage());
+            toast('Data proker gagal ditambahkan pastikan semua data terisi', 'error');
         }
     }
 
     public function update(Request $request, Proker $proker)
     {
+        $validated = $request->validate([
+            'program' => 'required|string|unique:proker,program,' . $proker->id,
+            'id_tim' => 'required|exists:tim_proker,id',
+            'latar_belakang' => 'required|string',
+            'tujuan' => 'required|string',
+            'sasaran' => 'required|string',
+            'target' => 'required|string',
+            'waktu_pelaksanaan' => 'required|array',
+            'penanggung_jawab' => 'required|string',
+            'indikator_keberhasilan' => 'required|string',
+            'anggaran' => 'required|integer',
+            'keterangan' => 'nullable|string',
+        ]);
         DB::beginTransaction();
         try {
-            $validated = $request->validate([
-                'program' => 'required|string|unique:proker,program,' . $proker->id,
-                'id_tim' => 'required|exists:tim_proker,id',
-                'latar_belakang' => 'required|string',
-                'tujuan' => 'required|string',
-                'sasaran' => 'required|string',
-                'target' => 'required|string',
-                'waktu_pelaksanaan' => 'required|array',
-                'penanggung_jawab' => 'required|string',
-                'indikator_keberhasilan' => 'required|string',
-                'anggaran' => 'required|integer',
-                'keterangan' => 'nullable|string',
-            ]);
 
             $waktuPelaksanaanOrdered = collect(Proker::MONTHS)
                 ->filter(fn($month) => in_array($month, $validated['waktu_pelaksanaan']))
@@ -122,9 +124,11 @@ class ProkerController extends Controller
             return redirect()
                 ->route('proker.index', [], 303)
                 ->withInput();
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             DB::rollBack();
-            throw $th;
+            Log::error('Error saat memperbarui Proker: ' . $e->getMessage());
+            toast('Data proker gagal diperbarui pastikan semua data terisi', 'error');
+            throw $e;
         }
     }
 
@@ -164,9 +168,10 @@ class ProkerController extends Controller
             toast('Berhasil menghapus program kerja', 'success');
             return redirect()
                 ->route('proker.index', [], 303);
-        } catch (\Throwable $th) {
+        } catch (\Exception $e) {
             DB::rollBack();
-            throw $th;
+            Log::error('Error saat menghapus Proker: ' . $e->getMessage());
+            toast('Data proker gagal ditambahkan pastikan semua data terisi', 'error');
         }
     }
 }
