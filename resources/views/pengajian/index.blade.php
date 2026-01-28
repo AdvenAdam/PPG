@@ -10,7 +10,7 @@
                             <h4 class="card-title">Data Pengajian</h4>
                             <span>Input Data Pengajian</span>
                         </div>
-                        <div class="col">
+                        <div class="col text-end">
                             <div class="btn-group dropdown">
                                 <button class="btn btn-success  ms-auto me-2 dropdown-toggle show" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="true">
