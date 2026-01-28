@@ -1,77 +1,92 @@
- @foreach ($pengajian->Absens as $absen)
-     <div class="col-md-6 col-12">
-         <form action="{{ route('pengajian.update', $absen->id) }}" method="POST">
-             @csrf
-             @method('PATCH')
-             <div class="card">
-                 <div class="card-header bg-secondary rounded-top d-flex justify-content-between">
-                     <div class="">
-                         @php
-                             $keterangan = json_decode($absen->keterangan);
-                         @endphp
-                         <h5 class="card-title text-light">{{ $absen->kelas->nama }}</h5>
-                         <span class="text-light">Alpha : {{ $keterangan->alpha }} | Sakit :
-                             {{ $keterangan->sakit }} | Izin :
-                             {{ $keterangan->izin }} | Hadir : {{ $keterangan->hadir }}</span>
-                     </div>
-                     <div class="">
-                         <button type="button" id="addRowButton" class="btn btn-info"
-                             onclick="this.disabled=true; this.form.submit();">
-                             Update
-                         </button>
-                     </div>
+@foreach ($pengajian->Absens as $absen)
+    <div class="col-md-6 col-12">
+        <div class="card">
+            <div class="card-header bg-secondary rounded-top">
+                @php
+                    $keterangan = json_decode($absen->keterangan);
+                @endphp
+                <h5 class="card-title text-light">{{ $absen->kelas->nama }}</h5>
+                <span class="text-light">
+                    Alpha : {{ $keterangan->alpha }} |
+                    Sakit : {{ $keterangan->sakit }} |
+                    Izin : {{ $keterangan->izin }} |
+                    Hadir : {{ $keterangan->hadir }}
+                </span>
+            </div>
 
-                 </div>
-                 <div class="card-body">
-                     <div class="table-responsive">
-                         <table id="add-row" class="display table table-boredered table-hover">
-                             <thead>
-                                 <tr>
-                                     <th>No</th>
-                                     <th>Nama </th>
-                                     <th style="width: 10%">Action</th>
-                                 </tr>
-                             </thead>
-                             <tbody>
-                                 @foreach (json_decode($absen->absen) as $item)
-                                     <tr>
-                                         <td>{{ $loop->iteration }}</td>
-                                         <td>{{ $item->nama }}</td>
-                                         <td>
-                                             <div class="selectgroup w-100">
-                                                 <label class="selectgroup-item">
-                                                     <input type="radio" name="absensi[{{ $item->id_generus }}]"
-                                                         value="A" class="selectgroup-input"
-                                                         {{ $item->absen == 'alpha' ? 'checked' : '' }}>
-                                                     <span class="selectgroup-button">Alpha</span>
-                                                 </label>
-                                                 <label class="selectgroup-item">
-                                                     <input type="radio" name="absensi[{{ $item->id_generus }}]"
-                                                         value="S" class="selectgroup-input"
-                                                         {{ $item->absen == 'sakit' ? 'checked' : 'false' }}>
-                                                     <span class="selectgroup-button">Sakit</span>
-                                                 </label>
-                                                 <label class="selectgroup-item">
-                                                     <input type="radio" name="absensi[{{ $item->id_generus }}]"
-                                                         value="I" class="selectgroup-input"
-                                                         {{ $item->absen == 'izin' ? 'checked' : 'false' }}>
-                                                     <span class="selectgroup-button">Izin</span>
-                                                 </label>
-                                                 <label class="selectgroup-item">
-                                                     <input type="radio" name="absensi[{{ $item->id_generus }}]"
-                                                         value="H" class="selectgroup-input"
-                                                         {{ $item->absen == 'hadir' ? 'checked' : 'false' }}>
-                                                     <span class="selectgroup-button">Hadir</span>
-                                                 </label>
-                                             </div>
-                                         </td>
-                                     </tr>
-                                 @endforeach
-                             </tbody>
-                         </table>
-                     </div>
-                 </div>
-             </div>
-         </form>
-     </div>
- @endforeach
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (json_decode($absen->absen) as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->nama }}</td>
+                                <td>
+                                    <div class="selectgroup">
+                                        @foreach (['A' => 'alpha', 'S' => 'sakit', 'I' => 'izin', 'H' => 'hadir'] as $kode => $label)
+                                            <label class="selectgroup-item">
+                                                <input type="radio" class="selectgroup-input absensi-radio"
+                                                    name="absensi_{{ $absen->id }}_{{ $item->id_generus }}"
+                                                    data-absen-id="{{ $absen->id }}"
+                                                    data-generus-id="{{ $item->id_generus }}"
+                                                    value="{{ $kode }}"
+                                                    {{ $item->absen == $label ? 'checked' : '' }}>
+                                                <span class="selectgroup-button">{{ ucfirst($label) }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endforeach
+@push('scripts')
+    <script>
+        let debounceTimer = null;
+
+        $(document).on('change', '.absensi-radio', function() {
+
+            const el = $(this);
+            const payload = {
+                absen_id: el.data('absen-id'),
+                generus_id: el.data('generus-id'),
+                status: el.val(),
+                _token: "{{ csrf_token() }}"
+            };
+
+            clearTimeout(debounceTimer);
+
+            debounceTimer = setTimeout(() => {
+                sendAbsensi(payload);
+            }, 400); // 400ms setelah stop klik
+        });
+
+        function sendAbsensi(payload) {
+            $.post("{{ route('pengajian.absensi.update') }}", payload)
+                .done(() => showToast())
+                .fail(() => alert('Gagal update'));
+        }
+
+        function showToast() {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                timer: 2000,
+                showConfirmButton: false,
+                icon: 'success',
+                title: 'Absensi tersimpan'
+            });
+        }
+    </script>
+@endpush

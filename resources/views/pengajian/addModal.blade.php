@@ -43,6 +43,17 @@
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
+                                <label class="form-label">Pilih Tingkat</label>
+                                <select name="tingkat" id="tingkat" class="form-control">
+                                    <option value="" selected disabled>Pilih Tingkat Pengajian</option>
+                                    <option value="daerah">Daerah</option>
+                                    <option value="desa">Desa</option>
+                                    <option value="kelompok">Kelompok</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
                                 <div class="form-group">
                                     <label for="materi">Materi pengajian</label>
                                     <textarea class="form-control" id="materi" name="materi" rows="4" placeholder=" isi Materi pengajian"></textarea>

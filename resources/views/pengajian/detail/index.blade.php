@@ -22,11 +22,5 @@
                 </div>
             </div>
         </div>
-
-        {{-- Optional: Modal Handling --}}
-        <script>
-            function closemodal() {
-                $(".modal").modal("hide");
-            }
-        </script>
-    @endsection
+    </div>
+@endsection

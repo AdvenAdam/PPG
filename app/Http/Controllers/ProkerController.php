@@ -21,6 +21,10 @@ class ProkerController extends Controller
             $prokerQuery->where('id_tim', $request->id_tim);
         }
 
+        if ($request->filled('bulan')) {
+            $prokerQuery->where('waktu_pelaksanaan', 'like', '%' . $request->bulan . '%');
+        }
+
         if ($request->filled('tahun')) {
             $year = $request->get('tahun');
             $prokerQuery->where('tahun', $year);

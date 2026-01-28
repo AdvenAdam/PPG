@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{pengajian}/edit/', [PengajianController::class, 'edit'])->name('edit');
         Route::post('/', [PengajianController::class, 'store'])->name('store');
         Route::patch('/{absen}/edit/', [PengajianController::class, 'update'])->name('update');
+        Route::post('/absensi/update', [PengajianController::class, 'updateAbsensi'])->name('absensi.update');
         Route::delete('/delete/{pengajian}', [PengajianController::class, 'destroy'])->name('destroy');
     });
 

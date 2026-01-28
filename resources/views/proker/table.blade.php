@@ -1,3 +1,8 @@
+@php
+    use App\Models\Proker;
+    $months = Proker::MONTHS;
+@endphp
+
 <div class="row">
     <div class="row mb-3">
         <form action="{{ url('/proker') }}" method="GET" id="filterForm" class="addRowForm row g-3">
@@ -5,23 +10,52 @@
                 <div class="form-group">
                     <label for="desa">Tim</label>
                     <select name="id_tim" id="id_tim" class="form-control">
-                        <option value="" selected disabled>Pilih Tim</option>
+                        <option value="" {{ request('id_tim') ? '' : 'selected' }}>
+                            Pilih Tim
+                        </option>
+
                         @foreach ($tims as $value)
-                            <option value="{{ $value->id }}">{{ $value->nama }}
+                            <option value="{{ $value->id }}" {{ request('id_tim') == $value->id ? 'selected' : '' }}>
+                                {{ $value->nama }}
                             </option>
                         @endforeach
                     </select>
+
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="kelompok">Tahun</label>
+                    <label for="tahun">Tahun Anggaran</label>
                     <select name="tahun" id="tahun" class="form-control">
-                        <option value="" selected disabled>Pilih Tahun</option>
+                        <option value="" {{ request('tahun') ? '' : 'selected' }}>
+                            Pilih Tahun
+                        </option>
+
                         @foreach ($tahun as $value)
-                            <option value="{{ $value }}">{{ $value }}</option>
+                            <option value="{{ $value }}" {{ request('tahun') == $value ? 'selected' : '' }}>
+                                {{ $value }}
+                            </option>
                         @endforeach
                     </select>
+
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="bulan">Bulan</label>
+                    <select name="bulan" id="bulan" class="form-control">
+                        <option value="" {{ request('bulan') ? '' : 'selected' }}>
+                            Pilih Bulan
+                        </option>
+
+                        @foreach ($months as $value)
+                            <option value="{{ $value }}" {{ request('bulan') == $value ? 'selected' : '' }}>
+                                {{ $value }}
+                            </option>
+                        @endforeach
+                    </select>
+
                 </div>
             </div>
             <div class="col-sm-12">

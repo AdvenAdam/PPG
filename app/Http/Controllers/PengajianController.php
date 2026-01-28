@@ -54,7 +54,14 @@ class PengajianController extends Controller
                 "$year-01-01",
                 "$year-12-31"
             ]);
+        } else {
+            $currentYear = date('Y');
+            $pengajiansQuery->whereBetween('waktu_tanggal_mulai', [
+                "$currentYear-01-01",
+                "$currentYear-12-31"
+            ]);
         }
+
         if ($request->filled('tingkat')) {
             $pengajiansQuery->where('tingkat', $request->tingkat);
         }
@@ -104,13 +111,13 @@ class PengajianController extends Controller
 
             if ($role === 'daerah') {
                 $kelompokIds = Kelompok::all()->pluck('id');
-                $tingkat = 'daerah';
+                $tingkat = $request->input('tingkat') ?? 'daerah';
             } elseif ($role === 'desa') {
                 $kelompokIds = Kelompok::where('id_desa', $user->id_desa)->pluck('id');
-                $tingkat = 'desa';
+                $tingkat = $request->input('tingkat') ?? 'desa';
             } else { // role === 'kelompok'
                 $kelompokIds = collect([$user->id_kelompok]);
-                $tingkat = 'kelompok';
+                $tingkat = $request->input('tingkat') ?? 'kelompok';
             }
 
             foreach ($kelompokIds as $id_kelompok) {
@@ -130,7 +137,7 @@ class PengajianController extends Controller
                         ->where('status', 'aktif')
                         ->get();
 
-                    $absenFormatted = $generus->map(fn ($gen) => [
+                    $absenFormatted = $generus->map(fn($gen) => [
                         'id_generus' => $gen->id,
                         'nama' => $gen->nama,
                         'absen' => 'alpha',
@@ -154,7 +161,6 @@ class PengajianController extends Controller
 
             DB::commit();
             toast('Berhasil menambahkan data', 'success');
-
         } catch (\Throwable $th) {
             DB::rollBack();
             toast('Error saat menambahkan data<br>' . $th->getMessage(), 'error');
@@ -250,6 +256,37 @@ class PengajianController extends Controller
         }
     }
 
+    public function updateAbsensi(Request $request)
+    {
+        $request->validate([
+            'absen_id' => 'required|integer',
+            'generus_id' => 'required|integer',
+            'status' => 'required|in:A,S,I,H',
+        ]);
+
+        $absen = Absen::findOrFail($request->absen_id);
+
+        $data = collect(json_decode($absen->absen, true))->map(function ($item) use ($request) {
+            if ($item['id_generus'] == $request->generus_id) {
+                $item['absen'] = match ($request->status) {
+                    'A' => 'alpha',
+                    'S' => 'sakit',
+                    'I' => 'izin',
+                    'H' => 'hadir',
+                };
+            }
+            return $item;
+        });
+
+        $absen->update([
+            'absen' => $data->toJson()
+        ]);
+
+        return response()->json([
+            'status' => 'success'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
@@ -263,7 +300,6 @@ class PengajianController extends Controller
             toast('Berhasil menghapus data', 'success');
         } catch (\Throwable $th) {
             DB::rollBack();
-            dd($th);
             toast('Error saat menghapus data <br/>' . $th->getMessage(), 'error');
         } finally {
             return redirect()->back();
