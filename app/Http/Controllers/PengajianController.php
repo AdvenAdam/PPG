@@ -108,17 +108,24 @@ class PengajianController extends Controller
 
             $user = Auth::user();
             $role = $user->jabatan;
+            $requestedTingkat = $request->input('tingkat');
 
-            if ($role === 'daerah') {
-                $kelompokIds = Kelompok::all()->pluck('id');
-                $tingkat = $request->input('tingkat') ?? 'daerah';
-            } elseif ($role === 'desa') {
-                $kelompokIds = Kelompok::where('id_desa', $user->id_desa)->pluck('id');
-                $tingkat = $request->input('tingkat') ?? 'desa';
-            } else { // role === 'kelompok'
-                $kelompokIds = collect([$user->id_kelompok]);
-                $tingkat = $request->input('tingkat') ?? 'kelompok';
-            }
+            // tingkat validation based on role
+            $allowedTingkat = match ($role) {
+                'daerah'   => ['daerah', 'desa', 'kelompok'],
+                'desa'     => ['desa', 'kelompok'],
+                'kelompok' => ['kelompok'],
+            };
+
+            $tingkat = in_array($requestedTingkat, $allowedTingkat)
+                ? $requestedTingkat
+                : $allowedTingkat[0];
+
+            $kelompokIds = match ($tingkat) {
+                'daerah' => Kelompok::pluck('id'),
+                'desa' => Kelompok::where('id_desa', $user->id_desa)->pluck('id'),
+                'kelompok' => collect([$user->id_kelompok]),
+            };
 
             foreach ($kelompokIds as $id_kelompok) {
 
@@ -127,7 +134,7 @@ class PengajianController extends Controller
                     'waktu_tanggal_mulai' => $request->input('waktu_tanggal_mulai'),
                     'id_kelompok' => $id_kelompok,
                     'materi' => $request->input('materi'),
-                    'tingkat' => $tingkat
+                    'tingkat' => $requestedTingkat
                 ]);
 
                 foreach ($request->input('kelas') as $id_kelas) {

@@ -18,8 +18,8 @@
 
 <div class="row">
     <div class="row mb-3">
-        @if (Auth::user()->jabatan !== 'kelompok')
-            <form action="{{ url('/pengajian') }}" method="GET" id="addRowForm" class="addRowForm row g-3">
+        <form action="{{ url('/pengajian') }}" method="GET" id="addRowForm" class="addRowForm row g-3">
+            @if (Auth::user()->jabatan !== 'kelompok')
                 <div class="col-sm-4 ">
                     <div class="form-group">
                         <label for="desa">Desa</label>
@@ -42,39 +42,40 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="kelompok">Tahun</label>
-                        <select name="tahun" id="tahun" class="form-control">
-                            <option value=""{{ request('tahun') ? '' : 'selected' }}>Pilih Tahun</option>
-                            @foreach ($tahun as $value)
-                                <option value="{{ $value }}" {{ request('tahun') == $value ? 'selected' : '' }}>
-                                    {{ $value }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+            @endif
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="kelompok">Tahun</label>
+                    <select name="tahun" id="tahun" class="form-control">
+                        <option value=""{{ request('tahun') ? '' : 'selected' }}>Pilih Tahun</option>
+                        @foreach ($tahun as $value)
+                            <option value="{{ $value }}"
+                                {{ request('tahun') == $value || date('Y') == $value ? 'selected' : '' }}>
+                                {{ $value }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="kelompok">Tingkat</label>
-                        <select name="tingkat" id="tingkat" class="form-control">
-                            <option value="" {{ request('tingkat') ? '' : 'selected' }}>
-                                Pilih Tingkat Pengajian
-                            </option>
-                            <option value="daerah" {{ request('tingkat') == 'daerah' ? 'selected' : '' }}>Daerah
-                            </option>
-                            <option value="desa" {{ request('tingkat') == 'desa' ? 'selected' : '' }}>Desa</option>
-                            <option value="kelompok" {{ request('tingkat') == 'kelompok' ? 'selected' : '' }}>Kelompok
-                            </option>
-                        </select>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="kelompok">Tingkat</label>
+                    <select name="tingkat" id="tingkat" class="form-control">
+                        <option value="" {{ request('tingkat') ? '' : 'selected' }}>
+                            Pilih Tingkat Pengajian
+                        </option>
+                        <option value="daerah" {{ request('tingkat') == 'daerah' ? 'selected' : '' }}>Daerah
+                        </option>
+                        <option value="desa" {{ request('tingkat') == 'desa' ? 'selected' : '' }}>Desa</option>
+                        <option value="kelompok" {{ request('tingkat') == 'kelompok' ? 'selected' : '' }}>Kelompok
+                        </option>
+                    </select>
 
-                    </div>
                 </div>
-                <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary ">Tampilkan</button>
-                </div>
-            </form>
-        @endif
+            </div>
+            <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary ">Tampilkan</button>
+            </div>
+        </form>
     </div>
     @foreach ($pengajians as $id => $data)
         <div class="col-sm-6 col-lg-4 mb-2 mb-lg-5">
