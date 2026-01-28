@@ -5,12 +5,12 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
                         <div class="col">
                             <h4 class="card-title">Data Generus</h4>
                             <span>Penginputan Data Generus</span>
                         </div>
-                        <div class="d-flex flex-column flex-md-row gap-3 align-items-center">
+                        <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
                             <div class="btn-md-group ms-auto gap-2" role="group" aria-label="Basic example">
                                 <a class="btn btn-info my-1" data-bs-toggle="modal" data-bs-target="#importModal">
                                     <i class="far fa-file-excel"></i>

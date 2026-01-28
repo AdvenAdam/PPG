@@ -19,7 +19,7 @@
 
 <div class="row">
     @foreach ($timProker as $tim)
-        <div class="col-lg-4 col-md-6 col-12">
+        <div class="col-md-6 col-12">
             <div class="table-wrapper card">
                 <div class="card-header rounded-top bg-secondary d-flex justify-content-between">
                     <h5 class="card-title text-light">Tim {{ $tim->nama }}</h5>

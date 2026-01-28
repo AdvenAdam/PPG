@@ -15,38 +15,40 @@
             </div>
 
             <div class="card-body">
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (json_decode($absen->absen) as $item)
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->nama }}</td>
-                                <td>
-                                    <div class="selectgroup">
-                                        @foreach (['A' => 'alpha', 'S' => 'sakit', 'I' => 'izin', 'H' => 'hadir'] as $kode => $label)
-                                            <label class="selectgroup-item">
-                                                <input type="radio" class="selectgroup-input absensi-radio"
-                                                    name="absensi_{{ $absen->id }}_{{ $item->id_generus }}"
-                                                    data-absen-id="{{ $absen->id }}"
-                                                    data-generus-id="{{ $item->id_generus }}"
-                                                    value="{{ $kode }}"
-                                                    {{ $item->absen == $label ? 'checked' : '' }}>
-                                                <span class="selectgroup-button">{{ ucfirst($label) }}</span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </td>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Action</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach (json_decode($absen->absen) as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->nama }}</td>
+                                    <td>
+                                        <div class="selectgroup">
+                                            @foreach (['A' => 'alpha', 'S' => 'sakit', 'I' => 'izin', 'H' => 'hadir'] as $kode => $label)
+                                                <label class="selectgroup-item">
+                                                    <input type="radio" class="selectgroup-input absensi-radio"
+                                                        name="absensi_{{ $absen->id }}_{{ $item->id_generus }}"
+                                                        data-absen-id="{{ $absen->id }}"
+                                                        data-generus-id="{{ $item->id_generus }}"
+                                                        value="{{ $kode }}"
+                                                        {{ $item->absen == $label ? 'checked' : '' }}>
+                                                    <span class="selectgroup-button">{{ ucfirst($label) }}</span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
