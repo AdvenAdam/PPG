@@ -32,7 +32,8 @@
                         </option>
 
                         @foreach ($tahun as $value)
-                            <option value="{{ $value }}" {{ request('tahun') == $value ? 'selected' : '' }}>
+                            <option value="{{ $value }}"
+                                {{ request('tahun') == $value || date('Y') == $value ? 'selected' : '' }}>
                                 {{ $value }}
                             </option>
                         @endforeach
