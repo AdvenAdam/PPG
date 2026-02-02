@@ -48,10 +48,35 @@
                                     <span class="sub-item">Data Generus</span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="{{ url('/pengajian') }}">
+                            <li class="submenu">
+                                <a data-bs-toggle="collapse" href="#subabsensi" class="collapsed" aria-expanded="false">
                                     <span class="sub-item">Absensi</span>
+                                    <span class="caret"></span>
                                 </a>
+                                <div class="collapse" id="subabsensi" style="">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="{{ url('/pengajian?tingkat=daerah') }}">
+                                                <span class="sub-item">Absensi Daerah</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('/pengajian?tingkat=desa') }}">
+                                                <span class="sub-item">Absensi Desa</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('/pengajian?tingkat=kelompok') }}">
+                                                <span class="sub-item">Absensi Kelompok</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('/pengajian?tingkat=asrama') }}">
+                                                <span class="sub-item">Absensi Asrama</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
                                 <a href="{{ url('/kurikulum') }}">

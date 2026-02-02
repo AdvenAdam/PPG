@@ -112,9 +112,9 @@ class PengajianController extends Controller
 
             // tingkat validation based on role
             $allowedTingkat = match ($role) {
-                'daerah'   => ['daerah', 'desa', 'kelompok'],
-                'desa'     => ['desa', 'kelompok'],
-                'kelompok' => ['kelompok'],
+                'daerah'   => ['daerah', 'desa', 'kelompok', 'asrama'],
+                'desa'     => ['desa', 'kelompok', 'asrama'],
+                'kelompok' => ['kelompok', 'asrama'],
             };
 
             $tingkat = in_array($requestedTingkat, $allowedTingkat)
@@ -124,6 +124,12 @@ class PengajianController extends Controller
             $kelompokIds = match ($tingkat) {
                 'daerah' => Kelompok::pluck('id'),
                 'desa' => Kelompok::where('id_desa', $user->id_desa)->pluck('id'),
+                'asrama' => match ($role) {
+                    // asrama mengikuti domain user
+                    'daerah' => Kelompok::pluck('id'),
+                    'desa' => Kelompok::where('id_desa', $user->id_desa)->pluck('id'),
+                    'kelompok' => collect([$user->id_kelompok]),
+                },
                 'kelompok' => collect([$user->id_kelompok]),
             };
 
@@ -169,6 +175,7 @@ class PengajianController extends Controller
             DB::commit();
             toast('Berhasil menambahkan data', 'success');
         } catch (\Throwable $th) {
+            dd($th);
             DB::rollBack();
             toast('Error saat menambahkan data<br>' . $th->getMessage(), 'error');
         } finally {

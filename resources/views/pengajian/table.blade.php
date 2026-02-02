@@ -63,10 +63,17 @@
                         <option value="" {{ request('tingkat') ? '' : 'selected' }}>
                             Pilih Tingkat Pengajian
                         </option>
-                        <option value="daerah" {{ request('tingkat') == 'daerah' ? 'selected' : '' }}>Daerah
+                        <option value="daerah" {{ request('tingkat') == 'daerah' ? 'selected' : '' }}>
+                            Daerah
                         </option>
-                        <option value="desa" {{ request('tingkat') == 'desa' ? 'selected' : '' }}>Desa</option>
-                        <option value="kelompok" {{ request('tingkat') == 'kelompok' ? 'selected' : '' }}>Kelompok
+                        <option value="desa" {{ request('tingkat') == 'desa' ? 'selected' : '' }}>
+                            Desa
+                        </option>
+                        <option value="kelompok" {{ request('tingkat') == 'kelompok' ? 'selected' : '' }}>
+                            Kelompok
+                        </option>
+                        <option value="asrama" {{ request('tingkat') == 'asrama' ? 'selected' : '' }}>
+                            Asrama
                         </option>
                     </select>
 

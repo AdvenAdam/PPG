@@ -23,7 +23,7 @@
                             <div class="form-group">
                                 <label for="waktu_tanggal_mulai">Tanggal Waktu Pengajian</label>
                                 <input type="text" class="form-control datetimepicker" name="waktu_tanggal_mulai"
-                                    placeholder="* isi Tanggal Lahir" />
+                                    placeholder="* isi Tanggal Waktu Pengajian" />
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -49,6 +49,7 @@
                                     <option value="daerah">Daerah</option>
                                     <option value="desa">Desa</option>
                                     <option value="kelompok">Kelompok</option>
+                                    <option value="asrama">Asrama</option>
                                 </select>
                             </div>
                         </div>
