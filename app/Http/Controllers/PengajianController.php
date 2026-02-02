@@ -327,13 +327,13 @@ class PengajianController extends Controller
         // dd($role);
         $name = '';
         if ($role == 'daerah') {
-            $name = 'Absensi Generus Daerah ' . $tahun . '.xlsx';
+            $name = 'Absensi Generus Daerah ' . $tahun;
         } elseif ($role == 'desa') {
             $deskel = Desa::where('id', auth()->user()->id_desa)->first()->nama;
-            $name = "Absensi Generus {$deskel} {$tahun}.xlsx";
+            $name = "Absensi Generus {$deskel} {$tahun}";
         } else {
             $deskel = Kelompok::where('id', auth()->user()->id_kelompok)->first()->nama;
-            $name = "Absensi Generus {$deskel} {$tahun}.xlsx";
+            $name = "Absensi Generus {$deskel} {$tahun}";
         }
 
         return Excel::download((new PengajianExports($tahun)),  $name . '.xlsx');
@@ -342,7 +342,7 @@ class PengajianController extends Controller
     public function exportAbsensi(Request $request, Pengajian $pengajian)
     {
         $name = sprintf(
-            'Absensi Pengajian %s %s %s %s.xlsx',
+            'Absensi Pengajian %s %s %s %s',
             Str::title($pengajian->tingkat),
             Str::title($pengajian->nama),
             Str::title($pengajian->Kelompok()->first()->nama),
