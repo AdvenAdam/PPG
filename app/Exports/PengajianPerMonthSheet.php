@@ -47,9 +47,7 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
                 'absens.keterangan'
             )
             ->whereYear('pengajians.waktu_tanggal_mulai', $this->year)
-            ->whereMonth('pengajians.waktu_tanggal_mulai', $this->month)
-            ->orderBy('pengajians.id_kelompok')
-            ->orderBy('absens.id_kelas');
+            ->whereMonth('pengajians.waktu_tanggal_mulai', $this->month);
 
         // Role-based filtering (before get)
         if (auth()->user()->jabatan === 'kelompok') {
@@ -61,12 +59,26 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
             $query->whereIn('pengajians.id_kelompok', $kelompokIds);
         }
 
-        $pengajian = $query->get();
+        $pengajian = $query
+            ->orderBy('pengajians.id_kelompok')
+            ->orderBy('absens.id_kelas')
+            ->orderBy('pengajians.tingkat')
+            ->get();
 
-        // Group the result
-        return $pengajian->groupBy(function ($item) {
-            return $item->id_kelas . '-' . $item->id_kelompok;
-        });
+        $grouped = $pengajian
+            ->groupBy(fn($item) => $item->id_kelompok . '-' . $item->id_kelas)
+            ->sortKeys() // order kelompok → kelas
+            ->map(function ($items) {
+                // enforce tingkat order INSIDE each group
+                return $items->sortBy(fn($i) => match ($i->tingkat) {
+                    'daerah' => 1,
+                    'desa' => 2,
+                    'kelompok' => 3,
+                    default => 99,
+                });
+            });
+
+        return $grouped;
     }
 
     public function map($pengajian): array
@@ -95,6 +107,7 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
                 'kelompok' => $kelompok->nama,
                 'desa'     => $desa->nama,
                 'daerah'   => 'Boyolali Barat',
+                'asrama'   => 'Asrama',
                 default    => '-',
             };
 
