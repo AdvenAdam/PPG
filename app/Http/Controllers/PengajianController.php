@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PengajianExports;
+use App\Exports\SinglePengajianExport;
 use App\Models\Absen;
 use App\Models\Desa;
 use App\Models\Generus;
@@ -12,6 +13,7 @@ use App\Models\Pengajian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PengajianController extends Controller
@@ -175,7 +177,6 @@ class PengajianController extends Controller
             DB::commit();
             toast('Berhasil menambahkan data', 'success');
         } catch (\Throwable $th) {
-            dd($th);
             DB::rollBack();
             toast('Error saat menambahkan data<br>' . $th->getMessage(), 'error');
         } finally {
@@ -336,5 +337,17 @@ class PengajianController extends Controller
         }
 
         return Excel::download((new PengajianExports($tahun)),  $name . '.xlsx');
+    }
+
+    public function exportAbsensi(Request $request, Pengajian $pengajian)
+    {
+        $name = sprintf(
+            'Absensi Pengajian %s %s %s %s.xlsx',
+            Str::title($pengajian->tingkat),
+            Str::title($pengajian->nama),
+            Str::title($pengajian->Kelompok()->first()->nama),
+            date('d M Y', strtotime($pengajian->waktu_tanggal_mulai))
+        );
+        return Excel::download((new SinglePengajianExport($pengajian)),  $name . '.xlsx');
     }
 }

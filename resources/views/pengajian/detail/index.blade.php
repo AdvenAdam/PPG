@@ -12,6 +12,13 @@
                             <span>Perbarui Data Pengajian dan Absensi</span><br />
                             <a href="{{ url('/pengajian') }}"> <span class="text-secondary">Kembali</span></a>
                         </div>
+                        <div class="div">
+                            <a class="btn btn-success  ms-auto me-2"
+                                href="{{ route('pengajian.exportAbsensi', $pengajian->id) }}">
+                                <i class="fa fa-file-excel"></i>
+                                Unduh Rekap
+                            </a>
+                        </div>
                     </div>
                 </div>
 
