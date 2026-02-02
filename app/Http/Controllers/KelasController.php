@@ -9,13 +9,13 @@ class KelasController extends Controller
 {
     public function index()
     {
-        $kelass = kelas::all();
+        $kelass = Kelas::all();
 
         // untuk sweat alert hapus
         $title = 'Delete Kelompok!';
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
-        
+
         return view('kelas.index', compact('kelass'));
     }
 
@@ -45,7 +45,7 @@ class KelasController extends Controller
             'nama.required' => 'Nama harus diisi',
         ]);
 
-        $kls = kelas::find($id);
+        $kls = Kelas::find($id);
         $kls->nama = $request->nama;
         $kls->save();
 
@@ -57,7 +57,7 @@ class KelasController extends Controller
 
     public function destroy($id)
     {
-        $kls = kelas::find($id);
+        $kls = Kelas::find($id);
         $kls->delete();
 
         // Sweet alert

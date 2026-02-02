@@ -32,7 +32,7 @@ class JamaahController extends Controller
 
         $orangtua = Ortu::all();
         $pekerjaan = Pekerjaan::all();
-        $kelas = kelas::all();
+        $kelas = Kelas::all();
 
         // untuk sweat alert hapus
         $title = 'Delete Kelompok!';

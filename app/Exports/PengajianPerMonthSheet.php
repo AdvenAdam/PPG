@@ -88,7 +88,7 @@ class PengajianPerMonthSheet implements FromCollection, WithHeadings, WithMappin
         // Guaranteed by collection(): one kelas + one kelompok
         $first = $pengajian->first();
 
-        $kelas = kelas::find($first->id_kelas);
+        $kelas = Kelas::find($first->id_kelas);
         $kelompok = Kelompok::find($first->id_kelompok);
         $desa = Desa::find($kelompok->id_desa);
 

@@ -32,7 +32,7 @@ class GenerusImport implements ToModel, WithStartRow, SkipsEmptyRows
     {
         $this->desa = Desa::all();
         $this->kelompok = Kelompok::all();
-        $this->kelas = kelas::all();
+        $this->kelas = Kelas::all();
     }
 
     public function model(array $row)
@@ -50,7 +50,7 @@ class GenerusImport implements ToModel, WithStartRow, SkipsEmptyRows
                 : $row[4];
 
             // Safe fetch kelas ID
-            $kelas = kelas::firstWhere('nama', $row[5]);
+            $kelas = Kelas::firstWhere('nama', $row[5]);
             if (!$kelas) {
                 throw new \Exception("Kelas not found: " . $row[5]);
             }

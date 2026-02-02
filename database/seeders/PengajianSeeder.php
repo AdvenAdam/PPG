@@ -24,7 +24,7 @@ class PengajianSeeder extends Seeder
         try {
             DB::beginTransaction();
             $kelompoks = Kelompok::all();
-            $kelas = kelas::all();
+            $kelas = Kelas::all();
             for ($i = 0; $i < 50; $i++) {
                 $randKelompok = $faker->randomElement($kelompoks->pluck('id')->toArray());
                 $randJumlah = $faker->numberBetween(1, $kelas->count());

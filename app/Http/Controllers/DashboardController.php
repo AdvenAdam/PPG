@@ -20,7 +20,7 @@ class DashboardController extends Controller
             'admin' => User::count(),
         ];
         $generusByClass = [];
-        $kelas = kelas::all();
+        $kelas = Kelas::all();
         foreach ($kelas as $class) {
             $generusByClass[$class->nama]['L'] = Generus::where('id_kelas', '=', $class->id)->where('gender', '=', 'L')->count();
             $generusByClass[$class->nama]['P'] = Generus::where('id_kelas', '=', $class->id)->where('gender', '=', 'P')->count();

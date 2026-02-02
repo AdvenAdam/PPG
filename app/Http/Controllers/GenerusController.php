@@ -37,7 +37,7 @@ class GenerusController extends Controller
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
 
-        $kelas = kelas::all();
+        $kelas = Kelas::all();
         $kelompok = Kelompok::all();
         $desa = Desa::all();
 
