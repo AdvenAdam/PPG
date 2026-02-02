@@ -1,6 +1,6 @@
 @foreach ($pengajian->Absens as $absen)
-    <div class="col-md-6 col-12">
-        <div class="card">
+    <div class="masonry-item">
+        <div class="card mb-0">
             <div class="card-header bg-secondary rounded-top">
                 @php
                     $keterangan = json_decode($absen->keterangan);
