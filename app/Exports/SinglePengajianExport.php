@@ -75,13 +75,12 @@ class SinglePengajianExport implements FromCollection, WithEvents, ShouldAutoSiz
                 $this->pushRow($rows, [
                     $i + 1,
                     $item->nama,
-                    $item->absen === 'alpha' ? 1 : '',
-                    $item->absen === 'sakit' ? 1 : '',
-                    $item->absen === 'izin' ? 1 : '',
-                    $item->absen === 'hadir' ? 1 : '',
+                    $item->absen === 'alpha' ? '✓' : '',
+                    $item->absen === 'sakit' ? '✓' : '',
+                    $item->absen === 'izin'  ? '✓' : '',
+                    $item->absen === 'hadir' ? '✓' : '',
                 ]);
             }
-
             /* ===== SPACE ===== */
             $this->pushRow($rows, ['', '', '', '', '', '']);
         }
