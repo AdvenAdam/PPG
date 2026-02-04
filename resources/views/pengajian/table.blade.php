@@ -1,20 +1,27 @@
-<style>
-    .text-truncate-container {
-        width: 100%;
-    }
+@php
+    use App\Models\Proker;
+    $months = Proker::MONTHS;
+@endphp
 
-    .text-truncate-container p {
-        -webkit-line-clamp: 1;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
+@push('css')
+    <style>
+        .text-truncate-container {
+            width: 100%;
+        }
 
-    .clickable-card:hover {
-        transform: translateY(-2px);
-        transition: 0.2s;
-    }
-</style>
+        .text-truncate-container p {
+            -webkit-line-clamp: 1;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-2px);
+            transition: 0.2s;
+        }
+    </style>
+@endpush
 
 <div class="row">
     <div class="row mb-3">
@@ -45,19 +52,6 @@
             @endif
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="kelompok">Tahun</label>
-                    <select name="tahun" id="tahun" class="form-control">
-                        <option value=""{{ request('tahun') ? '' : 'selected' }}>Pilih Tahun</option>
-                        @foreach ($tahun as $value)
-                            <option value="{{ $value }}"
-                                {{ request('tahun') == $value || date('Y') == $value ? 'selected' : '' }}>
-                                {{ $value }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group">
                     <label for="kelompok">Tingkat</label>
                     <select name="tingkat" id="tingkat" class="form-control">
                         <option value="" {{ request('tingkat') ? '' : 'selected' }}>
@@ -75,6 +69,37 @@
                         <option value="asrama" {{ request('tingkat') == 'asrama' ? 'selected' : '' }}>
                             Asrama
                         </option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="kelompok">Tahun</label>
+                    <select name="tahun" id="tahun" class="form-control">
+                        <option value=""{{ request('tahun') ? '' : 'selected' }}>Pilih Tahun</option>
+                        @foreach ($tahun as $value)
+                            <option value="{{ $value }}"
+                                {{ request('tahun') == $value || date('Y') == $value ? 'selected' : '' }}>
+                                {{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="bulan">Bulan</label>
+                    <select name="bulan" id="bulan" class="form-control">
+                        <option value="" {{ request('bulan') ? '' : 'selected' }}>
+                            Pilih Bulan
+                        </option>
+
+                        @foreach ($months as $index => $value)
+                            <option value="{{ $index + 1 }}"
+                                {{ request('bulan') == $index + 1 ? 'selected' : '' }}>
+                                {{ $value }}
+                            </option>
+                        @endforeach
                     </select>
 
                 </div>

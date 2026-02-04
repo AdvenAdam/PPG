@@ -6,12 +6,13 @@
                     $keterangan = json_decode($absen->keterangan);
                 @endphp
                 <h5 class="card-title text-light">{{ $absen->kelas->nama }}</h5>
-                <span class="text-light">
+                <span class="text-light" data-absen-id-header="{{ $absen->id }}">
                     Alpha : {{ $keterangan->alpha }} |
                     Sakit : {{ $keterangan->sakit }} |
                     Izin : {{ $keterangan->izin }} |
                     Hadir : {{ $keterangan->hadir }}
                 </span>
+
             </div>
 
             <div class="card-body">
@@ -58,7 +59,6 @@
         let debounceTimer = null;
 
         $(document).on('change', '.absensi-radio', function() {
-
             const el = $(this);
             const payload = {
                 absen_id: el.data('absen-id'),
@@ -76,7 +76,10 @@
 
         function sendAbsensi(payload) {
             $.post("{{ route('pengajian.absensi.update') }}", payload)
-                .done(() => showToast())
+                .done((res) => {
+                    showToast();
+                    updateKeterangan(payload.absen_id, res);
+                })
                 .fail(() => alert('Gagal update'));
         }
 
@@ -89,6 +92,18 @@
                 icon: 'success',
                 title: 'Absensi tersimpan'
             });
+        }
+
+        function updateKeterangan(absenId, res) {
+            const cardHeader = $(`[data-absen-id-header='${absenId}']`);
+            if (cardHeader && res.keterangan) {
+                cardHeader.html(
+                    `Alpha: ${res.keterangan.alpha} | ` +
+                    `Sakit: ${res.keterangan.sakit} | ` +
+                    `Izin: ${res.keterangan.izin} | ` +
+                    `Hadir: ${res.keterangan.hadir}`
+                );
+            }
         }
     </script>
 @endpush

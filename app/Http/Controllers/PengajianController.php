@@ -64,6 +64,10 @@ class PengajianController extends Controller
             ]);
         }
 
+        if ($request->filled('bulan')) {
+            $pengajiansQuery->whereMonth('waktu_tanggal_mulai', $request->bulan);;
+        }
+
         if ($request->filled('tingkat')) {
             $pengajiansQuery->where('tingkat', $request->tingkat);
         }
@@ -271,6 +275,7 @@ class PengajianController extends Controller
         }
     }
 
+
     public function updateAbsensi(Request $request)
     {
         $request->validate([
@@ -280,8 +285,16 @@ class PengajianController extends Controller
         ]);
 
         $absen = Absen::findOrFail($request->absen_id);
+        $absensiData = collect(json_decode($absen->absen, true));
 
-        $data = collect(json_decode($absen->absen, true))->map(function ($item) use ($request) {
+        $keterangan = [
+            'alpha' => 0,
+            'hadir' => 0,
+            'sakit' => 0,
+            'izin' => 0,
+        ];
+
+        $updatedAbsensi = $absensiData->map(function ($item) use ($request, &$keterangan) {
             if ($item['id_generus'] == $request->generus_id) {
                 $item['absen'] = match ($request->status) {
                     'A' => 'alpha',
@@ -290,15 +303,18 @@ class PengajianController extends Controller
                     'H' => 'hadir',
                 };
             }
+            $keterangan[$item['absen']]++;
             return $item;
         });
 
         $absen->update([
-            'absen' => $data->toJson()
+            'absen' => $updatedAbsensi->toJson(),
+            'keterangan' => json_encode($keterangan),
         ]);
 
         return response()->json([
-            'status' => 'success'
+            'status' => 'success',
+            'keterangan' => $keterangan,
         ]);
     }
 
