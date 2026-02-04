@@ -27,6 +27,7 @@ function GenerusByClassChart(feed) {
         data: data,
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: "top",
@@ -77,6 +78,7 @@ function GenerusByClassOverallChart(feed) {
         data: data,
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: "bottom",
@@ -140,6 +142,7 @@ function GenerusByEducationChart(feed) {
                 },
             },
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false,
@@ -188,6 +191,7 @@ function GenerusByJobChart(feed) {
         data: data,
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: "bottom",

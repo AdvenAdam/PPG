@@ -2,9 +2,8 @@
     <div class="main-header-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="blue2">
-            <a href="" class="logo">
-                <img src="{{ asset('assets/img/' . Auth::user()->foto) }}" alt="..."
-                    class="avatar-img rounded-circle" />
+            <a href="" class="logo text-white">
+                Generus Boyolali Barat
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
