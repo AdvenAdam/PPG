@@ -10,10 +10,16 @@
                             <h4 class="card-title">Data Sarpras</h4>
                             <span>Input Data Sarpras</span>
                         </div>
-                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#addRowModal">
+                    <div class="ms-auto d-flex gap-2">
+                        <a href="{{ route('sarpras.export') }}" class="btn btn-success btn-round">
+                            <i class="fa fa-file-excel"></i>
+                            Unduh Excel
+                        </a>
+                        <button class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#addRowModal">
                             <i class="fa fa-plus"></i>
                             Tambah
                         </button>
+                    </div>
                     </div>
                 </div>
                 <div class="card-body">

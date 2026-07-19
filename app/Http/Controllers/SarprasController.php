@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SarprasExport;
 use App\Models\Desa;
 use App\Models\kelas;
 use App\Models\Kelompok;
@@ -9,6 +10,7 @@ use App\Models\Sarpras;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SarprasController extends Controller
 {
@@ -48,6 +50,13 @@ class SarprasController extends Controller
 
         return view("sarpras.index", compact("sarpras", "desa", "kelompoks"));
     }
+
+    public function export()
+    {
+        $filename = 'Sarpras_' . now()->format('d-m-Y') . '.xlsx';
+        return Excel::download(new SarprasExport(), $filename);
+    }
+
     public function store(Request $request)
     {
         try {

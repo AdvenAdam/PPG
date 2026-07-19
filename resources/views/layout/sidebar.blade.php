@@ -53,7 +53,7 @@
                                     <span class="sub-item">Absensi</span>
                                     <span class="caret"></span>
                                 </a>
-                                <div class="collapse" id="subabsensi" style="">
+                                <div class="collapse" id="subabsensi">
                                     <ul class="nav nav-collapse subnav">
                                         <li>
                                             <a href="{{ url('/pengajian?tingkat=daerah') }}">
@@ -87,6 +87,29 @@
                                 <a href="{{ url('/sarpras') }}">
                                     <span class="sub-item">Sarpras</span>
                                 </a>
+                            </li>
+                            <li class="submenu">
+                                <a data-bs-toggle="collapse" href="#kepengurusan" class="collapsed"
+                                    aria-expanded="false">
+                                    <span class="sub-item">Kepengurusan</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="kepengurusan">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/kepengurusan">
+                                                <span class="sub-item">Struktur Kepengurusan</span>
+                                            </a>
+                                        </li>
+                                        @if (Auth::user()->jabatan === 'daerah')
+                                            <li>
+                                                <a href="/jabatan">
+                                                    <span class="sub-item">Data Jabatan</span>
+                                                </a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -131,7 +154,7 @@
                                         <span class="sub-item">Program Kerja</span>
                                         <span class="caret"></span>
                                     </a>
-                                    <div class="collapse" id="subnav1" style="">
+                                    <div class="collapse" id="subnav1">
                                         <ul class="nav nav-collapse subnav">
                                             <li>
                                                 <a href="/tim-proker">
@@ -146,6 +169,7 @@
                                         </ul>
                                     </div>
                                 </li>
+
                             </ul>
                         </div>
                     </li>

@@ -13,6 +13,8 @@ use App\Http\Controllers\PengajianController;
 use App\Http\Controllers\ProkerController;
 use App\Http\Controllers\SarprasController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\KepengurusanController;
 use App\Http\Controllers\TimProkerController;
 use App\Http\Controllers\userController;
 use Illuminate\Support\Facades\Route;
@@ -109,6 +111,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('sarpras')->name('sarpras.')->group(function () {
         Route::get('/', [SarprasController::class, 'index'])->name('index');
+        Route::get('/export', [SarprasController::class, 'export'])->name('export');
         Route::post('/', [SarprasController::class, 'store'])->name('store');
         Route::put('/update/{id}', [SarprasController::class, 'update'])->name('update');
         Route::delete('/delete/{sarpras}', [SarprasController::class, 'destroy'])->name('destroy');
@@ -123,6 +126,23 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/delete/{proker}', [ProkerController::class, 'destroy'])->name('destroy');
         Route::resource('/', ProkerController::class)->parameters(['' => 'proker'])->except('create', 'show', 'edit', 'destroy');
         Route::post('/{proker}/update-waktu', [ProkerController::class, 'updateWaktu']);
+    });
+
+    // Menu Jabatan
+    Route::prefix('jabatan')->name('jabatan.')->middleware('jabatan.daerah')->group(function () {
+        Route::get('/', [JabatanController::class, 'index'])->name('index');
+        Route::post('/', [JabatanController::class, 'store'])->name('store');
+        Route::post('/edit/{id}', [JabatanController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [JabatanController::class, 'destroy'])->name('destroy');
+    });
+
+    // Menu Kepengurusan
+    Route::prefix('kepengurusan')->name('kepengurusan.')->group(function () {
+        Route::get('/', [KepengurusanController::class, 'index'])->name('index');
+        Route::get('/export', [KepengurusanController::class, 'export'])->name('export');
+        Route::post('/', [KepengurusanController::class, 'store'])->name('store');
+        Route::post('/edit/{id}', [KepengurusanController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [KepengurusanController::class, 'destroy'])->name('destroy');
     });
 });
 
