@@ -111,12 +111,14 @@ class KepengurusanController extends Controller
     {
         $request->validate([
             'nama'       => 'required',
+            'no_hp'      => 'required',
             'jabatan_id' => 'required|exists:jabatan,id',
             'tingkat'    => 'required|in:daerah,desa,kelompok',
         ]);
 
         $kepengurusan = new Kepengurusan();
         $kepengurusan->nama        = $request->nama;
+        $kepengurusan->no_hp       = $request->no_hp;
         $kepengurusan->jabatan_id  = $request->jabatan_id;
         $kepengurusan->daerah_id   = $request->tingkat === 'daerah'   ? ($request->daerah_id   ?: null) : null;
         $kepengurusan->desa_id     = $request->tingkat === 'desa'     ? ($request->desa_id     ?: null) : null;
@@ -132,12 +134,14 @@ class KepengurusanController extends Controller
     {
         $request->validate([
             'nama'       => 'required',
+            'no_hp'      => 'required',
             'jabatan_id' => 'required|exists:jabatan,id',
             'tingkat'    => 'required|in:daerah,desa,kelompok',
         ]);
 
         $kepengurusan = Kepengurusan::findOrFail($id);
         $kepengurusan->nama        = $request->nama;
+        $kepengurusan->no_hp       = $request->no_hp;
         $kepengurusan->jabatan_id  = $request->jabatan_id;
         $kepengurusan->daerah_id   = $request->tingkat === 'daerah'   ? ($request->daerah_id   ?: null) : null;
         $kepengurusan->desa_id     = $request->tingkat === 'desa'     ? ($request->desa_id     ?: null) : null;

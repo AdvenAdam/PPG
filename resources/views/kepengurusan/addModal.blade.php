@@ -81,17 +81,22 @@
                             </div>
                         </div>
 
+                        {{-- No HP --}}
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="no_hp">No HP</label>
+                                <input type="text" name="no_hp" id="no_hp" class="form-control"
+                                    placeholder="* isi No HP" required />
+                            </div>
+                        </div>
+
                         {{-- Jabatan (filtered by tingkat) --}}
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="jabatan_id">Jabatan</label>
-                                <select name="jabatan_id" id="jabatan_id" class="form-control" required>
+                                <select name="jabatan_id" id="jabatan_id" class="form-control" required
+                                    @if (Auth::user()->jabatan !== 'kelompok') disabled @endif>
                                     <option value="" selected disabled>Pilih Jabatan</option>
-                                    @foreach ($jabatans as $j)
-                                        <option value="{{ $j->id }}" data-tingkat="{{ $j->tingkat }}">
-                                            {{ $j->nama }}
-                                        </option>
-                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -116,61 +121,73 @@
     // Filter jabatan dropdown based on selected tingkat
     function filterJabatan(tingkat) {
         const select = document.getElementById('jabatan_id');
-        const currentVal = select.value;
-        select.innerHTML = '<option value="" disabled>Pilih Jabatan</option>';
+        select.innerHTML = '<option value="" disabled selected>Pilih Jabatan</option>';
+        select.disabled = !tingkat;
 
-        jabatans
-            .filter(j => !tingkat || j.tingkat === tingkat)
-            .forEach(j => {
-                const opt = document.createElement('option');
-                opt.value = j.id;
-                opt.text = j.nama;
-                opt.dataset.tingkat = j.tingkat;
-                select.appendChild(opt);
-            });
-
-        // Restore value if still available
-        select.value = currentVal || '';
+        if (tingkat) {
+            jabatans
+                .filter(j => j.tingkat === tingkat)
+                .forEach(j => {
+                    const opt = document.createElement('option');
+                    opt.value = j.id;
+                    opt.text = j.nama;
+                    opt.dataset.tingkat = j.tingkat;
+                    select.appendChild(opt);
+                });
+        }
     }
 
-    // Show/hide unit selectors based on tingkat
+    // Optional parameter sets the selected value after AJAX finishes
+    function loadKelompokByDesa(desaId, selectedKelompokId = null) {
+        $.ajax({
+            url: '/kelompok/get-by-desa/' + desaId,
+            type: 'GET',
+            success: function(response) {
+                const sel = document.getElementById('kelompok_id');
+                sel.innerHTML = '<option value="" disabled selected>Pilih Kelompok</option>';
+                
+                response.forEach(k => {
+                    sel.innerHTML += `<option value="${k.id}">${k.nama}</option>`;
+                });
+
+                // Set the value if we are editing an existing record
+                if (selectedKelompokId) {
+                    sel.value = selectedKelompokId;
+                }
+            }
+        });
+    }
+
     @if (Auth::user()->jabatan !== 'kelompok')
-        document.getElementById('tingkat').addEventListener('change', function() {
-            const val = this.value;
+        // FIXED: Using jQuery .on() instead of native addEventListener
+        $('#tingkat').on('change', function() {
+            const val = $(this).val();
             document.getElementById('wrap_desa_id').style.display = val === 'desa' ? '' : 'none';
             document.getElementById('wrap_kelompok_id').style.display = val === 'kelompok' ? '' : 'none';
+            
             @if (Auth::user()->jabatan === 'daerah')
                 document.getElementById('wrap_daerah_id').style.display = val === 'daerah' ? '' : 'none';
 
-                // For desa level: load kelompoks filtered by desa when desa is selected
                 if (val === 'kelompok' && document.getElementById('desa_id').value) {
                     loadKelompokByDesa(document.getElementById('desa_id').value);
                 }
             @endif
+            
             filterJabatan(val);
         });
 
         @if (Auth::user()->jabatan === 'daerah')
-            document.getElementById('desa_id').addEventListener('change', function() {
-                if (document.getElementById('tingkat').value === 'kelompok') {
-                    loadKelompokByDesa(this.value);
+            // FIXED: Using jQuery .on() here as well
+            $('#desa_id').on('change', function() {
+                if ($('#tingkat').val() === 'kelompok') {
+                    loadKelompokByDesa($(this).val());
                 }
             });
         @endif
+    @endif
 
-        function loadKelompokByDesa(desaId) {
-            $.ajax({
-                url: '/kelompok/get-by-desa/' + desaId,
-                type: 'GET',
-                success: function(response) {
-                    const sel = document.getElementById('kelompok_id');
-                    sel.innerHTML = '<option value="" disabled selected>Pilih Kelompok</option>';
-                    response.forEach(k => {
-                        sel.innerHTML += `<option value="${k.id}">${k.nama}</option>`;
-                    });
-                }
-            });
-        }
+    @if (Auth::user()->jabatan === 'kelompok')
+        filterJabatan('kelompok');
     @endif
 
     function submitKepengurusan() {
@@ -183,7 +200,7 @@
         const form = $(this).find('#addRowForm');
         form.trigger('reset');
         form.find('input[name="_method"]').remove();
-        form.attr('action', '{{ url(' / kepengurusan ') }}');
+        form.attr('action', '{{ url('/kepengurusan') }}');
         $(this).find('.modal-title').text('Input Data Kepengurusan');
         $(this).find('#addRowButton').prop('disabled', false);
 
@@ -194,10 +211,12 @@
                 document.getElementById('wrap_daerah_id').style.display = 'none';
             @endif
             filterJabatan(null);
+        @else
+            filterJabatan('kelompok');
         @endif
     });
 
-    // Populate modal for edit
+    // Edit function logic
     function editKepengurusan(id) {
         const data = @json($kepengurusan->flatten()->values());
         const row = data.find(r => r.id === id);
@@ -212,22 +231,36 @@
         form.append('<input type="hidden" name="_method" value="POST">');
 
         modal.find('#nama').val(row.nama);
-        modal.find('#jabatan_id').val(row.jabatan_id);
+        modal.find('#no_hp').val(row.no_hp ?? '');
 
-        @if (Auth::user()->jabatan !== 'kelompok')
+        @if (Auth::user()->jabatan === 'kelompok')
+            filterJabatan('kelompok');
+            modal.find('#jabatan_id').val(row.jabatan_id);
+        @else
             const tingkat = row.tingkat;
+            
+            // This will now successfully trigger the jQuery .on('change') handler
             modal.find('#tingkat').val(tingkat).trigger('change');
+            
+            // Because the handler ran, the options exist and are enabled, so this will work!
+            modal.find('#jabatan_id').val(row.jabatan_id);
 
-            setTimeout(() => {
-                if (tingkat === 'daerah' && row.daerah_id) {
-                    modal.find('#daerah_id').val(row.daerah_id);
-                } else if (tingkat === 'desa' && row.desa_id) {
-                    modal.find('#desa_id').val(row.desa_id);
-                } else if (tingkat === 'kelompok' && row.kelompok_id) {
+            // Handle location assignments
+            if (tingkat === 'daerah' && row.daerah_id) {
+                modal.find('#daerah_id').val(row.daerah_id);
+            } else if (tingkat === 'desa' && row.desa_id) {
+                modal.find('#desa_id').val(row.desa_id);
+            } else if (tingkat === 'kelompok' && row.kelompok_id) {
+                
+                @if (Auth::user()->jabatan === 'daerah')
+                    if (row.desa_id) {
+                        modal.find('#desa_id').val(row.desa_id);
+                        loadKelompokByDesa(row.desa_id, row.kelompok_id);
+                    }
+                @else
                     modal.find('#kelompok_id').val(row.kelompok_id);
-                }
-                modal.find('#jabatan_id').val(row.jabatan_id);
-            }, 100);
+                @endif
+            }
         @endif
 
         modal.modal('show');

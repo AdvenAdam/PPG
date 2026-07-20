@@ -162,6 +162,7 @@
                                         <tr>
                                             <th style="width:5%">No</th>
                                             <th>Nama</th>
+                                            <th>No HP</th>
                                             <th>Jabatan</th>
                                             <th style="width:12%" class="no-print">Action</th>
                                         </tr>
@@ -171,6 +172,7 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $row->nama }}</td>
+                                                <td>{{ $row->no_hp ?? '-' }}</td>
                                                 <td>{{ $row->nama_jabatan }}</td>
                                                 <td class="no-print">
                                                     <div class="form-button-action">

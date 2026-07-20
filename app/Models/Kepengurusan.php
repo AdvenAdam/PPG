@@ -18,6 +18,7 @@ class Kepengurusan extends Model
         'kelompok_id',
         'daerah_id',
         'nama',
+        'no_hp',
         'jabatan_id',
         'created_at',
         'updated_at'

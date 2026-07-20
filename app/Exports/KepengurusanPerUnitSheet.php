@@ -48,7 +48,7 @@ class KepengurusanPerUnitSheet implements FromCollection, WithHeadings, WithMapp
     {
         $query = DB::table('kepengurusan')
             ->leftJoin('jabatan', 'kepengurusan.jabatan_id', '=', 'jabatan.id')
-            ->select('kepengurusan.nama', 'jabatan.nama as nama_jabatan');
+            ->select('kepengurusan.nama', 'kepengurusan.no_hp', 'jabatan.nama as nama_jabatan');
 
         if ($this->tingkat === 'daerah') {
             $query->where('kepengurusan.daerah_id', $this->daerahId);
@@ -66,6 +66,7 @@ class KepengurusanPerUnitSheet implements FromCollection, WithHeadings, WithMapp
         return [
             'No',
             'Nama',
+            'No HP',
             'Jabatan',
         ];
     }
@@ -77,6 +78,7 @@ class KepengurusanPerUnitSheet implements FromCollection, WithHeadings, WithMapp
         return [
             $this->rowNumber,
             $row->nama,
+            $row->no_hp ?? '-',
             $row->nama_jabatan ?? '-',
         ];
     }
